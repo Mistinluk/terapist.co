@@ -1,0 +1,19 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+node_modules/
+dist/
+*.sqlite*
+*.db
+*.log
+.sites-runtime/
+playwright-report/
+test-results/
+coverage/
+*.tsbuildinfo
+*.key
+/legacy/URL-DB Yedek.md

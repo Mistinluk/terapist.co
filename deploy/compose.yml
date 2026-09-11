@@ -1,0 +1,46 @@
+# Yalnızca yerel geliştirme. Üretim için docs/ISLETIM.md dosyasını okuyun.
+services:
+  api:
+    build: ../backend
+    env_file: ../backend/.env
+    environment:
+      ORTAM: gelistirme
+      VERITABANI_URL: postgresql+psycopg://terapist:yerel-ornek@postgres:5432/terapist
+      REDIS_URL: redis://redis:6379/0
+      UYGULAMA_ADRESI: http://localhost:8080
+      GUVENILIR_HOSTLAR: '["localhost","127.0.0.1"]'
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--no-access-log", "--no-proxy-headers"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+  web:
+    build: ../frontend
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on: [api]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: terapist
+      POSTGRES_PASSWORD: yerel-ornek
+      POSTGRES_DB: terapist
+    volumes: ["veriler:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U terapist -d terapist"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+volumes:
+  veriler:

@@ -1,0 +1,35 @@
+# Doğrulama sonucu
+
+11 Eylül 2026 tarihinde yerel Windows ortamında ve ayrılmış Linux konteynerlerinde:
+
+| Kontrol | Sonuç |
+|---|---|
+| Python testleri, SQLite + PostgreSQL + Redis | **54 başarılı, 1 kasıtlı atlandı** |
+| Atlanan test | SQLite'da eşzamanlı yazma testi; karşılığı gerçek PostgreSQL'de geçti. |
+| Ruff / PEP 8, 79 karakter | Başarılı |
+| Ruff biçim denetimi | 24 Python dosyası uygun |
+| TypeScript + Vite üretim derlemesi | Başarılı |
+| Vitest form ve Türkçe saat testleri | 2 başarılı |
+| Python bağımlılık taraması | Bilinen açık bulunmadı; yerel proje paketi PyPI taramasının doğal olarak dışında. |
+| React üretim bağımlılık taraması | Bilinen açık bulunmadı |
+| Docker API + arayüz imajları | Linux üzerinde derlendi |
+| PostgreSQL Alembic geçişi | Boş veritabanına uygulandı |
+| Nginx → API → PostgreSQL | HTTP 200; altı kurgusal profil döndü |
+| CSP ve önbellek başlıkları | Nginx/HTTP yanıtında doğrulandı |
+| Tarayıcı | Dar ekran ve masaüstü yerleşimi, filtre açma, İstanbul filtresi ve profil geçişi doğrulandı. |
+| Randevu uçtan uca | Kurgusal ad/telefonla gönderim başarı mesajına ulaştı. |
+| Kaynak SQLite ön kontrolü | 106 uzman, 2 randevu; uzman #6 geçersiz alanlar nedeniyle durdu. Yazma yapılmadı. |
+
+Testler kimliksiz erişim, rol ayrımı, başka uzmanın randevusuna erişim, CSRF,
+Origin, oturum süresi/iptali, TOTP ve tekrar kullanımı, hız sınırı, şifreli depolama,
+girdi sızıntısı, takvim doğrulaması, SQL benzersizliği, eşzamanlı talepler,
+başvuru/MFA/yönetici onayı, Türkçe arama, JSON filtreleri ve veri aktarımının
+geri alınmasını kapsar. Eski notların normal API yanıtına sızmadığı da sınandı.
+
+Test çıktısında Starlette/httpx ve AnyIO için iki bağımlılık kaynaklı kullanımdan
+kaldırma uyarısı vardır; test başarısızlığı değildir. Paket güncellemelerinde
+test istemcisi geçişi izlenmelidir.
+
+Bu sonuç bir dış sızma testi veya hukuki uygunluk denetimi değildir. Gerçek
+sağlık verileri, gerçek kullanıcı hesapları ve canlı altyapı üzerinde test yapılmadı.
+Hazırlanan GitHub Actions iş akışı henüz uzak depoya gönderilip çalıştırılmadı.
