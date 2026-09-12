@@ -14,7 +14,8 @@ tamamlanmalıdır. Önizlemedeki kişiler kurgusaldır.
 
 Tüm yeni çalışma `dev` dalındaki ayrı `terapist-dev` worktree'sindedir.
 İlk `terapist.co` kopyası kesinti anındaki `refactor/react-fastapi-tr` dalında
-bırakılmıştır. `origin/main` ve uzak depo değiştirilmemiştir.
+bırakılmıştır. Geliştirmeler GitHub'daki `dev` dalına gönderilir; `main` dalı
+değiştirilmemiştir.
 
 ## Proje yapısı
 
@@ -93,6 +94,8 @@ terapist.co/
 │   ├── compose.yml                # Arayüz, API, PostgreSQL ve Redis
 │   └── compose.test.yml           # Ayrılmış PostgreSQL/Redis test ortamı
 ├── docs/                          # Teknik ve operasyonel belgeler
+│   ├── diyagramlar/               # ER diyagramı: SVG ve Mermaid kaynağı
+│   ├── VERITABANI.md              # Tablo ilişkileri, anahtarlar ve kısıtlar
 │   ├── KOD_INCELEMESI.md           # Eski kod bulguları ve mimari kararlar
 │   ├── GECIS.md                    # Veri aktarımı ve geri alma adımları
 │   ├── ISLETIM.md                  # Dağıtım ve işletim gereklilikleri
@@ -109,6 +112,15 @@ işlemleri `backend/app/api/`, ortak iş kuralları `services.py`, veri doğrula
 
 `backend/.env` yerel kurulumda oluşturulur ve Git'e eklenmez. `legacy/` yeni
 uygulama tarafından çalıştırılmaz; eski sistemden geçiş için başvuru kaynağıdır.
+
+## Veritabanı ER diyagramı
+
+[![Veritabanı tabloları, anahtarları ve ilişkileri](docs/diyagramlar/veritabani.svg)](docs/diyagramlar/veritabani.svg)
+
+Tam boyutta görmek için diyagrama tıklayın. `PK` birincil anahtarı, `FK` yabancı
+anahtarı, `UK` benzersizlik kısıtını belirtir. Okunabilirlik için temel alanlar
+gösterilmiştir. [Veritabanı rehberi](docs/VERITABANI.md), ilişki çokluklarını,
+diğer alanları, randevu benzersizlik kuralını ve bağımsız denetim tablosunu açıklar.
 
 ## Yerel çalıştırma
 

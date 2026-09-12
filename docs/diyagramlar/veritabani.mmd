@@ -1,0 +1,80 @@
+---
+title: terapist.co · Veritabanı ilişkileri
+config:
+  theme: base
+  fontFamily: Arial, sans-serif
+  htmlLabels: false
+  themeVariables:
+    fontFamily: Arial, sans-serif
+    fontSize: 18px
+    primaryColor: "#eaf2fb"
+    primaryTextColor: "#172b45"
+    primaryBorderColor: "#7c93ad"
+    secondaryColor: "#f4f7fb"
+    tertiaryColor: "#ffffff"
+    lineColor: "#476582"
+  er:
+    diagramPadding: 24
+    entityPadding: 18
+    fontSize: 17
+    minEntityWidth: 230
+---
+erDiagram
+    direction LR
+
+    kullanicilar ||..o| uzmanlar : "uzman profili"
+    kullanicilar ||..o{ oturumlar : "oturumları"
+    uzmanlar ||..o{ randevular : "randevuları"
+    uzmanlar ||--o{ tavsiyeler : "veren_id"
+    uzmanlar ||--o{ tavsiyeler : "alan_id"
+
+    kullanicilar {
+        string id PK
+        string email UK
+        string parola_ozeti "Argon2id özeti"
+        string rol "uzman / yonetici"
+        boolean aktif
+        text mfa_sirri "Şifreli; boş olabilir"
+    }
+
+    uzmanlar {
+        string id PK
+        string kullanici_id FK, UK
+        string ad
+        string sehir
+        integer ucret
+        json calisma_saatleri
+        boolean onayli
+        boolean arsivli
+    }
+
+    oturumlar {
+        string ozet PK "Oturum belirteci özeti"
+        string kullanici_id FK
+        string csrf_ozeti
+        integer olusturma "Unix saniye"
+        integer son_erisim "Unix saniye"
+    }
+
+    randevular {
+        string id PK
+        string uzman_id FK
+        integer baslangic "Unix saniye"
+        text danisan_sifreli "Şifreli ad ve telefon"
+        string durum
+        integer olusturma "Unix saniye"
+        string aydinlatma_surumu
+    }
+
+    tavsiyeler {
+        string veren_id PK, FK "Tavsiye eden uzman"
+        string alan_id PK, FK "Tavsiye edilen uzman"
+    }
+
+    denetim {
+        string id PK
+        integer zaman "Unix saniye"
+        string kullanici_id "FK değil; boş olabilir"
+        string islem
+        string kaynak_id "FK değil; boş olabilir"
+    }
