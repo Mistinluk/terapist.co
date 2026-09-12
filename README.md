@@ -16,27 +16,99 @@ Tüm yeni çalışma `dev` dalındaki ayrı `terapist-dev` worktree'sindedir.
 İlk `terapist.co` kopyası kesinti anındaki `refactor/react-fastapi-tr` dalında
 bırakılmıştır. `origin/main` ve uzak depo değiştirilmemiştir.
 
-## Dizinler
+## Proje yapısı
+
+Arayüz `frontend/`, Python sunucusu `backend/` altında bulunur. Aşağıdaki
+ağaç, proje köküne göre temel dosyaları ve sorumluluklarını gösterir;
+bağımlılık klasörleri, derleme çıktıları ve yerel veri dosyaları gösterilmemiştir.
 
 ```text
-frontend/
-  src/pages/          Sayfa akışları
-  src/components/     Ortak profil formu, avatar, yüklenme/hata bileşenleri
-  src/lib/            API istemcisi, oturum, tipler ve Türkçe biçimlendirme
-backend/
-  app/api/            Oturum, uzman, randevu ve yönetim uç noktaları
-  app/models.py       Veritabanı modelleri
-  app/schemas.py      Pydantic istek/yanıt sözleşmeleri
-  app/security.py     Şifreleme, oturum, CSRF, hız sınırı ve yetki bağımlılıkları
-  app/services.py     Takvim ve ortak iş kuralları
-  app/config.py       Doğrulanan ortam ayarları
-  migrations/         Sürümlü Alembic şema geçişleri
-  scripts/            Yerel ayarlar ve kontrollü eski veri aktarımı
-  tests/              Güvenlik ve entegrasyon testleri
-deploy/               Yerel Docker ve ayrılmış entegrasyon testi ortamları
-docs/                 Kod incelemesi, geçiş, işletim ve uyum belgeleri
-legacy/               Çalıştırılmayan eski PHP kaynakları
+terapist.co/
+├── README.md                      # Kurulum, çalıştırma ve proje rehberi
+├── Makefile                       # Ortak kurulum, geliştirme ve kontrol komutları
+├── .github/
+│   └── workflows/
+│       └── dogrulama.yml           # GitHub üzerinde otomatik doğrulama
+│
+├── frontend/                      # React + TypeScript arayüzü
+│   ├── public/                    # Doğrudan sunulan statik dosyalar
+│   ├── src/
+│   │   ├── main.tsx               # React uygulamasının başlangıcı
+│   │   ├── App.tsx                # Uygulama çatısı ve sayfa yönlendirmeleri
+│   │   ├── styles.css             # Ortak görünüm ve duyarlı tasarım
+│   │   ├── pages/                 # Kullanıcı akışlarını birleştiren sayfalar
+│   │   │   ├── Directory.tsx      # Uzman dizini, arama ve filtreler
+│   │   │   ├── Profile.tsx        # Uzman profili ve randevu talebi
+│   │   │   ├── Apply.tsx          # Uzman başvurusu
+│   │   │   ├── Login.tsx          # Giriş ve iki aşamalı doğrulama
+│   │   │   ├── Dashboard.tsx      # Uzmanın profil ve randevu yönetimi
+│   │   │   ├── Admin.tsx          # Yönetici işlemleri
+│   │   │   └── Privacy.tsx        # Gizlilik bilgilendirmesi
+│   │   ├── components/            # Sayfalar arasında paylaşılan bileşenler
+│   │   │   ├── ProfileForm.tsx    # Ortak profil düzenleme formu
+│   │   │   ├── Avatar.tsx         # Profil görseli
+│   │   │   └── Status.tsx         # Yüklenme ve hata durumları
+│   │   ├── lib/                   # Arayüzün ortak veri ve oturum yardımcıları
+│   │   │   ├── api.ts             # API istemcisi, tipler ve biçimlendirme
+│   │   │   ├── auth.tsx           # Oturum durumu ve erişim kontrolü
+│   │   │   └── useApi.ts          # Veri yükleme ve yenileme kancası
+│   │   └── forms.test.ts          # Form doğrulama testleri
+│   ├── index.html                 # Tarayıcı giriş belgesi
+│   ├── package.json               # JavaScript bağımlılıkları ve komutları
+│   ├── pnpm-lock.yaml             # Sabitlenmiş bağımlılık sürümleri
+│   ├── vite.config.ts             # Geliştirme sunucusu ve API vekili
+│   ├── tsconfig.json              # TypeScript derleyici ayarları
+│   ├── Dockerfile                 # Arayüz derleme ve sunum imajı
+│   └── nginx.conf                 # Statik dosya sunumu ve API yönlendirmesi
+│
+├── backend/                       # FastAPI + Pydantic Python sunucusu
+│   ├── app/
+│   │   ├── main.py                # FastAPI uygulaması ve ara katmanlar
+│   │   ├── api/                   # HTTP uç noktaları, iş alanına göre ayrılmış
+│   │   │   ├── auth.py            # Başvuru, giriş, MFA ve oturum
+│   │   │   ├── profiles.py        # Uzman arama ve profil işlemleri
+│   │   │   ├── appointments.py    # Randevu talebi ve durum değişiklikleri
+│   │   │   └── admin.py           # Yönetici onayı, arşivleme ve denetim
+│   │   ├── schemas.py             # Pydantic istek/yanıt doğrulaması
+│   │   ├── models.py              # SQLAlchemy veritabanı modelleri
+│   │   ├── db.py                  # Veritabanı bağlantısı ve oturumları
+│   │   ├── services.py            # Ortak profil ve randevu iş kuralları
+│   │   ├── security.py            # Şifreleme, oturum, CSRF ve yetkilendirme
+│   │   ├── config.py              # Doğrulanan ortam ayarları
+│   │   └── cli.py                 # Yönetici, hesap kurtarma ve örnek veri komutları
+│   ├── migrations/
+│   │   ├── env.py                 # Alembic çalışma ortamı
+│   │   └── versions/              # Sürümlenmiş veritabanı şema değişiklikleri
+│   ├── scripts/
+│   │   ├── yerel_ayarlar.py        # Yerel .env dosyasını güvenle oluşturma
+│   │   └── eski_veri_aktar.py      # Eski verilerin kontrollü aktarımı
+│   ├── tests/                     # Güvenlik, randevu, geçiş ve entegrasyon testleri
+│   ├── .env.example               # Ortam değişkenleri için örnek şablon
+│   ├── pyproject.toml             # Python bağımlılıkları, Ruff ve test ayarları
+│   ├── uv.lock                    # Sabitlenmiş Python bağımlılık sürümleri
+│   ├── alembic.ini                # Şema geçişi ayarları
+│   └── Dockerfile                 # API sunucusu imajı
+│
+├── deploy/                        # Yerel konteyner ortamları
+│   ├── compose.yml                # Arayüz, API, PostgreSQL ve Redis
+│   └── compose.test.yml           # Ayrılmış PostgreSQL/Redis test ortamı
+├── docs/                          # Teknik ve operasyonel belgeler
+│   ├── KOD_INCELEMESI.md           # Eski kod bulguları ve mimari kararlar
+│   ├── GECIS.md                    # Veri aktarımı ve geri alma adımları
+│   ├── ISLETIM.md                  # Dağıtım ve işletim gereklilikleri
+│   ├── KVKK_VE_GUVENLIK.md         # Uyum kapsamı ve güvenlik gereklilikleri
+│   └── DOGRULAMA.md                # Test ve doğrulama sonuçları
+└── legacy/                        # Referans için saklanan eski PHP kaynakları
 ```
+
+**Nerede değişiklik yapmalıyım?** Sayfa akışları `frontend/src/pages/`, ortak
+görsel parçalar `frontend/src/components/` altında geliştirilir. Sunucuda HTTP
+işlemleri `backend/app/api/`, ortak iş kuralları `services.py`, veri doğrulaması
+`schemas.py` içindedir. Veritabanı yapısı değiştiğinde `models.py` ile birlikte
+`backend/migrations/versions/` altında bir Alembic geçişi hazırlanır.
+
+`backend/.env` yerel kurulumda oluşturulur ve Git'e eklenmez. `legacy/` yeni
+uygulama tarafından çalıştırılmaz; eski sistemden geçiş için başvuru kaynağıdır.
 
 ## Yerel çalıştırma
 
