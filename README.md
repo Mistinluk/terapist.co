@@ -295,8 +295,9 @@ pnpm dev
 `localhost` farklı kaynaklardır; `.env` içindeki `UYGULAMA_ADRESI` tarayıcı adresiyle
 aynı olmalıdır. API istekleri Vite üzerinden aynı kaynaktan iletilir.
 
-Geliştirme sunucusu `localhost:5173` adresini kullanır; port doluysa başka bir
-porta geçmek yerine durur. **İstek kaynağı doğrulanamadı** hatası görürseniz
+Geliştirme sunucusu `localhost:5173` adresini kullanır; yerel IP ile açılan
+sayfaları otomatik olarak bu adrese yönlendirir. Port doluysa başka bir porta
+geçmek yerine durur. **İstek kaynağı doğrulanamadı** hatası görürseniz
 sayfayı `http://localhost:5173` üzerinden açın. Özel bir adres kullanıyorsanız
 `backend/.env` içindeki `UYGULAMA_ADRESI` değerini o adresle eşleştirip API'yi
 yeniden başlatın.
