@@ -3,10 +3,14 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from sqlalchemy import select
+from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.api import admin, appointments, auth, profiles
 from app.config import get_settings
+from app.db import engine
+from app.models import Uzman
 
 settings = get_settings()
 app = FastAPI(
@@ -24,7 +28,7 @@ app.add_middleware(
 
 async def istegi_dogrula(request: Request):
     if request.method not in {"GET", "HEAD", "OPTIONS"}:
-        if request.headers.get("origin") != settings.uygulama_adresi:
+        if not settings.kaynak_izinli(request.headers.get("origin")):
             return JSONResponse(
                 {"detail": "İstek kaynağı doğrulanamadı."}, status_code=403
             )
@@ -106,6 +110,18 @@ async def sunucu_hatasi(request, exc):
 @app.get("/api/saglik", tags=["Sistem"])
 def saglik():
     return {"durum": "hazır"}
+
+
+@app.get("/api/hazir", tags=["Sistem"])
+def hazir():
+    try:
+        with engine.connect() as connection:
+            connection.execute(select(Uzman.id).limit(1))
+    except SQLAlchemyError:
+        return JSONResponse(
+            {"durum": "veritabanı hazır değil"}, status_code=503
+        )
+    return {"durum": "hazır", "veritabani": engine.dialect.name}
 
 
 @app.get("/api/aydinlatma", tags=["Bilgilendirme"])

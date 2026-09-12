@@ -2,6 +2,7 @@
 
 from functools import lru_cache
 from typing import Literal
+from urllib.parse import urlsplit
 
 from cryptography.fernet import Fernet
 from pydantic import SecretStr, model_validator
@@ -31,6 +32,32 @@ class Settings(BaseSettings):
     veri_sorumlusu: str = ""
     oturum_bos_suresi: int = 900
     oturum_azami_suresi: int = 28800
+
+    def kaynak_izinli(self, origin: str | None) -> bool:
+        """Geliştirmede yalnızca aynı porttaki yerel adresleri eşleştirir."""
+        if origin == self.uygulama_adresi:
+            return True
+        if self.ortam != "gelistirme" or not origin:
+            return False
+        try:
+            address = urlsplit(self.uygulama_adresi)
+            port = f":{address.port}" if address.port else ""
+        except ValueError:
+            return False
+        if (
+            address.scheme not in {"http", "https"}
+            or address.hostname not in {"localhost", "127.0.0.1", "::1"}
+            or address.path not in {"", "/"}
+            or address.query
+            or address.fragment
+            or address.username
+            or address.password
+        ):
+            return False
+        return origin in {
+            f"{address.scheme}://{host}{port}"
+            for host in ("localhost", "127.0.0.1", "[::1]")
+        }
 
     @model_validator(mode="after")
     def guvenligi_dogrula(self):

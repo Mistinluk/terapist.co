@@ -8,12 +8,16 @@ PNPM ?= pnpm
 DOCKER ?= docker
 
 PY = $(UV) run --directory backend --locked --extra dev python
-COMPOSE = $(DOCKER) compose -p terapist-dev-preview -f deploy/compose.yml
+COMPOSE = $(DOCKER) compose -p terapist-docker -f deploy/compose.yml
 
 .PHONY: yardim kurulum bagimliliklar ortam veritabani ornek api arayuz \
-	yonetici test kontrol derle docker-baslat docker-ornek docker-durdur
+	yonetici test kontrol derle docker-baslat docker-ornek docker-durdur \
+	baslat durdur durum docker-ortam docker-yonetici
 
 yardim:
+	@echo "make baslat          - Tum uygulamayi Docker ile baslat: http://localhost:8080"
+	@echo "make durdur          - Docker uygulamasini durdur; verileri koru"
+	@echo "make durum           - Docker servislerinin durumunu goster"
 	@echo "make kurulum         - Bagimliliklar, yerel ayarlar ve veritabani"
 	@echo "make api             - Python API: http://127.0.0.1:8000"
 	@echo "make arayuz          - React: http://localhost:5173 (ikinci terminal)"
@@ -70,14 +74,29 @@ kontrol:
 derle:
 	$(PNPM) --dir frontend build
 
-docker-baslat: ortam
+baslat: docker-baslat
+
+durdur: docker-durdur
+
+durum:
+	$(COMPOSE) ps
+
+# Docker akisi bilgisayarda Python, uv, Node.js veya pnpm gerektirmez.
+docker-ortam:
+	$(DOCKER) run --rm --mount "type=bind,source=$(CURDIR)/backend,target=/calisma" -w /calisma python:3.12-slim python scripts/yerel_ayarlar.py
+
+docker-baslat: docker-ortam
 	$(COMPOSE) build
 	$(COMPOSE) up -d --wait postgres redis
 	$(COMPOSE) run --rm api alembic upgrade head
-	$(COMPOSE) up -d api web
+	$(COMPOSE) up -d --wait api web
 
 docker-ornek:
 	$(COMPOSE) run --rm api python -m app.cli demo
 
 docker-durdur:
 	$(COMPOSE) down
+
+docker-yonetici:
+	$(if $(strip $(EPOSTA)),,$(error EPOSTA gerekli: make docker-yonetici EPOSTA=adres@example.com))
+	$(COMPOSE) exec api python -m app.cli yonetici --email "$(EPOSTA)"

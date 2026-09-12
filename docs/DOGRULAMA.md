@@ -1,5 +1,23 @@
 # Doğrulama sonucu
 
+## Docker ve PostgreSQL geçişi — 12 Eylül 2026
+
+| Kontrol | Sonuç |
+|---|---|
+| Python, SQLite + gerçek PostgreSQL + Redis | **82 başarılı, 3 kasıtlı atlandı** |
+| Atlananlar | SQLite'da PostgreSQL'e özgü 2 aktarım testi ve 1 eşzamanlı yazma testi; PostgreSQL karşılıkları geçti. |
+| Ruff / PEP 8 ve biçim | 27 Python dosyası başarılı |
+| Vitest | 5 başarılı |
+| Docker derlemesi | API ve React/Nginx imajları oluşturuldu |
+| WSL'de `make baslat` | PostgreSQL, Redis, API ve arayüz sağlıklı başladı |
+| Kayıt aktarımı | 6 kullanıcı, 6 uzman, 1 randevu ve 1 denetim kaydı korundu; SQLite ve `.env` yedeklendi |
+| Gerçek tarayıcı, anonim randevu | `127.0.0.1:8080` üzerinde hesap açmadan başarı mesajı görüldü |
+| Test temizliği | Yalnızca kurgusal tarayıcı test kaydı kaldırıldı; mevcut randevu korundu |
+| Kaynak güvenliği | Geliştirmede aynı porttaki yerel adresler kabul edilir; yabancı kaynak, farklı port ve üretim kısıtları sınandı |
+| Hazırlık kontrolü | Gerçek DB sorgusu başarılı; erişim hatasında hassas bilgi içermeyen 503 yanıtı sınandı |
+
+## İlk sürüm — 11 Eylül 2026
+
 11 Eylül 2026 tarihinde yerel Windows ortamında ve ayrılmış Linux konteynerlerinde:
 
 | Kontrol | Sonuç |

@@ -2,13 +2,40 @@
 
 Türkçe uzman dizini, uzman başvurusu, profil yönetimi ve randevu uygulaması.
 React 19 + TypeScript arayüzü, FastAPI + Pydantic 2 sunucusu, SQLAlchemy ve
-Alembic kullanır. Üretim için PostgreSQL ve Redis hedeflenmiştir; SQLite yalnızca
-yerel geliştirme içindir. Python kodu 79 karakter sınırıyla Ruff / PEP 8 denetiminden geçer.
+Alembic kullanır. Varsayılan Docker kurulumu PostgreSQL ve Redis kullanır.
+Python kodu 79 karakter sınırıyla Ruff / PEP 8 denetiminden geçer.
 
 **Bu sürüm, KVKK uygunluğu belgesi veya HIPAA sertifikası değildir.** Kullanım
 yalnızca Türkiye olarak belirlendi. Gerçek danışan verisine geçmeden önce
 [uyum kapsamı](docs/KVKK_VE_GUVENLIK.md) ve [işletim gereklilikleri](docs/ISLETIM.md)
 tamamlanmalıdır. Önizlemedeki kişiler kurgusaldır.
+
+## Tek komutla çalıştırma
+
+Docker Desktop açık olmalı; WSL kullanıyorsanız Ubuntu için Docker entegrasyonu
+etkin olmalıdır. Proje kökünde:
+
+```bash
+make baslat
+```
+
+[Uygulamayı açın: localhost:8080](http://localhost:8080).
+**Randevu talebi için üyelik veya giriş gerekmez.** Uzman hesabı, profil ve
+randevu yönetimi içindir.
+
+Bu komut PostgreSQL, Redis, API ve arayüzü birlikte hazırlar. Veritabanı
+geçişlerini uygular ve servisler sağlıklı duruma gelene kadar bekler.
+Bilgisayarınızda Python, uv, Node.js veya pnpm kurmanız gerekmez.
+`make api` ve `make arayuz` bu Docker akışında kullanılmaz.
+
+```bash
+make durum   # Servislerin sağlık durumu
+make durdur  # Uygulamayı kapat; PostgreSQL kayıtlarını koru
+```
+
+Yeni kodu aldıktan sonra tekrar `make baslat` çalıştırın. Veriler
+`terapist-docker_veriler` adlı Docker veri biriminde saklanır.
+[Docker ve PostgreSQL rehberi](docs/DOCKER.md).
 
 ## Dal ve çalışma kopyası
 
@@ -94,6 +121,7 @@ terapist.co/
 │   ├── compose.yml                # Arayüz, API, PostgreSQL ve Redis
 │   └── compose.test.yml           # Ayrılmış PostgreSQL/Redis test ortamı
 ├── docs/                          # Teknik ve operasyonel belgeler
+│   ├── DOCKER.md                  # Tek komutla çalışma ve PostgreSQL geçişi
 │   ├── diyagramlar/               # ER diyagramı: SVG ve Mermaid kaynağı
 │   ├── VERITABANI.md              # Tablo ilişkileri, anahtarlar ve kısıtlar
 │   ├── KOD_INCELEMESI.md           # Eski kod bulguları ve mimari kararlar
@@ -122,7 +150,11 @@ anahtarı, `UK` benzersizlik kısıtını belirtir. Okunabilirlik için temel al
 gösterilmiştir. [Veritabanı rehberi](docs/VERITABANI.md), ilişki çokluklarını,
 diğer alanları, randevu benzersizlik kuralını ve bağımsız denetim tablosunu açıklar.
 
-## Yerel çalıştırma
+## Docker kullanmadan geliştirme (isteğe bağlı)
+
+Aşağıdaki adımlar önceki Python/Node.js geliştirme akışı içindir; Docker ile
+çalıştırırken uygulanmaz. SQLite yalnızca bu isteğe bağlı geliştirme ve test
+akışında kullanılır.
 
 ### macOS kurulumu ve çalıştırma
 
@@ -258,10 +290,10 @@ sunucuyu durdurur. `make yonetici EPOSTA=adres@example.com` yönetici hesabı
 oluşturur; parola terminalde gizli sorulur. `make test`, `make kontrol` ve
 `make derle` doğrulama komutlarıdır. Tüm hedefleri `make yardim` gösterir.
 
-Docker alternatifi: `make docker-baslat`, ardından
-[Docker önizlemesi](http://localhost:8080). Bu hedef de ilk `.env` oluşturulurken
-uv/Python gerektirir. `make docker-ornek` yalnızca boş Docker veritabanına örnek
-veri ekler; `make docker-durdur` veri birimini silmeden konteynerleri kapatır.
+Docker ile çalıştırma: `make baslat`, ardından
+[uygulama](http://localhost:8080). Bu akışta uv/Python bilgisayarınızda gerekmez.
+`make docker-ornek` yalnızca boş Docker veritabanına örnek veri ekler;
+`make durdur` veri birimini silmeden konteynerleri kapatır.
 
 ### Komutları doğrudan çalıştırma
 
@@ -361,19 +393,15 @@ tablolarını oluşturup kaldırır; gerçek veritabanı adresi verilmemelidir.
 
 ## Docker ile yerel çalışma
 
-Önce `backend/.env` dosyasını yukarıdaki komutla oluşturun. Proje kökünden:
+Proje kökünden:
 
 ```powershell
-docker compose -p terapist-dev-preview -f deploy/compose.yml build
-docker compose -p terapist-dev-preview -f deploy/compose.yml up -d postgres redis
-docker compose -p terapist-dev-preview -f deploy/compose.yml run --rm api alembic upgrade head
-docker compose -p terapist-dev-preview -f deploy/compose.yml run --rm api python -m app.cli demo
-docker compose -p terapist-dev-preview -f deploy/compose.yml up -d api web
+make baslat
 ```
 
 [Docker önizlemesi](http://localhost:8080) yalnızca bu bilgisayardan erişilir.
 Bu Compose dosyası geliştirme içindir; örnek parolalar ve HTTP içerir, üretime
-taşınmamalıdır. `down` yerel konteynerleri durdurur; veri birimini korur.
+taşınmamalıdır. `make durdur` konteynerleri durdurur; veri birimini korur.
 
 Eski verileri otomatik taşımadım. Kaynak dosyada **106 uzman ve 2 randevu** bulundu;
 ön kontrol, **uzman #6** için veri doğrulamasında durdu. [Geçiş kılavuzu](docs/GECIS.md)

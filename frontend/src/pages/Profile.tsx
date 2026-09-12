@@ -185,8 +185,8 @@ export function Profile() {
             <span> / görüşme · 60 dakika</span>
           </div>
           <p className="muted small">
-            Saatler Türkiye saatine göredir. Talebiniz uzman tarafından
-            değerlendirilecektir.
+            Üye olmadan randevu talebi gönderebilirsiniz. Saatler Türkiye
+            saatine göredir. Talebiniz uzman tarafından değerlendirilecektir.
           </p>
           <Status
             loading={slots.loading}
