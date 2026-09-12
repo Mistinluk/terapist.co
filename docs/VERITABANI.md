@@ -8,7 +8,8 @@ seçilmiştir; diğer alanlar aşağıda açıklanır. Tablo adları kodla aynı
 [![Altı tabloyu, anahtarlarını ve aralarındaki ilişkileri gösteren ER diyagramı](diyagramlar/veritabani.svg)](diyagramlar/veritabani.svg)
 
 Diyagrama tıklayarak tam boyutta açabilirsiniz. SVG yakınlaştırıldığında
-netliğini korur. Düzenlenebilir kaynak: [veritabani.mmd](diyagramlar/veritabani.mmd).
+netliğini korur. Koyu tema SVG'ye gömülüdür; görüntüleyicinin temasından bağımsızdır.
+Düzenlenebilir kaynak: [veritabani.mmd](diyagramlar/veritabani.mmd).
 
 ## Diyagramı okuma
 
@@ -66,5 +67,5 @@ Proje kökünde aşağıdaki komut SVG'yi yeniden üretir; ilk kullanımda çizi
 ve tarayıcı bileşenleri indirilir. Bu araç uygulamayı çalıştırmak için gerekmez.
 
 ```bash
-npm exec --yes --package=@mermaid-js/mermaid-cli@11.17.0 -- mmdc -i docs/diyagramlar/veritabani.mmd -o docs/diyagramlar/veritabani.svg -b white
+npm exec --yes --package=@mermaid-js/mermaid-cli@11.17.0 -- mmdc -i docs/diyagramlar/veritabani.mmd -o docs/diyagramlar/veritabani.svg -b '#0b1220'
 ```
