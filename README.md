@@ -40,6 +40,47 @@ legacy/               Çalıştırılmayan eski PHP kaynakları
 
 ## Yerel çalıştırma
 
+### Makefile ile
+
+GNU Make, uv, Node.js ve pnpm komutları `PATH` üzerinde bulunmalıdır. Windows'ta
+GNU Make ayrıca kurulmalıdır; PowerShell'in yerleşik komutu değildir. Araç yolu
+gerekiyorsa örneğin `make kurulum UV="C:/araclar/uv.exe"` kullanabilirsiniz.
+
+Proje kökünden ilk kurulum:
+
+```powershell
+make kurulum
+```
+
+Bu hedef kilitli bağımlılıkları kurar, yalnızca yoksa `backend/.env` dosyasını
+oluşturur ve Alembic geçişlerini uygular. Mevcut anahtarları veya verileri ezmez.
+Boş veritabanına örnek profiller eklemek için isteğe bağlı `make ornek` çalıştırın;
+hazırlanmış çalışma kopyasında örnek veriler zaten vardır.
+
+Birinci terminalde API:
+
+```powershell
+make api
+```
+
+Aynı proje kökünde ikinci terminalde arayüz:
+
+```powershell
+make arayuz
+```
+
+[Uygulamayı açın](http://localhost:5173). Her iki terminalde `Ctrl+C` ilgili
+sunucuyu durdurur. `make yonetici EPOSTA=adres@example.com` yönetici hesabı
+oluşturur; parola terminalde gizli sorulur. `make test`, `make kontrol` ve
+`make derle` doğrulama komutlarıdır. Tüm hedefleri `make yardim` gösterir.
+
+Docker alternatifi: `make docker-baslat`, ardından
+[Docker önizlemesi](http://localhost:8080). Bu hedef de ilk `.env` oluşturulurken
+uv/Python gerektirir. `make docker-ornek` yalnızca boş Docker veritabanına örnek
+veri ekler; `make docker-durdur` veri birimini silmeden konteynerleri kapatır.
+
+### Komutları doğrudan çalıştırma
+
 Gereksinimler: Python 3.12+, Node.js 22+ ve pnpm 11.19.0; Python paketleri için
 uv 0.12.13. `uv.lock` ve `pnpm-lock.yaml` sürümleri sabitler.
 
