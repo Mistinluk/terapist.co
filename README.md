@@ -112,6 +112,106 @@ uygulama tarafından çalıştırılmaz; eski sistemden geçiş için başvuru k
 
 ## Yerel çalıştırma
 
+### macOS kurulumu ve çalıştırma
+
+Bu adımları macOS **Terminal** uygulamasında, varsayılan `zsh` kabuğunda
+çalıştırın. Yol ayarları Apple Silicon ve Intel için Homebrew konumunu otomatik
+kullanır. Yerel geliştirme SQLite kullanır; PostgreSQL veya Docker kurulumu gerekmez.
+
+**1. Geliştirme araçlarını hazırlayın.** Command Line Tools kurulu değilse:
+
+```bash
+xcode-select --install
+```
+
+Açılan kurulum tamamlandıktan sonra devam edin. Homebrew kurulu değilse
+[resmî kurulum yönergesini](https://docs.brew.sh/Installation) izleyin; kurulum
+sonundaki **Next steps** bölümünde verilen `shellenv` komutlarını da uygulayın.
+Ardından yeni bir Terminal penceresi açıp araçları kurun:
+
+```bash
+brew install git node@24 uv make
+```
+
+Node.js 24 ve Homebrew GNU Make komutlarını `PATH` üzerine almak için aşağıdaki
+iki satırı **bir kez** çalıştırın. İlk satır ayarı sonraki `zsh` oturumları için
+saklar; ikinci satır mevcut terminale uygular.
+
+```bash
+echo 'export PATH="$(brew --prefix node@24)/bin:$(brew --prefix make)/libexec/gnubin:$PATH"' >> ~/.zshrc
+export PATH="$(brew --prefix node@24)/bin:$(brew --prefix make)/libexec/gnubin:$PATH"
+```
+
+Projenin kullandığı pnpm sürümünü ve Python 3.12'yi kurup araçları doğrulayın:
+
+```bash
+npm install --global pnpm@11.19.0
+uv python install 3.12
+node --version
+pnpm --version
+uv --version
+make --version
+```
+
+`node` çıktısı `v24.x`, `pnpm` çıktısı `11.19.0`, `make` çıktısı GNU Make olmalıdır.
+Python sanal ortamını elle etkinleştirmek gerekmez; Makefile komutları `uv` kullanır.
+Kurulum kaynakları: [Node.js 24](https://formulae.brew.sh/formula/node@24),
+[GNU Make](https://formulae.brew.sh/formula/make),
+[pnpm](https://pnpm.io/installation),
+[uv ve Python](https://docs.astral.sh/uv/guides/install-python/).
+
+**2. `dev` dalını ayrı bir klasöre indirin ve kurun.** Aşağıdaki komutlar
+`~/Projects/terapist-dev` adlı yeni bir çalışma kopyası oluşturur. Bu klasör
+zaten varsa klonlama adımını atlayıp mevcut `dev` çalışma kopyanıza geçin.
+
+```bash
+mkdir -p ~/Projects
+cd ~/Projects
+git clone --branch dev https://github.com/Mistinluk/terapist.co.git terapist-dev
+cd terapist-dev
+git branch --show-current
+UV_PYTHON=3.12 make kurulum
+```
+
+Dal çıktısı `dev` olmalıdır. Kurulum bağımlılıkları yükler, `backend/.env`
+dosyasını yalnızca yoksa oluşturur ve veritabanı geçişlerini uygular. Boş
+veritabanına kurgusal uzmanlar eklemek için isteğe bağlı `make ornek` çalıştırın.
+
+**3. Uygulamayı iki terminalde başlatın.** Birinci terminal:
+
+```bash
+cd ~/Projects/terapist-dev
+make api
+```
+
+Yeni bir Terminal sekmesinde (`⌘T`):
+
+```bash
+cd ~/Projects/terapist-dev
+make arayuz
+```
+
+Tarayıcıda [http://localhost:5173](http://localhost:5173) adresini açın.
+Her terminalde `Control+C` ilgili sunucuyu durdurur. Sonraki çalıştırmalarda
+yalnızca bu iki başlatma komutu yeterlidir.
+
+**4. Yönetici hesabı ve kontroller.** Proje kökünde, ayrı bir terminalde:
+
+```bash
+make yonetici EPOSTA=adres@example.com
+make test
+make kontrol
+make derle
+```
+
+`adres@example.com` yerine kendi e-posta adresinizi yazın. Yönetici oluşturulurken
+parola gizli sorulur; gösterilen MFA anahtarını doğrulama uygulamanıza ekleyin.
+
+`brew`, `node` veya `make` bulunamazsa Homebrew **Next steps** ve yukarıdaki `PATH`
+ayarlarını kontrol edip yeni terminal açın. `8000` veya `5173` portu doluysa önce
+uygulamanın önceki terminalini `Control+C` ile durdurun. Giriş için tarayıcıda
+`localhost:5173` kullanın; `127.0.0.1` ile değiştirmeyin.
+
 ### Makefile ile
 
 GNU Make, uv, Node.js ve pnpm komutları `PATH` üzerinde bulunmalıdır. Windows'ta
