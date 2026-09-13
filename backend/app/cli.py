@@ -56,7 +56,7 @@ def demo():
             raise SystemExit("Uzman kayıtları var; örnek veri eklenmedi.")
         names = [
             (
-                "Uzm. Kln. Psk. Erdee Hasbutchu",
+                "Dr. Erdee Hasbutchu",
                 "İstanbul",
                 "Kadıköy",
                 ["Kaygı", "Stres yönetimi"],
@@ -65,7 +65,7 @@ def demo():
                 8,
             ),
             (
-                "Kln. Psk. Whehbee Tosun",
+                "Uzm. Psk. Whehbee Tosun",
                 "Ankara",
                 "Çankaya",
                 ["İlişki sorunları", "Yas / kayıp"],
@@ -74,7 +74,7 @@ def demo():
                 6,
             ),
             (
-                "Uzm. Kln. Psk. Shaheen Tosun",
+                "Uzm. Psk. Shaheen Tosun",
                 "İzmir",
                 "Karşıyaka",
                 ["Travma", "Kaygı"],
@@ -83,7 +83,7 @@ def demo():
                 10,
             ),
             (
-                "Kln. Psk. Cebele Malone",
+                "Psk. Cebele Malone",
                 "İstanbul",
                 "Beşiktaş",
                 ["Tükenmişlik", "Stres yönetimi"],
@@ -92,7 +92,7 @@ def demo():
                 5,
             ),
             (
-                "Uzm. Kln. Psk. Cubala O'Neal",
+                "Uzm. Psk. Cubala O'Neal",
                 "Bursa",
                 "Nilüfer",
                 ["Ergenlik", "Aile ilişkileri"],
@@ -101,7 +101,7 @@ def demo():
                 7,
             ),
             (
-                "Kln. Psk. Mert Örnek",
+                "Psk. Mert Örnek",
                 "Ankara",
                 "Çankaya",
                 ["Kaygı", "Özgüven"],

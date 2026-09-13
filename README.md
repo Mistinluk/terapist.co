@@ -313,10 +313,9 @@ uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log
 
 `yerel_ayarlar.py` rastgele anahtarlarla `.env` oluşturur; mevcut dosyayı ezmez.
 `demo` komutu yalnızca boş uzman tablosuna altı kurgusal profil ekler.
-Unvanlar ilk PHP sürümündeki düzeni izler:
-Uzm. Kln. Psk. Erdee Hasbutchu, Kln. Psk. Whehbee Tosun,
-Uzm. Kln. Psk. Shaheen Tosun, Kln. Psk. Cebele Malone,
-Uzm. Kln. Psk. Cubala O'Neal ve Kln. Psk. Mert Örnek.
+Unvanlar ilk React sürümündeki Örnek soyadlı profillerin düzenini izler:
+Dr. Erdee Hasbutchu, Uzm. Psk. Whehbee Tosun, Uzm. Psk. Shaheen Tosun,
+Psk. Cebele Malone, Uzm. Psk. Cubala O'Neal ve Psk. Mert Örnek.
 Yeni oluşturulan örnek hesapların girişi varsayılan olarak kapalıdır;
 paylaşılan sabit bir demo parolası yoktur.
 
