@@ -56,7 +56,7 @@ def demo():
             raise SystemExit("Uzman kayıtları var; örnek veri eklenmedi.")
         names = [
             (
-                "Dr. Erdee Hasbutchu",
+                "Uzm. Kln. Psk. Erdee Hasbutchu",
                 "İstanbul",
                 "Kadıköy",
                 ["Kaygı", "Stres yönetimi"],
@@ -65,7 +65,7 @@ def demo():
                 8,
             ),
             (
-                "Uzm. Psk. Whehbee Tosun",
+                "Kln. Psk. Whehbee Tosun",
                 "Ankara",
                 "Çankaya",
                 ["İlişki sorunları", "Yas / kayıp"],
@@ -74,7 +74,7 @@ def demo():
                 6,
             ),
             (
-                "Uzm. Psk. Shaheen Tosun",
+                "Uzm. Kln. Psk. Shaheen Tosun",
                 "İzmir",
                 "Karşıyaka",
                 ["Travma", "Kaygı"],
@@ -83,7 +83,7 @@ def demo():
                 10,
             ),
             (
-                "Psk. Cebele Malone",
+                "Kln. Psk. Cebele Malone",
                 "İstanbul",
                 "Beşiktaş",
                 ["Tükenmişlik", "Stres yönetimi"],
@@ -92,13 +92,22 @@ def demo():
                 5,
             ),
             (
-                "Uzm. Psk. Cubala O'Neal",
+                "Uzm. Kln. Psk. Cubala O'Neal",
                 "Bursa",
                 "Nilüfer",
                 ["Ergenlik", "Aile ilişkileri"],
                 "Sistemik Terapi",
                 1400,
                 7,
+            ),
+            (
+                "Kln. Psk. Mert Örnek",
+                "Ankara",
+                "Çankaya",
+                ["Kaygı", "Özgüven"],
+                "Şema Terapi",
+                1700,
+                4,
             ),
         ]
         import secrets
@@ -140,7 +149,7 @@ def demo():
             )
         db.commit()
     print(
-        "Beş kurgusal profil oluşturuldu; örnek hesaplarla giriş kapalıdır."
+        "Altı kurgusal profil oluşturuldu; örnek hesaplarla giriş kapalıdır."
     )
 
 
