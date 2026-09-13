@@ -324,6 +324,15 @@ Uzman girişindeki 6 haneli kod, hesabın kurulum anahtarını zaman tabanlı
 kullanılan kod tekrar kullanılamaz; bir sonraki kodu bekleyin. Kurulum
 anahtarı ve parola Git'e veya bu belgeye eklenmemelidir.
 
+Yeni uzmanlar `/basvuru` ekranından kaydolur. Sunucu her hesap için ayrı,
+rastgele bir doğrulama anahtarı oluşturur ve veritabanında şifreli saklar.
+Başvurudan sonra kullanıcıya kendi QR kodu gösterilir; Google Authenticator
+ile tarayıp giriş ekranında uygulamanın ürettiği kodu kullanır. QR kod
+tarayıcı içinde oluşturulur; dışarıdaki bir QR servisine gönderilmez.
+Tarama yapılamıyorsa aynı ekrandaki “QR kodu tarayamıyorum” bölümünde elle
+kurulum anahtarı bulunur. QR kod ve anahtar yalnızca başvuru sonucunda
+gösterilir; sayfa yenilendiğinde veya kapatıldığında tekrar gösterilmez.
+
 İkinci terminal:
 
 ```powershell

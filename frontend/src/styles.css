@@ -759,6 +759,15 @@ h1 em {
 .auth-bottom a {
   text-decoration: underline;
 }
+.mfa-qr {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+.mfa-qr svg {
+  max-width: 100%;
+  height: auto;
+}
 .secret {
   display: block;
   background: #eff2e8;

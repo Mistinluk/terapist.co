@@ -25,6 +25,20 @@ def test_basvuru_mfa_profil_onayi(env):
     created = client.post("/api/oturum/basvuru", json=body)
     assert created.status_code == 201, created.text
     secret = created.json()["mfa_anahtari"]
+    authenticator = pyotp.parse_uri(created.json()["mfa_uri"])
+    assert authenticator.secret == secret
+    assert authenticator.name == body["email"]
+    assert authenticator.issuer == "Terapist.co"
+    assert authenticator.digits == 6
+    assert authenticator.interval == 30
+    other = client.post(
+        "/api/oturum/basvuru",
+        json={**body, "email": "diger@example.com"},
+    )
+    assert other.status_code == 201
+    other_authenticator = pyotp.parse_uri(other.json()["mfa_uri"])
+    assert other_authenticator.name == "diger@example.com"
+    assert other_authenticator.secret != secret
     with factory() as db:
         user = db.scalar(
             select(Kullanici).where(Kullanici.email == "yeni@example.com")
@@ -39,7 +53,7 @@ def test_basvuru_mfa_profil_onayi(env):
         json={
             "email": body["email"],
             "parola": PAROLA,
-            "dogrulama_kodu": pyotp.TOTP(secret).now(),
+            "dogrulama_kodu": authenticator.now(),
         },
     )
     assert response.status_code == 200

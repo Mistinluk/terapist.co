@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
 import { ProfileForm } from "../components/ProfileForm";
 import { api } from "../lib/api";
 
@@ -7,6 +8,7 @@ export function Apply() {
   const [result, setResult] = useState<{
     mesaj: string;
     mfa_anahtari: string;
+    mfa_uri: string;
   }>();
   if (result)
     return (
@@ -16,14 +18,35 @@ export function Apply() {
         <p>{result.mesaj}</p>
         <h2>İki adımlı doğrulamayı kurun</h2>
         <p className="muted">
-          Doğrulama uygulamanızda yeni bir hesap ekleyin. Hesap adı olarak
-          e-posta adresinizi, anahtar olarak aşağıdaki kodu kullanın. Tür:
-          zamana dayalı (TOTP).
+          Google Authenticator'da + → QR kodu tara seçeneğini açın ve aşağıdaki
+          kodu tarayın. Bu QR kod yalnızca sizin hesabınıza aittir.
         </p>
-        <code className="secret">{result.mfa_anahtari}</code>
+        <div className="mfa-qr">
+          <QRCodeSVG
+            value={result.mfa_uri}
+            size={240}
+            marginSize={4}
+            level="M"
+            title="Hesabınızın doğrulama uygulaması kurulum QR kodu"
+            role="img"
+          />
+        </div>
+        <details>
+          <summary>QR kodu tarayamıyorum</summary>
+          <p className="muted small">
+            Doğrulama uygulamasında kurulum anahtarı girme seçeneğini açın.
+            Hesap adı olarak e-posta adresinizi, anahtar olarak aşağıdaki değeri
+            kullanın. Türü zaman tabanlı seçin.
+          </p>
+          <code className="secret">{result.mfa_anahtari}</code>
+        </details>
         <p className="muted small">
-          Bu anahtar yalnızca şimdi gösterilir. Güvenli bir yerde saklayın ve
-          paylaşmayın.
+          Kurulum bilgileri yalnızca bu ekranda gösterilir. Sayfadan ayrılmadan
+          kurulumu tamamlayın; QR kodu ve anahtarı paylaşmayın.
+        </p>
+        <p className="muted">
+          Sonraki adımda e-posta adresiniz, parolanız ve uygulamada görünen 6
+          haneli kodla giriş yapın. Kod 30 saniyede bir yenilenir.
         </p>
         <Link className="button" to="/giris">
           Kurulumu yaptım, giriş yap
@@ -45,17 +68,18 @@ export function Apply() {
         onSubmit={async (profil, form) => {
           if (!profil.formatlar.length)
             throw new Error("En az bir görüşme şekli seçin.");
-          const data = await api<{ mesaj: string; mfa_anahtari: string }>(
-            "/oturum/basvuru",
-            {
-              method: "POST",
-              body: JSON.stringify({
-                profil,
-                email: form.get("email"),
-                parola: form.get("parola"),
-              }),
-            },
-          );
+          const data = await api<{
+            mesaj: string;
+            mfa_anahtari: string;
+            mfa_uri: string;
+          }>("/oturum/basvuru", {
+            method: "POST",
+            body: JSON.stringify({
+              profil,
+              email: form.get("email"),
+              parola: form.get("parola"),
+            }),
+          });
           setResult(data);
           window.scrollTo(0, 0);
         }}
