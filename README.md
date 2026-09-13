@@ -313,7 +313,7 @@ uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log
 
 `yerel_ayarlar.py` rastgele anahtarlarla `.env` oluşturur; mevcut dosyayı ezmez.
 `demo` komutu yalnızca boş uzman tablosuna beş kurgusal profil ekler:
-Dr. Psk. Erdee Hasbutchu, Uzm. Psk. Whehbee Tosun, Uzm. Psk. Shaheen Tosun,
+Dr. Erdee Hasbutchu, Uzm. Psk. Whehbee Tosun, Uzm. Psk. Shaheen Tosun,
 Psk. Cebele Malone ve Uzm. Psk. Cubala O'Neal.
 Yeni oluşturulan örnek hesapların girişi varsayılan olarak kapalıdır;
 paylaşılan sabit bir demo parolası yoktur.

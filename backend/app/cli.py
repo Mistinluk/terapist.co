@@ -56,7 +56,7 @@ def demo():
             raise SystemExit("Uzman kayıtları var; örnek veri eklenmedi.")
         names = [
             (
-                "Dr. Psk. Erdee Hasbutchu",
+                "Dr. Erdee Hasbutchu",
                 "İstanbul",
                 "Kadıköy",
                 ["Kaygı", "Stres yönetimi"],
