@@ -56,7 +56,7 @@ def demo():
             raise SystemExit("Uzman kayıtları var; örnek veri eklenmedi.")
         names = [
             (
-                "Dr. Deniz Örnek",
+                "Dr. Psk. Erdee Hasbutchu",
                 "İstanbul",
                 "Kadıköy",
                 ["Kaygı", "Stres yönetimi"],
@@ -65,7 +65,7 @@ def demo():
                 8,
             ),
             (
-                "Uzm. Psk. Ece Örnek",
+                "Uzm. Psk. Whehbee Tosun",
                 "Ankara",
                 "Çankaya",
                 ["İlişki sorunları", "Yas / kayıp"],
@@ -74,7 +74,7 @@ def demo():
                 6,
             ),
             (
-                "Uzm. Psk. Selin Örnek",
+                "Uzm. Psk. Shaheen Tosun",
                 "İzmir",
                 "Karşıyaka",
                 ["Travma", "Kaygı"],
@@ -83,7 +83,7 @@ def demo():
                 10,
             ),
             (
-                "Psk. Arda Örnek",
+                "Psk. Cebele Malone",
                 "İstanbul",
                 "Beşiktaş",
                 ["Tükenmişlik", "Stres yönetimi"],
@@ -92,22 +92,13 @@ def demo():
                 5,
             ),
             (
-                "Uzm. Psk. Duru Örnek",
+                "Uzm. Psk. Cubala O'Neal",
                 "Bursa",
                 "Nilüfer",
                 ["Ergenlik", "Aile ilişkileri"],
                 "Sistemik Terapi",
                 1400,
                 7,
-            ),
-            (
-                "Psk. Mert Örnek",
-                "Ankara",
-                "Çankaya",
-                ["Kaygı", "Özgüven"],
-                "Şema Terapi",
-                1700,
-                4,
             ),
         ]
         import secrets
@@ -149,7 +140,7 @@ def demo():
             )
         db.commit()
     print(
-        "Altı kurgusal profil oluşturuldu; örnek hesaplarla giriş kapalıdır."
+        "Beş kurgusal profil oluşturuldu; örnek hesaplarla giriş kapalıdır."
     )
 
 

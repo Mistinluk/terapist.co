@@ -312,8 +312,17 @@ uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log
 ```
 
 `yerel_ayarlar.py` rastgele anahtarlarla `.env` oluşturur; mevcut dosyayı ezmez.
-`demo` komutu yalnızca boş uzman tablosuna altı kurgusal profil ekler.
-Bu örnek hesapların girişi kapalıdır. Çalışan önizlemede bu adımlar tamamlanmıştır.
+`demo` komutu yalnızca boş uzman tablosuna beş kurgusal profil ekler:
+Dr. Psk. Erdee Hasbutchu, Uzm. Psk. Whehbee Tosun, Uzm. Psk. Shaheen Tosun,
+Psk. Cebele Malone ve Uzm. Psk. Cubala O'Neal.
+Yeni oluşturulan örnek hesapların girişi varsayılan olarak kapalıdır;
+paylaşılan sabit bir demo parolası yoktur.
+
+Uzman girişindeki 6 haneli kod, hesabın kurulum anahtarını zaman tabanlı
+(TOTP) hesap olarak eklediğiniz doğrulama uygulamasından alınır. Kod
+30 saniyede bir yenilenir; SMS veya e-posta gönderilmez. Başarılı girişte
+kullanılan kod tekrar kullanılamaz; bir sonraki kodu bekleyin. Kurulum
+anahtarı ve parola Git'e veya bu belgeye eklenmemelidir.
 
 İkinci terminal:
 
