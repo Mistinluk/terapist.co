@@ -313,6 +313,10 @@ uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log
 
 `yerel_ayarlar.py` rastgele anahtarlarla `.env` oluşturur; mevcut dosyayı ezmez.
 `demo` komutu yalnızca boş uzman tablosuna altı kurgusal profil ekler.
+Eşleştirme deneyleri için `make docker-eslestirme` komutu mevcut kayıtlara
+1.000 farklı kurgusal uzman ekler ve beş test hesabının giriş bilgilerini
+yerel dosyaya kaydeder. [Veri seti ve test hesapları](docs/ESLESTIRME_VERISI.md).
+
 Unvanlar ilk React sürümündeki Örnek soyadlı profillerin düzenini izler:
 Dr. Erdee Hasbutchu, Uzm. Psk. Whehbee Tosun, Uzm. Psk. Shaheen Tosun,
 Psk. Cebele Malone, Uzm. Psk. Cubala O'Neal ve Psk. Mert Örnek.
