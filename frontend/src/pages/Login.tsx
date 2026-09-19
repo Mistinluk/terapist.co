@@ -69,8 +69,8 @@ export function Login() {
         </label>
         <p id="mfa-yardim" className="muted small">
           Hesabınızın kurulum anahtarını doğrulama uygulamanıza zaman tabanlı
-          hesap olarak ekleyin. Uygulamanın ürettiği 6 haneli kodu buraya
-          yazın; kod 30 saniyede bir yenilenir. SMS veya e-posta gönderilmez.
+          hesap olarak ekleyin. Uygulamanın ürettiği 6 haneli kodu buraya yazın;
+          kod 30 saniyede bir yenilenir. SMS veya e-posta gönderilmez.
         </p>
         {error && (
           <p className="notice error" role="alert">

@@ -5,6 +5,11 @@ React 19 + TypeScript arayüzü, FastAPI + Pydantic 2 sunucusu, SQLAlchemy ve
 Alembic kullanır. Varsayılan Docker kurulumu PostgreSQL ve Redis kullanır.
 Python kodu 79 karakter sınırıyla Ruff / PEP 8 denetiminden geçer.
 
+Kodun akışını öğrenmek için [geliştirici rehberini](docs/GELISTIRICI_REHBERI.md),
+danışan tercihlerine göre sıralama için [eşleştirme rehberini](docs/ESLESTIRME.md)
+okuyun. Eşleştirmeyi denemek için giriş gerekmez: ana sayfadan destek alanlarını
+seçin; en yüksek tercih uyumuna sahip uzmanlar önce gösterilir.
+
 **Bu sürüm, KVKK uygunluğu belgesi veya HIPAA sertifikası değildir.** Kullanım
 yalnızca Türkiye olarak belirlendi. Gerçek danışan verisine geçmeden önce
 [uyum kapsamı](docs/KVKK_VE_GUVENLIK.md) ve [işletim gereklilikleri](docs/ISLETIM.md)
@@ -41,8 +46,8 @@ Yeni kodu aldıktan sonra tekrar `make baslat` çalıştırın. Veriler
 
 Tüm yeni çalışma `dev` dalındaki ayrı `terapist-dev` worktree'sindedir.
 İlk `terapist.co` kopyası kesinti anındaki `refactor/react-fastapi-tr` dalında
-bırakılmıştır. Geliştirmeler GitHub'daki `dev` dalına gönderilir; `main` dalı
-değiştirilmemiştir.
+bırakılmıştır. Önceki React/Python sürümü `main` dalına taşınmıştır; yeni
+geliştirmeler `dev` dalında hazırlanır ve ayrıca onaylanarak `main` ile birleştirilir.
 
 ## Proje yapısı
 
@@ -78,6 +83,7 @@ terapist.co/
 │   │   │   └── Status.tsx         # Yüklenme ve hata durumları
 │   │   ├── lib/                   # Arayüzün ortak veri ve oturum yardımcıları
 │   │   │   ├── api.ts             # API istemcisi, tipler ve biçimlendirme
+│   │   │   ├── matching.ts        # Tercih durumu ve eşleştirme isteği
 │   │   │   ├── auth.tsx           # Oturum durumu ve erişim kontrolü
 │   │   │   └── useApi.ts          # Veri yükleme ve yenileme kancası
 │   │   └── forms.test.ts          # Form doğrulama testleri
@@ -95,12 +101,15 @@ terapist.co/
 │   │   ├── api/                   # HTTP uç noktaları, iş alanına göre ayrılmış
 │   │   │   ├── auth.py            # Başvuru, giriş, MFA ve oturum
 │   │   │   ├── profiles.py        # Uzman arama ve profil işlemleri
+│   │   │   ├── matching.py        # Anonim eşleştirme uç noktası
 │   │   │   ├── appointments.py    # Randevu talebi ve durum değişiklikleri
 │   │   │   └── admin.py           # Yönetici onayı, arşivleme ve denetim
 │   │   ├── schemas.py             # Pydantic istek/yanıt doğrulaması
 │   │   ├── models.py              # SQLAlchemy veritabanı modelleri
 │   │   ├── db.py                  # Veritabanı bağlantısı ve oturumları
 │   │   ├── services.py            # Ortak profil ve randevu iş kuralları
+│   │   ├── eslestirme.py          # Filtreleme, SQL puanı ve eşleşme açıklaması
+│   │   ├── eslestirme_verisi.py   # 1.000 kurgusal uzman ve test hesapları
 │   │   ├── security.py            # Şifreleme, oturum, CSRF ve yetkilendirme
 │   │   ├── config.py              # Doğrulanan ortam ayarları
 │   │   └── cli.py                 # Yönetici, hesap kurtarma ve örnek veri komutları
@@ -122,6 +131,9 @@ terapist.co/
 │   └── compose.test.yml           # Ayrılmış PostgreSQL/Redis test ortamı
 ├── docs/                          # Teknik ve operasyonel belgeler
 │   ├── DOCKER.md                  # Tek komutla çalışma ve PostgreSQL geçişi
+│   ├── GELISTIRICI_REHBERI.md      # İstek akışı, kod sorumlulukları ve geliştirme
+│   ├── ESLESTIRME.md              # Puanlama formülü, API sözleşmesi ve sınırlar
+│   ├── ESLESTIRME_VERISI.md        # Kurgusal veri seti ve test hesabı kullanımı
 │   ├── diyagramlar/               # ER diyagramı: SVG ve Mermaid kaynağı
 │   ├── VERITABANI.md              # Tablo ilişkileri, anahtarlar ve kısıtlar
 │   ├── KOD_INCELEMESI.md           # Eski kod bulguları ve mimari kararlar
@@ -371,8 +383,10 @@ ayrı kanaldan doğrulandıktan sonra `kurtar --email ...` kullanılır; tüm ot
 
 ## İşlevler
 
-- Uzman arama; şehir, destek alanı, ekol, danışan grubu, format ve deneyim filtreleri;
-  ücret sıralaması ve sunucu tarafında sayfalama.
+- Anonim uzman eşleştirme: destek alanı ve terapi yaklaşımı tercihlerine göre
+  açıklanabilir puan; şehir, danışan grubu, görüşme şekli, bütçe ve deneyim filtreleri.
+  Varsayılan olarak en yüksek uyum önce; alternatif ad/ücret sıralaması ve
+  sunucu tarafında sayfalama. [Puanlama ayrıntıları](docs/ESLESTIRME.md).
 - Onaylı uzman profili, çalışma saatleri ve meslektaş tavsiyesi.
 - Türkiye saatine göre 15 günlük takvim; bir saatlik randevu talepleri.
 - Uzman başvurusu, Argon2id parola özeti, TOTP ve süreli çerez oturumu.

@@ -768,6 +768,35 @@ h1 em {
   max-width: 100%;
   height: auto;
 }
+.matching-choices {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 4px 2px;
+}
+.matching-choices .radio:has(input:disabled) {
+  opacity: 0.55;
+}
+.matching-note {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 22px;
+}
+.matching-explanation {
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  padding: 14px 0 0;
+  margin-bottom: 16px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.matching-explanation strong {
+  color: var(--green);
+}
+.matching-explanation p {
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
 .secret {
   display: block;
   background: #eff2e8;

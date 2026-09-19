@@ -63,6 +63,15 @@ export type Profil = ProfilGirdi & {
   onayli: boolean;
   arsivli: boolean;
 };
+export type EslesenProfil = Profil & {
+  eslesme: {
+    puan: number | null;
+    eslesen_alanlar: string[];
+    eslesen_ekoller: string[];
+    eksik_alanlar: string[];
+    eksik_ekoller: string[];
+  };
+};
 export type Aydinlatma = {
   surum: string;
   metin: string;

@@ -3,10 +3,10 @@
 from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Query
-from sqlalchemy import cast, exists, func, select
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 
+from app.eslestirme import listede_var, turkce_ad_sirasi
 from app.models import Tavsiye, Uzman
 from app.schemas import ProfilCikti, ProfilGirdi, TavsiyeGirdi
 from app.security import AktifUzman, Db, denetle
@@ -28,16 +28,18 @@ def uzmanlar(
     sayfa: Annotated[int, Query(ge=1)] = 1,
     sirala: Literal["ad", "ucret_artan", "ucret_azalan"] = "ad",
 ):
+    """Eski GET sözleşmesi: tüm tercihler kesin filtre olarak korunur.
+
+    Yeni dizin POST /eslestirme kullanır. Eski istemcilerde bu uç noktanın
+    sonuç kümesini veya varsayılan alfabetik sıralamasını değiştirmiyoruz.
+    """
     query = select(Uzman).where(
         Uzman.onayli.is_(True), Uzman.arsivli.is_(False)
     )
     if sehir:
         query = query.where(Uzman.sehir == sehir)
     query = query.where(Uzman.deneyim_yili >= deneyim)
-    normalized = Uzman.ad
-    for upper, lower in zip("IİÇĞÖŞÜ", "ıiçğöşü", strict=True):
-        normalized = func.replace(normalized, upper, lower)
-    normalized = func.lower(normalized)
+    normalized = turkce_ad_sirasi()
     if arama:
         term = arama.translate(str.maketrans("Iİ", "ıi")).lower()
         query = query.where(normalized.contains(term, autoescape=True))
@@ -49,15 +51,7 @@ def uzmanlar(
     ]:
         if not value:
             continue
-        if db.bind.dialect.name == "postgresql":
-            query = query.where(cast(field, JSONB).contains([value]))
-        else:
-            items = func.json_each(field).table_valued("value")
-            query = query.where(
-                exists(
-                    select(1).select_from(items).where(items.c.value == value)
-                )
-            )
+        query = query.where(listede_var(db, field, value))
     count = db.scalar(select(func.count()).select_from(query.subquery()))
     order = {
         "ad": normalized,

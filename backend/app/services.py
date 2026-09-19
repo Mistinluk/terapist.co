@@ -5,13 +5,20 @@ from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.models import Randevu, Uzman
 
 ISTANBUL = ZoneInfo("Europe/Istanbul")
 
 
-def profil_bul(db, uzman_id, kilitle=False):
+def profil_bul(db: Session, uzman_id: str, kilitle: bool = False) -> Uzman:
+    """Yayımlanmış profili getirir; görünmeyen profiller için 404 döner.
+
+    Randevu oluşturulurken kilitle=True, PostgreSQL satır kilidi alır.
+    Kilit, çağıranın işlemi bitene kadar eşzamanlı rezervasyonları sıraya
+    koyar; veritabanındaki benzersizlik kısıtı da son savunmadır.
+    """
     query = select(Uzman).where(
         Uzman.id == uzman_id,
         Uzman.onayli.is_(True),
@@ -25,7 +32,14 @@ def profil_bul(db, uzman_id, kilitle=False):
     return profile
 
 
-def musait_saatler(db, profile: Uzman) -> list[str]:
+def musait_saatler(db: Session, profile: Uzman) -> list[str]:
+    """Bugün dahil 15 gün için boş bir saatlik başlangıçları döndürür.
+
+    Haftalık program İstanbul saatine göre açılır. Bekleyen ve onaylanan
+    talepler zamanı kapatır; reddedilen/iptal edilenler kapatmaz. ISO
+    değerleri saat dilimi içerir. Bu liste rezervasyon garantisi değildir;
+    talep kaydedilirken uygunluk yeniden kontrol edilmelidir.
+    """
     now = datetime.now(ISTANBUL)
     busy = set(
         db.scalars(

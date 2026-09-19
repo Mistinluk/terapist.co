@@ -8,34 +8,18 @@ import {
   SlidersHorizontal,
   Video,
 } from "lucide-react";
-import { Profil, para } from "../lib/api";
+import { EslesenProfil, para } from "../lib/api";
+import {
+  MatchingFilters,
+  emptyMatchingFilters,
+  matchingRequest,
+} from "../lib/matching";
 import { useApi } from "../lib/useApi";
 import { Status } from "../components/Status";
 import { Avatar } from "../components/Avatar";
 
-type Filters = {
-  arama: string;
-  sehir: string;
-  uzmanlik: string;
-  format: string;
-  ekol: string;
-  kitle: string;
-  deneyim: string;
-  sirala: string;
-};
-const empty: Filters = {
-  arama: "",
-  sehir: "",
-  uzmanlik: "",
-  format: "",
-  ekol: "",
-  kitle: "",
-  deneyim: "0",
-  sirala: "ad",
-};
-
 export function Directory() {
-  const [filters, setFilters] = useState(empty);
+  const [filters, setFilters] = useState(emptyMatchingFilters);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [mobileFilters, showFilters] = useState(false);
@@ -45,21 +29,23 @@ export function Directory() {
     ekoller: string[];
     kitle: string[];
   }>("/secenekler");
-  const params = new URLSearchParams({ ...filters, sayfa: String(page) });
   const { data, error, loading, reload } = useApi<{
     toplam: number;
-    sonuclar: Profil[];
-  }>(`/uzmanlar?${params}`);
-  const change = (key: keyof Filters, value: string) => {
+    sonuclar: EslesenProfil[];
+  }>("/eslestirme", matchingRequest(filters, page));
+  const change = <K extends keyof MatchingFilters>(
+    key: K,
+    value: MatchingFilters[K],
+  ) => {
     setFilters((f) => ({ ...f, [key]: value }));
     setPage(1);
   };
   const reset = () => {
-    setFilters(empty);
+    setFilters(emptyMatchingFilters);
     setSearch("");
     setPage(1);
   };
-  const select = (label: string, key: keyof Filters, values: string[]) => (
+  const select = (label: string, key: "sehir" | "kitle", values: string[]) => (
     <label className="field">
       {label}
       <select
@@ -72,6 +58,41 @@ export function Directory() {
         ))}
       </select>
     </label>
+  );
+  const choices = (
+    label: string,
+    key: "uzmanliklar" | "ekoller",
+    values: string[],
+    limit: number,
+  ) => (
+    <fieldset>
+      <legend>{label}</legend>
+      <p className="muted small">
+        En fazla {limit} seçim; eşleşenler önce gösterilir.
+      </p>
+      <div className="matching-choices">
+        {values.map((value) => (
+          <label className="radio" key={value}>
+            <input
+              type="checkbox"
+              checked={filters[key].includes(value)}
+              disabled={
+                !filters[key].includes(value) && filters[key].length >= limit
+              }
+              onChange={(e) =>
+                change(
+                  key,
+                  e.target.checked
+                    ? [...filters[key], value]
+                    : filters[key].filter((v) => v !== value),
+                )
+              }
+            />
+            {value}
+          </label>
+        ))}
+      </div>
+    </fieldset>
   );
   return (
     <>
@@ -115,10 +136,11 @@ export function Directory() {
             </button>
           </div>
           {select("Şehir", "sehir", options.data?.sehirler || [])}
-          {select(
-            "Destek almak istediğiniz alan",
-            "uzmanlik",
+          {choices(
+            "Destek almak istediğiniz alanlar",
+            "uzmanliklar",
             options.data?.uzmanliklar || [],
+            5,
           )}
           <fieldset>
             <legend>Görüşme şekli</legend>
@@ -139,7 +161,12 @@ export function Directory() {
               </label>
             ))}
           </fieldset>
-          {select("Terapi yaklaşımı", "ekol", options.data?.ekoller || [])}
+          {choices(
+            "Terapi yaklaşımı (isteğe bağlı)",
+            "ekoller",
+            options.data?.ekoller || [],
+            3,
+          )}
           {select("Danışan grubu", "kitle", options.data?.kitle || [])}
           <label className="field">
             Deneyim
@@ -153,9 +180,21 @@ export function Directory() {
               <option value="10">10 yıl ve üzeri</option>
             </select>
           </label>
+          <label className="field">
+            En yüksek görüşme ücreti (₺)
+            <input
+              type="number"
+              min="0"
+              max="100000"
+              step="1"
+              placeholder="Sınır yok"
+              value={filters.azami_ucret}
+              onChange={(e) => change("azami_ucret", e.target.value)}
+            />
+          </label>
           <p className="filter-note">
-            Hangi yaklaşımı seçeceğinizden emin değilseniz uzman profillerindeki
-            açıklamaları inceleyebilirsiniz.
+            Şehir, danışan grubu, görüşme şekli, ücret ve deneyim koşulları
+            kesin uygulanır. Yaklaşım seçmek zorunlu değildir.
           </p>
         </aside>
         <section className="results" aria-label="Uzman sonuçları">
@@ -193,12 +232,18 @@ export function Directory() {
                 value={filters.sirala}
                 onChange={(e) => change("sirala", e.target.value)}
               >
+                <option value="eslesme">Tercihlerime en uygun</option>
                 <option value="ad">Ada göre sırala</option>
                 <option value="ucret_artan">Ücret: düşükten yükseğe</option>
                 <option value="ucret_azalan">Ücret: yüksekten düşüğe</option>
               </select>
             </label>
           </div>
+          <p className="matching-note">
+            {filters.uzmanliklar.length || filters.ekoller.length
+              ? "Eşleşme puanı seçtiğiniz destek alanları ve yaklaşımlara dayanır. Klinik uygunluk veya tedavi başarısı ölçümü değildir."
+              : "Destek alanı veya yaklaşım seçerek size göre sıralayın. Tercih belirtilmediğinde uzmanlar seçtiğiniz sırayla, varsayılan olarak alfabetik gösterilir."}
+          </p>
           <Status loading={loading} error={error} retry={reload} />
           {!loading && !error && data?.sonuclar.length === 0 && (
             <div className="empty-state">
@@ -239,6 +284,36 @@ export function Directory() {
                   <p className="formats">
                     <Video size={14} /> {p.formatlar.join(" & ")}
                   </p>
+                  {p.eslesme.puan !== null && (
+                    <div className="matching-explanation">
+                      <strong>
+                        Tercih eşleşmesi:{" "}
+                        {p.eslesme.puan.toLocaleString("tr-TR")} / 100
+                      </strong>
+                      {[
+                        ...p.eslesme.eslesen_alanlar,
+                        ...p.eslesme.eslesen_ekoller,
+                      ].length > 0 && (
+                        <p>
+                          Eşleşenler:{" "}
+                          {[
+                            ...p.eslesme.eslesen_alanlar,
+                            ...p.eslesme.eslesen_ekoller,
+                          ].join(" · ")}
+                        </p>
+                      )}
+                      {[...p.eslesme.eksik_alanlar, ...p.eslesme.eksik_ekoller]
+                        .length > 0 && (
+                        <p className="muted">
+                          Profilde belirtilmeyenler:{" "}
+                          {[
+                            ...p.eslesme.eksik_alanlar,
+                            ...p.eslesme.eksik_ekoller,
+                          ].join(" · ")}
+                        </p>
+                      )}
+                    </div>
+                  )}
                   <div className="card-bottom">
                     <div>
                       <strong>{para(p.ucret)}</strong>

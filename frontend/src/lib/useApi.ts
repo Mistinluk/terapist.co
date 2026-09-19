@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { api } from "./api";
 
-export function useApi<T>(path: string) {
+/** İstek değişince önceki yanıtı iptal eder; body verilirse salt-okuma POST'u kullanır. */
+export function useApi<T>(path: string, body?: string) {
   const [data, setData] = useState<T>();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -12,15 +13,21 @@ export function useApi<T>(path: string) {
     setLoading(true);
     setError("");
     setData(undefined);
-    api<T>(path, { signal: controller.signal })
-      .then(setData)
+    api<T>(path, {
+      signal: controller.signal,
+      ...(body === undefined ? {} : { method: "POST", body }),
+    })
+      .then((result) => {
+        if (!controller.signal.aborted) setData(result);
+      })
       .catch((e) => {
-        if (e.name !== "AbortError") setError(e.message);
+        if (!controller.signal.aborted && e.name !== "AbortError")
+          setError(e.message);
       })
       .finally(() => {
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, [path, version]);
+  }, [path, body, version]);
   return { data, error, loading, reload };
 }

@@ -7,7 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from app.api import admin, appointments, auth, profiles
+from app.api import admin, appointments, auth, matching, profiles
 from app.config import get_settings
 from app.db import engine
 from app.models import Uzman
@@ -137,6 +137,7 @@ def aydinlatma():
 for router in [
     auth.router,
     profiles.router,
+    matching.router,
     appointments.router,
     admin.router,
 ]:

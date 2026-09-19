@@ -1,5 +1,7 @@
 """Veritabanı bağlantısı ve istek başına işlem kapsamı."""
 
+from collections.abc import Generator
+
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
@@ -33,7 +35,13 @@ if settings.veritabani_url.startswith("sqlite"):
 SessionLocal = sessionmaker(engine, expire_on_commit=False)
 
 
-def get_db():
+def get_db() -> Generator[Session, None, None]:
+    """Bir HTTP isteğinin veritabanı oturumunu ve işlem sınırını yönetir.
+
+    Başarılı akış commit, istisna rollback ile biter; bağlam yöneticisi
+    bağlantıyı havuza iade eder. Yanıt öncesi kalıcılık gerektiren yazma
+    uçları kaydet() çağırır. Eşleştirme yalnızca SELECT çalıştırır.
+    """
     with SessionLocal() as db:
         try:
             yield db

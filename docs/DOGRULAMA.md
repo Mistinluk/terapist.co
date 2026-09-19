@@ -1,5 +1,24 @@
 # Doğrulama sonucu
 
+## Tercihe dayalı eşleştirme — 19 Eylül 2026
+
+| Kontrol | Sonuç |
+| --- | --- |
+| Python, SQLite + PostgreSQL + Redis | **127 başarılı, 3 kasıtlı atlandı** |
+| Atlananlar | SQLite için 2 PostgreSQL aktarım testi ve 1 eşzamanlılık testi; PostgreSQL karşılıkları geçti |
+| Yeni eşleştirme senaryoları | İki veritabanında toplam 38 başarılı senaryo |
+| Ruff / PEP 8 ve biçim | 32 Python dosyası; 79 karakter sınırı, başarılı |
+| Vitest | 7 başarılı; JSON tercih gövdesi, 0 TL ve boş bütçe ayrımı dahil |
+| TypeScript + Vite, Prettier | Derleme ve arayüz biçim kontrolü başarılı |
+| Docker | PostgreSQL, Redis, API ve web sağlıklı; mevcut 1.006 profil korundu |
+| Tarayıcı | Dar ekranda filtreleri açma/kapama, çoklu tercih ve bütçe girişi, puan/açıklama kartları doğrulandı |
+| Örnek sonuç | Kaygı + Travma, BDT, en fazla 2.500 TL: 453 aday; Shaheen 70, Erdee 65 puanla ilk iki sırada |
+| Bütün sonuçların HTTP kontrolü | 38 sayfada 453 benzersiz profil; her puan bağımsız yeniden hesaplandı, azalan sıra ve bütçe/onay/arşiv koşulları doğrulandı |
+
+Testler puanlama ve filtre davranışını doğrular; klinik uygunluk kalitesini
+ölçmez. Bu çalışmada bağımlılık güvenlik taraması veya yük testi tekrarlanmadı.
+HTTP kontrolleri yerel geliştirme ortamındaki kurgusal veriler üzerinde yapıldı.
+
 ## Docker ve PostgreSQL geçişi — 12 Eylül 2026
 
 | Kontrol | Sonuç |

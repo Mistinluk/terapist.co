@@ -69,6 +69,54 @@ class ProfilCikti(ProfilGirdi):
     arsivli: bool
 
 
+class EslestirmeGirdi(Sema):
+    """Kesin filtreler ve puanlanan tercihler; danışan kimliği alınmaz.
+
+    Destek alanı ve yaklaşım listeleri OR filtresi değildir: her eşleşme
+    kapsama oranına katkı sağlar. Diğer alanlar sonuçları kesin olarak eler.
+    """
+
+    arama: str = Field(default="", max_length=150)
+    sehir: str = Field(default="", max_length=80)
+    kitle: str = Field(default="", max_length=100)
+    format: Literal["", "Çevrim içi", "Yüz yüze"] = ""
+    deneyim: int = Field(default=0, ge=0, le=70)
+    azami_ucret: int | None = Field(default=None, ge=0, le=100000)
+    uzmanliklar: list[KisaMetin] = Field(default_factory=list, max_length=5)
+    ekoller: list[KisaMetin] = Field(default_factory=list, max_length=3)
+    sayfa: int = Field(default=1, ge=1, le=100000)
+    sirala: Literal["eslesme", "ad", "ucret_artan", "ucret_azalan"] = "eslesme"
+
+    @field_validator("uzmanliklar", "ekoller")
+    @classmethod
+    def tekrar_gider(cls, values: list[str]) -> list[str]:
+        """Aynı tercihin tekrar gönderilmesi ağırlığı artırmasın."""
+        return list(dict.fromkeys(values))
+
+
+class EslesmeAciklamasi(Sema):
+    """Tercih uyumu; başarı olasılığı veya klinik uygunluk ölçümü değildir."""
+
+    puan: float | None = Field(default=None, ge=0, le=100)
+    eslesen_alanlar: list[str]
+    eslesen_ekoller: list[str]
+    eksik_alanlar: list[str]
+    eksik_ekoller: list[str]
+
+
+class EslesenProfil(ProfilCikti):
+    eslesme: EslesmeAciklamasi
+
+
+class EslestirmeCikti(Sema):
+    """Sayfalama tüm adaylar puanlandıktan sonra uygulanır."""
+
+    toplam: int
+    sayfa: int
+    sonuclar: list[EslesenProfil]
+    surum: str = "tercih-v1"
+
+
 class KayitGirdi(Sema):
     email: EmailStr
     parola: SecretStr = Field(min_length=14, max_length=128)
