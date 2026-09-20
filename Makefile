@@ -12,13 +12,14 @@ COMPOSE = $(DOCKER) compose -p terapist-docker -f deploy/compose.yml
 
 .PHONY: yardim kurulum bagimliliklar ortam veritabani ornek api arayuz \
 	yonetici test kontrol derle docker-baslat docker-ornek docker-durdur \
-	baslat durdur durum docker-ortam docker-yonetici docker-eslestirme
+	baslat durdur durum docker-ortam docker-yonetici docker-eslestirme docker-adresler
 
 yardim:
 	@echo "make baslat          - Tum uygulamayi Docker ile baslat: http://localhost:8080"
 	@echo "make durdur          - Docker uygulamasini durdur; verileri koru"
 	@echo "make durum           - Docker servislerinin durumunu goster"
 	@echo "make docker-eslestirme - 1000 kurgusal uzman ve 5 test hesabi ekle"
+	@echo "make docker-adresler  - Mevcut kurgusal profillerin ornek adreslerini tamamla"
 	@echo "make kurulum         - Bagimliliklar, yerel ayarlar ve veritabani"
 	@echo "make api             - Python API: http://127.0.0.1:8000"
 	@echo "make arayuz          - React: http://localhost:5173 (ikinci terminal)"
@@ -94,6 +95,10 @@ docker-baslat: docker-ortam
 
 docker-ornek:
 	$(COMPOSE) run --rm api python -m app.cli demo
+
+# Yalnızca tanınan demo profillerinin boş/eski yer tutucu adresleri doldurulur.
+docker-adresler:
+	$(COMPOSE) run --rm api python -m app.cli adresler
 
 docker-eslestirme: docker-baslat
 	mkdir -p backend/backups

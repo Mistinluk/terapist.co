@@ -1,5 +1,25 @@
 # Doğrulama sonucu
 
+## Açık örnek adresler ve geçiş dosyalarının temizliği — 20 Eylül 2026
+
+Mevcut `dev` sürümü (`3f1f8ad`) değişikliklerden önce `main` dalına
+birleştirilip gönderildi. Sonraki adres/temizlik çalışması `dev` dalındadır.
+
+| Kontrol | Sonuç |
+| --- | --- |
+| Python: SQLite + PostgreSQL + Redis | Toplam 126 başarılı, SQLite eşzamanlılık senaryosu için 1 kasıtlı atlama |
+| Geçici dosya testleri | İlk koşudaki Windows klasör erişim hatası temiz geçici klasörle giderildi; etkilenen iki test tekrar geçti |
+| Ruff / PEP 8 ve biçim | 30 Python dosyası başarılı |
+| Docker derlemesi | API ve React/Nginx derlendi; servisler sağlıklı |
+| Örnek veri | 661 yüz yüze profilin boş/yer tutucu adresi tamamlandı |
+| Tarayıcı | Erdee profilinde mahalle/sokak/bina/kat/daire ve tam adresli Maps bağlantısı doğrulandı |
+| Temizlik | İki eski aktarım aracı, bunların iki test dosyası ve iki geçiş belgesi kaldırıldı; kırık referanslar temizlendi |
+| Korunanlar | `legacy/`, güncel Alembic şeması, PostgreSQL verileri ve yerel test hesabı dosyaları |
+
+Yeni adresler kurgusaldır; gerçek bir kliniğe ait oldukları veya Google Maps'te
+doğru bir bina olarak bulunacakları iddia edilmez. Aşağıdaki sonuçlar önceki
+sürümlerin tarihli kayıtlarıdır; kaldırılan aktarım testleri güncel pakette yoktur.
+
 ## Kod açıklamaları ve Google Maps — 20 Eylül 2026
 
 | Kontrol | Sonuç |

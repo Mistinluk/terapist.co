@@ -4,6 +4,7 @@
 `kurtar` mevcut hesabın parolasını/MFA anahtarını yeniler; kişinin kimliğini
 komut doğrulamaz, işletici bunu önceden doğrulamalıdır. `demo` yalnızca boş
 uzman tablosuna altı kurgusal profil ekler. Şema için önce Alembic çalışır.
+`adresler` bilinen kurgusal profillerin boş/eski yer tutucu adresini tamamlar.
 """
 
 import argparse
@@ -18,6 +19,7 @@ from sqlalchemy import delete, select
 from app.config import get_settings
 from app.db import SessionLocal
 from app.models import Kullanici, Oturum, Uzman
+from app.ornek_adresler import adresleri_tamamla, ornek_adres
 from app.security import denetle, parolalar, sifrele
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
@@ -157,6 +159,7 @@ def demo() -> None:
                     ),
                     ucret=fee,
                     deneyim_yili=years,
+                    adres=ornek_adres(i),
                     ekoller=[school],
                     uzmanliklar=areas,
                     kitle=["Yetişkin"],
@@ -176,17 +179,25 @@ def demo() -> None:
 
 
 def main() -> None:
-    """Komutu ayrıştırır; demo hariç e-posta olmadan işlem başlatmaz.
+    """Komutu ayrıştırır; hesap işlemleri için e-posta gerektirir.
 
     yonetici yeni hesap açar, kurtar yalnızca mevcut hesabı yeniler.
     Parola komut satırı argümanı değildir; kabuk geçmişine taşınmaz.
     """
     parser = argparse.ArgumentParser(description="Terapist.co hesap yönetimi")
-    parser.add_argument("komut", choices=["yonetici", "kurtar", "demo"])
+    parser.add_argument(
+        "komut", choices=["yonetici", "kurtar", "demo", "adresler"]
+    )
     parser.add_argument("--email")
     args = parser.parse_args()
     if args.komut == "demo":
         demo()
+    elif args.komut == "adresler":
+        with SessionLocal.begin() as db:
+            count = adresleri_tamamla(db)
+            if count:
+                denetle(db, "demo.adresleri_tamamla")
+        print(f"Açık örnek adresi tamamlanan profil: {count}")
     elif args.email:
         hesap(args.email, "yonetici", args.komut == "kurtar")
     else:

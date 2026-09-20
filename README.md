@@ -112,6 +112,7 @@ terapist.co/
 │   │   ├── services.py            # Ortak profil ve randevu iş kuralları
 │   │   ├── eslestirme.py          # Filtreleme, SQL puanı ve eşleşme açıklaması
 │   │   ├── eslestirme_verisi.py   # 1.000 kurgusal uzman ve test hesapları
+│   │   ├── ornek_adresler.py      # Kurgusal açık adres üretimi ve tamamlama
 │   │   ├── security.py            # Şifreleme, oturum, CSRF ve yetkilendirme
 │   │   ├── config.py              # Doğrulanan ortam ayarları
 │   │   └── cli.py                 # Yönetici, hesap kurtarma ve örnek veri komutları
@@ -119,9 +120,8 @@ terapist.co/
 │   │   ├── env.py                 # Alembic çalışma ortamı
 │   │   └── versions/              # Sürümlenmiş veritabanı şema değişiklikleri
 │   ├── scripts/
-│   │   ├── yerel_ayarlar.py        # Yerel .env dosyasını güvenle oluşturma
-│   │   └── eski_veri_aktar.py      # Eski verilerin kontrollü aktarımı
-│   ├── tests/                     # Güvenlik, randevu, geçiş ve entegrasyon testleri
+│   │   └── yerel_ayarlar.py        # Yerel .env dosyasını güvenle oluşturma
+│   ├── tests/                     # Güvenlik, randevu, eşleştirme ve entegrasyon
 │   ├── .env.example               # Ortam değişkenleri için örnek şablon
 │   ├── pyproject.toml             # Python bağımlılıkları, Ruff ve test ayarları
 │   ├── uv.lock                    # Sabitlenmiş Python bağımlılık sürümleri
@@ -132,15 +132,13 @@ terapist.co/
 │   ├── compose.yml                # Arayüz, API, PostgreSQL ve Redis
 │   └── compose.test.yml           # Ayrılmış PostgreSQL/Redis test ortamı
 ├── docs/                          # Teknik ve operasyonel belgeler
-│   ├── DOCKER.md                  # Tek komutla çalışma ve PostgreSQL geçişi
+│   ├── DOCKER.md                  # Tek komutla çalışma ve PostgreSQL ortamı
 │   ├── GELISTIRICI_REHBERI.md      # İstek akışı, kod sorumlulukları ve geliştirme
 │   ├── TEST_REHBERI.md             # Fixture yaşam döngüsü ve test senaryoları
 │   ├── ESLESTIRME.md              # Puanlama formülü, API sözleşmesi ve sınırlar
 │   ├── ESLESTIRME_VERISI.md        # Kurgusal veri seti ve test hesabı kullanımı
 │   ├── diyagramlar/               # ER diyagramı: SVG ve Mermaid kaynağı
 │   ├── VERITABANI.md              # Tablo ilişkileri, anahtarlar ve kısıtlar
-│   ├── KOD_INCELEMESI.md           # Eski kod bulguları ve mimari kararlar
-│   ├── GECIS.md                    # Veri aktarımı ve geri alma adımları
 │   ├── ISLETIM.md                  # Dağıtım ve işletim gereklilikleri
 │   ├── KVKK_VE_GUVENLIK.md         # Uyum kapsamı ve güvenlik gereklilikleri
 │   └── DOGRULAMA.md                # Test ve doğrulama sonuçları
@@ -153,8 +151,10 @@ işlemleri `backend/app/api/`, ortak iş kuralları `services.py`, veri doğrula
 `schemas.py` içindedir. Veritabanı yapısı değiştiğinde `models.py` ile birlikte
 `backend/migrations/versions/` altında bir Alembic geçişi hazırlanır.
 
-`backend/.env` yerel kurulumda oluşturulur ve Git'e eklenmez. `legacy/` yeni
-uygulama tarafından çalıştırılmaz; eski sistemden geçiş için başvuru kaynağıdır.
+`backend/.env` yerel kurulumda oluşturulur ve Git'e eklenmez. `legacy/` eski PHP
+kaynak arşividir; yeni uygulamada çalıştırılmaz. Tek seferlik PHP/SQLite aktarım
+araçları kaldırılmıştır. `backend/migrations/` güncel PostgreSQL şemasını kuran
+Alembic dosyalarıdır ve uygulamanın parçası olarak korunur.
 
 ## Veritabanı ER diyagramı
 
@@ -403,7 +403,8 @@ ayrı kanaldan doğrulandıktan sonra `kurtar --email ...` kullanılır; tüm ot
 
 Yeni randevu formunda serbest sağlık/terapi notu toplanmaz. Eski Google yorumları
 bağlantısı zaten anahtar yer tutucusuydu; yeni uygulamaya eklenmedi. Dış avatar,
-font ve CDN istekleri kaldırıldı. Ayrıntılar [kod incelemesinde](docs/KOD_INCELEMESI.md).
+font ve CDN istekleri kaldırıldı. Güncel mimari
+[geliştirici rehberinde](docs/GELISTIRICI_REHBERI.md) açıklanır.
 
 ## Test ve derleme
 
@@ -445,6 +446,7 @@ make baslat
 Bu Compose dosyası geliştirme içindir; örnek parolalar ve HTTP içerir, üretime
 taşınmamalıdır. `make durdur` konteynerleri durdurur; veri birimini korur.
 
-Eski verileri otomatik taşımadım. Kaynak dosyada **106 uzman ve 2 randevu** bulundu;
-ön kontrol, **uzman #6** için veri doğrulamasında durdu. [Geçiş kılavuzu](docs/GECIS.md)
-doğrulama ve geri alma adımlarını açıklar.
+Örnek uzmanların açık adresleri kurgusaldır. Mevcut örneklerin boş veya eski
+yer tutucu adreslerini doldurmak için `make docker-adresler` çalıştırın.
+Yeni `demo` ve eşleştirme verisi üretimlerinde adresler otomatik eklenir.
+Yalnızca yüz yüze görüşme sunan profiller etkilenir; düzenlenmiş adresler korunur.

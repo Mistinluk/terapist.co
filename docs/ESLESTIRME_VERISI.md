@@ -56,3 +56,22 @@ kodla giriş yapın. `mfa_uri`, aynı kurulumu QR olarak sunmak içindir.
 
 Normal başlangıç komutu `make baslat` olarak kalır; her başlatmada test
 verisi eklenmez.
+
+## Açık örnek adresler
+
+Yüz yüze görüşme sunan yeni örnekler mahalle, sokak, bina, kat ve daire içeren
+adreslerle oluşturulur. Bunlar kurgusal test adresleridir; Google Maps araması
+gerçek bir kliniğin konumunu doğrulamaz. Şehir ve ilçe profilden bağlantıya eklenir.
+Yalnızca çevrim içi profillere fiziksel ofis adresi eklenmez.
+
+Önceki sürümün boş/yer tutucu adreslerini tamamlamak için:
+
+```bash
+make baslat
+make docker-adresler
+```
+
+Komut yalnızca geliştirmede çalışır ve bilinen örnek hesap kalıbı ile kurgusal
+biyografiyi birlikte kontrol eder. Kullanıcının düzenlediği açık adresleri,
+parolaları, MFA anahtarlarını ve randevuları değiştirmez. Tekrar çalıştırılabilir;
+tamamlanmış adresleri yeniden yazmaz. Hesaplar yeniden üretilmez.

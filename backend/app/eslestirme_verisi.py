@@ -15,6 +15,7 @@ from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.db import SessionLocal
 from app.models import Kullanici, Uzman
+from app.ornek_adresler import ornek_adres
 from app.schemas import ProfilGirdi
 from app.security import denetle, parolalar, sifrele
 
@@ -134,11 +135,7 @@ def profil_uret(index: int) -> ProfilGirdi:
         uzmanliklar=selected_areas,
         egitim=[f"Kurgusal Örnek Üniversitesi · {education}"],
         kurumlar=["Kurgusal Örnek Danışmanlık Merkezi"],
-        adres=(
-            f"Kurgusal test adresi · {district} / {city}"
-            if "Yüz yüze" in formats
-            else ""
-        ),
+        adres=(ornek_adres(index + 6) if "Yüz yüze" in formats else ""),
         calisma_saatleri=schedule,
     )
 

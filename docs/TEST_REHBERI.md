@@ -44,8 +44,7 @@ test sonunda geri alır; `tmp_path` kurgusal dosyaları gerçek yedeklerden ayı
 | `test_local_origin.py` | Yerel adres istisnası, üretim kaynak sınırı, DB kopukluğunda hazırlık yanıtı |
 | `test_matching.py` | Puan ağırlıkları, kesin filtreler, açıklamalar, global sayfalama, iki sorgu, kayıt oluşturmama |
 | `test_eslestirme_verisi.py` | 1.000 profil çeşitliliği, tekrar üretme, test hesabı MFA'sı, sır dosyasını koruma |
-| `test_migration.py` | Eski PHP şemasından aktarım, ön kontrol, eski notları şifreleme, işlem geri alma |
-| `test_postgres_transfer.py` | Güncel SQLite → PostgreSQL aktarımı, kaynak bütünlüğü ve anahtar uyuşmazlığı |
+| `test_ornek_adresler.py` | Kurgusal açık adresler, idempotans, mevcut adres/hesap koruması ve üretim engeli |
 | `frontend/src/forms.test.ts` | Form verisi dönüşümü ve Türkiye saati gösterimi |
 | `frontend/src/matching.test.ts` | Çoklu tercih JSON'u ve boş/sıfır bütçe ayrımı |
 | `frontend/src/location.test.tsx` | Maps URL kodlaması, yalnızca açık adres/bölge aktarımı, yeni sekme güvenliği, uzun URL |
@@ -67,8 +66,8 @@ Eşleştirme puanları bu nedenle elle hesaplanabilen iki kontrollü profille s�
 
 ## Atlanan testler ve sınırlar
 
-Tam SQLite/PostgreSQL/Redis koşusunda SQLite parametresi için iki PostgreSQL
-aktarım testi ve bir eşzamanlılık testi atlanır. Redis adresi verilmediyse Redis
+Tam SQLite/PostgreSQL/Redis koşusunda SQLite parametresinde bir eşzamanlılık
+testi atlanır. Redis adresi verilmediyse Redis
 testi de atlanır. `pytest -ra` gerekçeleri gösterir; bütün testlerin geçtiğini
 söylemeden önce hangi ortamların gerçekten çalıştığını kontrol edin.
 

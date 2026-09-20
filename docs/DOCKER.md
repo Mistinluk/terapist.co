@@ -40,30 +40,5 @@ Veriler `terapist-docker_veriler` birimindedir. `make durdur` bu birimi silmez.
 `.env` içindeki şifreleme anahtarının kaybolması şifreli kayıtların okunmasını
 engeller; veritabanı yedeğiyle birlikte bu dosyayı da güvenle saklayın.
 
-## Mevcut SQLite kayıtlarını taşıma
-
-Bu bölüm yeni uygulamanın `backend/gelistirme.db` dosyası içindir. Eski PHP
-veritabanı için [ayrı geçiş rehberini](GECIS.md) kullanın.
-
-1. Eski `make api` ve `make arayuz` süreçlerini kapatın.
-2. SQLite'ın tutarlı bir yedeğini ve mevcut `.env` dosyasını alın. Bu yerel
-   geçişte yedekler `backend/backups/` altında tutulur; Git'e ve Docker imajına
-   eklenmez. SQLite kaynağı korunur.
-3. PostgreSQL şemasını `make baslat` ile hazırlayın; aktarım boyunca API'yi
-   kapatın: `docker compose -p terapist-docker -f deploy/compose.yml stop api web`.
-4. Yedek dosyanızı salt okunur bağlayarak aşağıdaki ön kontrolü çalıştırın.
-   Örnekteki `kaynak.db` yerine yedeğinizin adını yazın. `--uygula` eklendiğinde
-   gerçek aktarım yapılır.
-
-```bash
-docker compose -p terapist-docker -f deploy/compose.yml run --rm --no-deps -v "$(pwd)/backend/backups:/kaynak:ro" api python scripts/sqlite_postgres_aktar.py --kaynak /kaynak/kaynak.db
-```
-
-Araç yalnızca boş PostgreSQL hedefini kabul eder; dolu hedefe ekleme veya
-üzerine yazma yapmaz. Şema sürümü ve sütunlar kontrol edilir. Şifreli kayıtlar
-mevcut `.env` anahtarıyla doğrulanır; kullanıcı/parola/MFA ve randevu kimlikleri
-korunur. Aktarım tek işlemde tamamlanır; hata olursa geri alınır.
-Sonrasında `make baslat` ile uygulamayı açın.
-
 Bu Compose ortamı yerel geliştirme içindir. Üretim gereklilikleri
 [işletim rehberinde](ISLETIM.md) açıklanır.
