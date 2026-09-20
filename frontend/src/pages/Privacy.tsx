@@ -27,6 +27,12 @@ export function Privacy() {
             Giriş oturumu için zorunlu çerez kullanılır. Bu uygulamaya reklam
             veya analiz izleyicisi eklenmemiştir.
           </p>
+          <p className="muted">
+            Google Maps bağlantıları yeni sekmede açılır. Bağlantıya
+            tıkladığınızda uzmanın yayımladığı iş adresi veya ilçe/şehir bilgisi
+            Google Maps’te aranır. Randevu formundaki bilgiler ve eşleştirme
+            tercihleriniz bu bağlantıya eklenmez.
+          </p>
         </article>
       )}
     </section>

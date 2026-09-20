@@ -1,3 +1,10 @@
+"""Yerel adres kolaylığı ile üretim kaynak sınırının regresyon testleri.
+
+monkeypatch ayarları yalnızca test süresince değiştirir. Yerelde aynı portlu
+loopback adreslerine izin verilirken şema/port değişimi ve yanıltıcı host
+yazımları reddedilmelidir. Hazırlık kontrolünün DB hatası ayrıca taklit edilir.
+"""
+
 from unittest.mock import Mock
 
 import pytest
@@ -11,6 +18,9 @@ from tests.test_appointments import payload
 
 @pytest.mark.parametrize("host", ["localhost", "127.0.0.1", "[::1]"])
 def test_gelistirmede_uyeliksiz_randevu(env, monkeypatch, host):
+    """Loopback adresi farklı yazılsa da aynı portta üyesiz talep kabul
+    edilmelidir.
+    """
     client, factory, ids, _ = env
     monkeypatch.setattr(main.settings, "ortam", "gelistirme")
     monkeypatch.setattr(
@@ -43,6 +53,9 @@ def test_gelistirmede_uyeliksiz_randevu(env, monkeypatch, host):
     ],
 )
 def test_yabanci_kaynaklar_engellenir(env, monkeypatch, origin):
+    """Yerel adres istisnası farklı port, protokol veya sahte hosta
+    genişlememelidir.
+    """
     client, _, _, _ = env
     monkeypatch.setattr(main.settings, "ortam", "gelistirme")
     monkeypatch.setattr(
@@ -59,6 +72,9 @@ def test_yabanci_kaynaklar_engellenir(env, monkeypatch, origin):
 
 
 def test_uretimde_yalnizca_tanimli_kaynak(env, monkeypatch):
+    """Üretimde loopback takma adı da reddedilir; izinli Origin
+    doğrulamaya ulaşır.
+    """
     client, _, _, _ = env
     monkeypatch.setattr(main.settings, "ortam", "uretim")
     monkeypatch.setattr(
@@ -83,6 +99,9 @@ def test_uretimde_yalnizca_tanimli_kaynak(env, monkeypatch):
 
 
 def test_hazirlik_veritabanini_sorgular(env, monkeypatch):
+    """DB kopunca hazırlık 503 verirken süreç sağlığı 200 kalır;
+    ayrıntı sızmaz.
+    """
     client, factory, _, _ = env
     monkeypatch.setattr(main, "engine", factory.kw["bind"])
     assert client.get("/api/hazir").status_code == 200

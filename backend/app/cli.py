@@ -1,7 +1,14 @@
-"""Hesap oluşturma ve kimliği doğrulanmış kullanıcılar için MFA kurtarma."""
+"""Güvenilir işletici terminalinden hesap yönetimi ve kurgusal veri kurulumu.
+
+Çalıştırma: python -m app.cli yonetici --email adres@example.com
+`kurtar` mevcut hesabın parolasını/MFA anahtarını yeniler; kişinin kimliğini
+komut doğrulamaz, işletici bunu önceden doğrulamalıdır. `demo` yalnızca boş
+uzman tablosuna altı kurgusal profil ekler. Şema için önce Alembic çalışır.
+"""
 
 import argparse
 import getpass
+import secrets
 import sys
 
 import pyotp
@@ -17,7 +24,15 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8")
 
 
-def hesap(email: str, rol: str, kurtar: bool):
+def hesap(email: str, rol: str, kurtar: bool) -> None:
+    """Hesabı oluşturur veya mevcut hesabın giriş sırlarını yeniler.
+
+    E-posta normalize edilir; parola gizli ve iki kez sorulur. Kurtarma
+    mevcut rolü, aktif durumunu ve profil onayını değiştirmez. Parola/MFA
+    değişikliği, eski oturumların iptali ve denetim kaydı birlikte commit
+    edilir. Yeni MFA anahtarı yalnızca başarıdan sonra terminale yazılır;
+    terminal çıktısı gizli kabul edilmeli, kayda veya Git'e alınmamalıdır.
+    """
     email = str(TypeAdapter(EmailStr).validate_python(email)).lower()
     password = getpass.getpass("Yeni parola (en az 14 karakter): ")
     if len(password) < 14 or len(password) > 128:
@@ -39,6 +54,8 @@ def hesap(email: str, rol: str, kurtar: bool):
         user.parola_ozeti = parolalar.hash(password)
         user.mfa_sirri = sifrele({"anahtar": secret})
         user.son_mfa_adimi = -1
+        # Yeni kullanıcı kimliği, oturum iptali/denetim için gerekir.
+        # flush henüz kalıcılaştırmaz; hata olursa tüm işlem geri alınır.
         db.flush()
         db.execute(delete(Oturum).where(Oturum.kullanici_id == user.id))
         denetle(db, "hesap.kurtar" if kurtar else "hesap.olustur", user.id)
@@ -48,7 +65,14 @@ def hesap(email: str, rol: str, kurtar: bool):
     print("Hesap: " + email)
 
 
-def demo():
+def demo() -> None:
+    """Üretim dışında, boş dizine altı girişe kapalı örnek hesap ekler.
+
+    Dolu tabloda durması mevcut profillerin yanlışlıkla ezilmesini önler.
+    Rastgele parolalar saklanmaz/paylaşılmaz; görünür profil, açık giriş
+    anlamına gelmez. 1.000 profillik veri için eslestirme_verisi kullanılır.
+    Bütün örnekler tek işlemde kaydedilir; kısmi veri bırakılmaz.
+    """
     if get_settings().ortam == "uretim":
         raise SystemExit("Üretimde örnek veri oluşturulamaz.")
     with SessionLocal() as db:
@@ -110,8 +134,6 @@ def demo():
                 4,
             ),
         ]
-        import secrets
-
         for i, (name, city, district, areas, school, fee, years) in enumerate(
             names
         ):
@@ -153,7 +175,12 @@ def demo():
     )
 
 
-def main():
+def main() -> None:
+    """Komutu ayrıştırır; demo hariç e-posta olmadan işlem başlatmaz.
+
+    yonetici yeni hesap açar, kurtar yalnızca mevcut hesabı yeniler.
+    Parola komut satırı argümanı değildir; kabuk geçmişine taşınmaz.
+    """
     parser = argparse.ArgumentParser(description="Terapist.co hesap yönetimi")
     parser.add_argument("komut", choices=["yonetici", "kurtar", "demo"])
     parser.add_argument("--email")

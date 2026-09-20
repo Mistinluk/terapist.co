@@ -6,6 +6,7 @@ import { useApi } from "../lib/useApi";
 import { useAuth } from "../lib/auth";
 import { Status } from "../components/Status";
 import { Avatar } from "../components/Avatar";
+import { ProfileLocation } from "../components/ProfileLocation";
 
 export function Profile() {
   const { id } = useParams();
@@ -129,13 +130,8 @@ export function Profile() {
                 </ul>
               </>
             )}
-            {p.adres && (
-              <>
-                <h3>Görüşme adresi</h3>
-                <p>{p.adres}</p>
-              </>
-            )}
           </div>
+          <ProfileLocation profile={p} />
           <div className="detail-section">
             <h2>Meslektaş tavsiyeleri</h2>
             <p>

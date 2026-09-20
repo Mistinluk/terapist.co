@@ -1,3 +1,9 @@
+"""Eski PHP SQLite şemasından aktarımın yalıtılmış testleri.
+
+Kaynak dosya tmp_path altında kurgusal olarak oluşturulur; gerçek legacy
+veritabanı açılmaz. Ön kontrolün yazmaması, özel alanların şifrelenmesi ve
+hata halinde tüm hedef işleminin geri alınması sınanır."""
+
 import hashlib
 import json
 import sqlite3
@@ -13,6 +19,9 @@ from tests.conftest import PAROLA, login
 
 
 def source_file(tmp_path, duplicate=False):
+    """Eski şemayı tmp_path'te kurar; duplicate çakışmayla rollback
+    sınaması sağlar.
+    """
     source = tmp_path / "kaynak.sqlite"
     with sqlite3.connect(source) as db:
         db.execute("""
@@ -62,6 +71,9 @@ def source_file(tmp_path, duplicate=False):
 
 
 def test_aktarim_on_kontrol_yazmaz(env, tmp_path, monkeypatch):
+    """Ön kontrol hedef sayısını ve kaynak dosyanın SHA-256 özetini
+    değiştirmemelidir.
+    """
     _, factory, _, _ = env
     monkeypatch.setattr(eski_veri_aktar, "SessionLocal", factory)
     source = source_file(tmp_path)
@@ -75,6 +87,9 @@ def test_aktarim_on_kontrol_yazmaz(env, tmp_path, monkeypatch):
 def test_aktarim_notlari_sifreler_ve_kaynak_degismez(
     env, tmp_path, monkeypatch
 ):
+    """Eski not şifreli taşınmalı, normal randevu yanıtına
+    çıkmamalıdır.
+    """
     client, factory, _, _ = env
     engine = factory.kw["bind"]
     Base.metadata.drop_all(engine)
@@ -99,6 +114,9 @@ def test_aktarim_notlari_sifreler_ve_kaynak_degismez(
 
 
 def test_aktarim_hatasinda_tum_islem_geri_alinir(env, tmp_path, monkeypatch):
+    """Çakışan kaynak talebi, önceden eklenen kullanıcı/profili de geri
+    aldırmalıdır.
+    """
     _, factory, _, _ = env
     engine = factory.kw["bind"]
     Base.metadata.drop_all(engine)

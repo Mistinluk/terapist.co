@@ -1,4 +1,8 @@
-"""Tercih sırası, kesin sınırlar ve veri mahremiyeti için örnek senaryolar."""
+"""Tercih puanı, kesin filtreler, sayfalama ve mahremiyet senaryoları.
+
+İki kontrollü profil beklenen puanları elle hesaplanabilir kılar. Çok kayıtlı
+senaryo puanlamanın ilk sayfayla sınırlı kalmadığını ve N+1 sorgu olmadığını
+denetler. Aynı testler env aracılığıyla SQLite/PostgreSQL'de yürütülür."""
 
 import pytest
 from sqlalchemy import event, func, select
@@ -8,12 +12,18 @@ from app.schemas import EslestirmeGirdi
 
 
 def arama(client, **body):
+    """Anonim eşleştirme yanıtını açar; başarısız istekte yanıtı test
+    hatasına ekler.
+    """
     response = client.post("/api/eslestirme", json=body)
     assert response.status_code == 200, response.text
     return response.json()
 
 
 def ayarla(factory, ids):
+    """Ad sırasıyla puan sırası ters olan iki profil kurar; sıralama
+    hatası görünür olur.
+    """
     with factory.begin() as db:
         first, second = [db.get(Uzman, id_) for id_ in ids]
         first.ad = "Aaa Kurgusal Uzman"
@@ -28,6 +38,9 @@ def ayarla(factory, ids):
 
 
 def test_agirlik_aciklama_ve_bos_tercihler(env):
+    """Tam/kısmi uyum, eksik tercih açıklaması ve boş seçimde null
+    puanı denetler.
+    """
     client, factory, ids, _ = env
     ayarla(factory, ids)
     body = {"uzmanliklar": ["Kaygı", "Travma"], "ekoller": ["BDT", "ACT"]}
@@ -48,6 +61,9 @@ def test_agirlik_aciklama_ve_bos_tercihler(env):
 
 
 def test_alan_yaklasimdan_once_gelir_ve_unvan_bonus_degildir(env):
+    """70/30 ağırlığı korunmalı; unvan, yıl ve yüksek ücret gizli bonus
+    olmamalıdır.
+    """
     client, factory, ids, _ = env
     ayarla(factory, ids)
     with factory.begin() as db:
@@ -75,6 +91,9 @@ def test_alan_yaklasimdan_once_gelir_ve_unvan_bonus_degildir(env):
     ],
 )
 def test_en_yuksek_puan_kesin_kosullari_asamaz(env, change, criteria):
+    """En güçlü eşleşme bile bütçe, görünürlük veya diğer kesin
+    filtreleri aşamaz.
+    """
     client, factory, ids, _ = env
     ayarla(factory, ids)
     with factory.begin() as db:
@@ -85,6 +104,9 @@ def test_en_yuksek_puan_kesin_kosullari_asamaz(env, change, criteria):
 
 
 def test_sifir_butce_fiyat_sirasi_ve_turkce_ad(env):
+    """Ücretsiz sınırı, alternatif sıralama ve Türkçe/literal ad
+    aramasını sınar.
+    """
     client, factory, ids, _ = env
     ayarla(factory, ids)
     with factory.begin() as db:
@@ -100,6 +122,9 @@ def test_sifir_butce_fiyat_sirasi_ve_turkce_ad(env):
 
 
 def test_global_siralama_sayfalama_ve_iki_sorgu(env):
+    """27 profilin tamamı puanlanmalı; üç sayfa tekrarsız ve iki
+    sorguyla dönmelidir.
+    """
     client, factory, ids, _ = env
     ayarla(factory, ids)
     with factory.begin() as db:
@@ -126,6 +151,9 @@ def test_global_siralama_sayfalama_ve_iki_sorgu(env):
     engine = factory.kw["bind"]
 
     def capture(conn, cursor, statement, params, context, many):
+        """Yalnızca ölçülen istek boyunca SQL çağrılarını sayar; dinleyici
+        sonra kaldırılır.
+        """
         queries.append(statement)
 
     event.listen(engine, "before_cursor_execute", capture)
@@ -158,6 +186,9 @@ def test_global_siralama_sayfalama_ve_iki_sorgu(env):
     ],
 )
 def test_gecersiz_girdi_reddedilir(env, body):
+    """Aralık/liste/ek alan ihlalleri 422 almalı; hassas girdi
+    yanıtlanmamalıdır.
+    """
     client, _, _, _ = env
     response = client.post("/api/eslestirme", json=body)
     assert response.status_code == 422
@@ -165,6 +196,9 @@ def test_gecersiz_girdi_reddedilir(env, body):
 
 
 def test_tekrarlar_mahremiyet_ve_origin(env):
+    """Tekrarlar ağırlık yaratmaz; arama kayıt/çerez üretmez ve kaynak
+    sınırını korur.
+    """
     client, factory, ids, _ = env
     ayarla(factory, ids)
     assert EslestirmeGirdi(uzmanliklar=[" Kaygı ", "Kaygı"]).uzmanliklar == [

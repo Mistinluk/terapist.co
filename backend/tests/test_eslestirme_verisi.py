@@ -1,4 +1,8 @@
-"""Kurgusal veri çeşitliliği, giriş ve mevcut kayıtların korunması."""
+"""Kurgusal veri üreticisinin çeşitlilik ve güvenli tekrar testleri.
+
+Saf profil üretimi 1.000 kayıtla; DB/MFA akışı daha küçük veriyle sınanır.
+Parola/TOTP yalnızca test belleğinde veya tmp_path içindedir. Tekrar çalıştırma
+mevcut hesapları değiştirmemeli, dosya çakışması DB'yi de geri almalıdır."""
 
 import json
 import sys
@@ -13,6 +17,9 @@ from app.security import parolalar
 
 
 def test_bin_gecerli_ve_tekrarlanabilir_profil():
+    """Aynı indeks aynı profili üretmeli; şehir, ücret ve program
+    çeşitliliği korunmalı.
+    """
     profiles = [veri.profil_uret(i) for i in range(1000)]
     assert len({p.ad for p in profiles}) == 1000
     assert len({p.sehir for p in profiles}) == 20
@@ -25,6 +32,9 @@ def test_bin_gecerli_ve_tekrarlanabilir_profil():
 
 
 def test_ekleme_tekrari_ve_mfa(env, monkeypatch):
+    """Tekrar ekleme kayıt/parola ezmez; etkin örnek hesap yalnızca MFA
+    ile giriş yapar.
+    """
     client, factory, ids, booking_id = env
     monkeypatch.setattr(veri.get_settings(), "ortam", "gelistirme")
     settings = veri.UretimAyarlari(adet=25)
@@ -65,6 +75,9 @@ def test_ekleme_tekrari_ve_mfa(env, monkeypatch):
 
 
 def test_uretim_ortaminda_reddedilir(env, monkeypatch):
+    """Geliştirme üreticisi üretim ortamında DB'ye örnek hesap
+    yazmamalıdır.
+    """
     _, factory, _, _ = env
     monkeypatch.setattr(veri.get_settings(), "ortam", "uretim")
     with factory.begin() as db, pytest.raises(ValueError):
@@ -72,6 +85,9 @@ def test_uretim_ortaminda_reddedilir(env, monkeypatch):
 
 
 def test_parola_dosyasi_ezilmez_ve_db_geri_alinir(env, monkeypatch, tmp_path):
+    """Var olan sır dosyası korunmalı; dosya çakışması yeni DB hesabını
+    geri almalıdır.
+    """
     _, factory, _, _ = env
     monkeypatch.setattr(veri.get_settings(), "ortam", "gelistirme")
     monkeypatch.setattr(veri, "SessionLocal", factory)

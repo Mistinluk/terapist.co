@@ -92,6 +92,9 @@ eşzamanlı randevu veya yetkisiz erişim gibi gözlenebilir davranışları tes
 
 ## Testleri çalıştırma
 
+Fixture'ların yaşam döngüsü, dosya bazında senaryolar ve atlanma gerekçeleri
+[test rehberinde](TEST_REHBERI.md) açıklanır.
+
 Bilgisayarınızda uv, Node.js ve pnpm varsa ilk kurulum `make kurulum`, normal
 doğrulama ise aşağıdaki üç komuttur. Bu akışın ayrıntıları ve macOS kurulumu
 [README](../README.md) içindedir:
@@ -129,3 +132,24 @@ ayarlarına bağlıdır. Yerel Docker profili ve test profili ayrı ad/port kull
 `.env`, `.venv`, yedekler, test hesabı parolaları ve TOTP anahtarları Git'e
 eklenmez. Kurgusal veriyi üretmek için `make docker-eslestirme` kullanılır;
 hesap dosyalarının davranışı [veri seti rehberinde](ESLESTIRME_VERISI.md) anlatılır.
+
+## Google Maps bağlantısı
+
+`frontend/src/components/ProfileLocation.tsx`, yüz yüze görüşme sunan profilde
+iş adresini ilçe, şehir ve Türkiye ile birleştirir. `URLSearchParams`, Türkçe
+harfleri ve `&` gibi karakterleri tek bir `query` parametresi olarak kodlar.
+Hedef sabit `https://www.google.com/maps/search/?api=1&query=...` biçimindedir;
+profil alanı doğrudan bağlantı hedefi kabul edilmez. API anahtarı gerekmez.
+Sözleşme: [Google Maps URLs resmî rehberi](https://developers.google.com/maps/documentation/urls/get-started).
+
+Açık adres yoksa ilçe/şehir araması yapılır ve düğme “Bölgeyi Google Maps’te aç”
+yazar. Yalnızca çevrim içi profilde bağlantı gösterilmez. Bağlantı yeni sekmede,
+`noopener noreferrer` ve `no-referrer` ile açılır. Harita gömülmez; sayfa
+açılırken Google'a istek gitmez. Danışan konumu istenmez ve eşleştirme/randevu
+verisi URL'ye konmaz. Kullanıcı tıkladığında Google hedef adresi ve normal ağ
+bağlantısı bilgilerini görür. Mevcut CSP'de ek Google izinleri gerekmez.
+
+Adres araması koordinat veya doğrulanmış Place ID değildir; doğru binanın
+bulunması adres kalitesine bağlıdır. Kodlanmış URL 2.048 karakteri aşarsa metin
+kırpılmaz; kullanıcıya adresi kopyalayıp araması söylenir. Kurgusal profillerin
+adreslerini gerçek klinik olarak doğrulamayın.

@@ -1,3 +1,10 @@
+"""Birden fazla bileşenin birlikte çalıştığı entegrasyon senaryoları.
+
+Başvuru/TOTP/onay ve arama SQLite ile PostgreSQL'de çalışır. Eşzamanlı yazma
+gerçek PostgreSQL gerektirir; bellek içi SQLite bunun yerine geçmez. Redis
+testi ayrı iki sınırlayıcının aynı sayacı paylaşmasını gerçek serviste ölçer.
+"""
+
 import os
 import secrets
 from concurrent.futures import ThreadPoolExecutor
@@ -17,6 +24,9 @@ from tests.test_appointments import payload
 
 
 def test_basvuru_mfa_profil_onayi(env):
+    """Ayrı TOTP sırları, şifreli saklama, giriş ve yönetici onayını
+    birlikte sınar.
+    """
     client, factory, ids, _ = env
     profile = client.get(f"/api/uzmanlar/{ids[0]}").json()
     for field in ["id", "onayli", "arsivli"]:
@@ -68,6 +78,9 @@ def test_basvuru_mfa_profil_onayi(env):
 
 
 def test_turkce_arama_json_filtreleri(env):
+    """Türkçe harfler doğru eşleşmeli; yüzde işareti SQL jokeri
+    olmamalıdır.
+    """
     client, factory, ids, _ = env
     with factory() as db:
         expert = db.get(Uzman, ids[0])
@@ -90,12 +103,18 @@ def test_turkce_arama_json_filtreleri(env):
 
 
 def test_es_zamanli_postgresql_talepleri(env):
+    """Aynı saate iki istemciden yarışan talebin yalnızca biri 201
+    almalıdır.
+    """
     client, factory, ids, _ = env
     if factory.kw["bind"].dialect.name != "postgresql":
         pytest.skip("Eşzamanlılık gerçek PostgreSQL üzerinde sınanır.")
     body = payload(client, ids[0])
 
     def send():
+        """Her iş parçacığında ayrı istemciyle aynı kurgusal talebi
+        gönderir.
+        """
         with TestClient(app, raise_server_exceptions=False) as other:
             return other.post(
                 "/api/randevular",
@@ -110,6 +129,9 @@ def test_es_zamanli_postgresql_talepleri(env):
 
 @pytest.mark.skipif(not os.environ.get("TEST_REDIS_URL"), reason="Redis yok")
 def test_redis_ortak_hiz_siniri():
+    """İki sınırlayıcı örneği tek Redis kotasını paylaşmalı, ikincisi
+    reddedilmelidir.
+    """
     url = os.environ["TEST_REDIS_URL"]
     assert url == "redis://127.0.0.1:56379/0"
     first, second = HizSiniri(), HizSiniri()

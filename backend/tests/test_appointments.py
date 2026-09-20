@@ -1,3 +1,9 @@
+"""Anonim randevu akışı ve veritabanı çakışma kısıtının testleri.
+
+payload sabit tarihe bağlı kalmadan API'nin ilk müsait saatini seçer.
+HTTP seviyesinde reddin yanında doğrudan SQL yazmasının da kısıtlandığı
+sınanır; böylece yalnızca arayüz kontrolüne güvenilmez."""
+
 from datetime import UTC, datetime, timedelta
 
 import pytest
@@ -9,6 +15,9 @@ from tests.conftest import login
 
 
 def payload(client, profile_id):
+    """Geçerli boş saati API'den alıp yalnızca kurgusal iletişim
+    bilgisi ekler.
+    """
     slots = client.get(f"/api/uzmanlar/{profile_id}/saatler").json()["saatler"]
     return {
         "uzman_id": profile_id,
@@ -21,6 +30,9 @@ def payload(client, profile_id):
 
 
 def test_randevu_olustur_ve_cakisma(env):
+    """İlk talep saati kapatır; aynı saatin ikinci talebi 409
+    almalıdır.
+    """
     client, _, ids, _ = env
     body = payload(client, ids[0])
     assert client.post("/api/randevular", json=body).status_code == 201
@@ -32,6 +44,9 @@ def test_randevu_olustur_ve_cakisma(env):
 
 
 def test_veritabani_cakismayi_dogrudan_engeller(env):
+    """API atlanarak yazılsa bile aktif saat benzersizliği
+    bozulmamalıdır.
+    """
     _, factory, ids, _ = env
     with factory() as db:
         existing = db.scalar(select(Randevu))
@@ -49,6 +64,9 @@ def test_veritabani_cakismayi_dogrudan_engeller(env):
 
 
 def test_iptal_saati_serbest_birakir(env):
+    """İptal kaydı silinmeden aynı saat için yeni talep
+    alınabilmelidir.
+    """
     client, factory, ids, _ = env
     body = payload(client, ids[0])
     client.post("/api/randevular", json=body)
@@ -72,6 +90,9 @@ def test_iptal_saati_serbest_birakir(env):
 
 @pytest.mark.parametrize("change", ["gecmis", "saat_dilimsiz", "kapali_saat"])
 def test_gecersiz_randevu_saati(env, change):
+    """Geçmiş, saat dilimsiz veya program dışı zaman rezervasyon
+    yaratmamalıdır.
+    """
     client, _, ids, _ = env
     body = payload(client, ids[0])
     if change == "gecmis":
@@ -84,6 +105,9 @@ def test_gecersiz_randevu_saati(env, change):
 
 
 def test_onaysiz_profil_ve_eski_aydinlatma(env):
+    """Eski metin sürümü reddedilir; onaysız profil görülemez ve
+    rezerve edilemez.
+    """
     client, factory, ids, _ = env
     body = payload(client, ids[0])
     body["aydinlatma_surumu"] = "eski"
@@ -97,6 +121,9 @@ def test_onaysiz_profil_ve_eski_aydinlatma(env):
 
 
 def test_profil_ciktisi_parola_ve_email_icermez(env):
+    """Açık dizin hesap bilgilerini sızdırmaz; şehir filtresi sonuçları
+    sınırlar.
+    """
     client, _, _, _ = env
     response = client.get("/api/uzmanlar")
     assert response.status_code == 200
@@ -107,6 +134,9 @@ def test_profil_ciktisi_parola_ve_email_icermez(env):
 
 
 def test_yetki_alanlarini_profil_girdisi_kabul_etmez(env):
+    """Çıktıdaki id/onay alanlarını geri yollamak yetki değişimine
+    dönüşmemelidir.
+    """
     client, _, _, _ = env
     login(client)
     profile = client.get("/api/uzman/profil").json()

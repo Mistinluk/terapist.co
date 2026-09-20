@@ -1,3 +1,9 @@
+"""Yeni uygulamanın SQLite verisini PostgreSQL'e taşıma testleri.
+
+Eski PHP aktarımından farklı olarak iki tarafta da güncel ORM şeması vardır.
+Yalnızca conftest'in izin verdiği geçici PostgreSQL hedefi kullanılır;
+tablo içerikleri testte temizlenir. SQLite parametresi bilerek atlanır."""
+
 import hashlib
 
 import pytest
@@ -10,6 +16,9 @@ from scripts.sqlite_postgres_aktar import aktar
 
 
 def kaynak_hazirla(env, tmp_path):
+    """Geçici PostgreSQL kayıtlarından SQLite kaynak üretir ve test
+    hedefini boşaltır.
+    """
     _, factory, _, _ = env
     target = factory.kw["bind"]
     if target.dialect.name != "postgresql":
@@ -39,6 +48,9 @@ def kaynak_hazirla(env, tmp_path):
 
 
 def test_postgres_aktarimi_kaynak_ve_kayitlari_korur(env, tmp_path):
+    """Satır sayıları/kaynak özeti korunmalı; dolu hedefe ikinci
+    aktarım engellenmelidir.
+    """
     source, target, expected = kaynak_hazirla(env, tmp_path)
     before = hashlib.sha256(source.read_bytes()).digest()
     try:
@@ -59,6 +71,9 @@ def test_postgres_aktarimi_kaynak_ve_kayitlari_korur(env, tmp_path):
 
 
 def test_anahtar_uyusmazligi_hedefe_yazmaz(env, tmp_path):
+    """Başka anahtarla şifrelenen kaynak, hedefte kısmi kayıt
+    bırakmamalıdır.
+    """
     source, target, _ = kaynak_hazirla(env, tmp_path)
     sqlite = create_engine(f"sqlite:///{source}")
     with sqlite.begin() as connection:

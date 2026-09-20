@@ -1,4 +1,10 @@
-"""Kimlik, kamuya açık profil ve gizli randevu verilerinin ayrımı."""
+"""SQLAlchemy tabloları: hesap, açık profil ve özel randevu verisi ayrılır.
+
+Bu sınıflar saklama biçimini tanımlar; HTTP doğrulaması schemas.py içindeki
+Pydantic modellerindedir. Şema değişikliği Alembic geçişi de gerektirir.
+İlişkiler yabancı anahtarla kurulur; kayıtlar kendiliğinden cascade silinmez.
+ORM nesnesini doğrudan API'ye döndürmek yerine çıktı şeması kullanılmalıdır.
+"""
 
 import uuid
 
@@ -9,10 +15,19 @@ from app.db import Base
 
 
 def yeni_id() -> str:
+    """Yeni satır için UUID üretir; kimliği bilmek erişim yetkisi vermez."""
     return str(uuid.uuid4())
 
 
 class Kullanici(Base):
+    """Giriş kimliği; uzman profili ve danışan iletişiminden bağımsızdır.
+
+    parola_ozeti Argon2id özetidir; geri çözülebilir parola değildir.
+    mfa_sirri şifreli TOTP anahtarıdır, son_mfa_adimi kod tekrarını engeller.
+    aktif=False girişi kapatır; profilin yayımlanması ayrıca yönetilir.
+    Yönetici hesabının uzman profili olması zorunlu değildir.
+    """
+
     __tablename__ = "kullanicilar"
 
     id: Mapped[str] = mapped_column(primary_key=True, default=yeni_id)
@@ -25,6 +40,15 @@ class Kullanici(Base):
 
 
 class Uzman(Base):
+    """Bir hesaba en fazla bir açık uzman profili bağlar.
+
+    kullanici_id üzerindeki unique kısıtı bire bir eşlemeyi sağlar.
+    ucret tam TL, deneyim_yili tam yıldır; adres yayımlanan iş adresidir.
+    onayli/arsivli dizin görünürlüğünü belirler, silme yerine arşiv kullanılır.
+    Liste alanları profil etiketlerini, calisma_saatleri haftalık programı
+    tutar: gun=0 Pazartesi, baslangic/bitis saatleri İstanbul saatindedir.
+    """
+
     __tablename__ = "uzmanlar"
 
     id: Mapped[str] = mapped_column(primary_key=True, default=yeni_id)
@@ -37,6 +61,8 @@ class Uzman(Base):
     biyografi: Mapped[str] = mapped_column(Text, default="")
     ucret: Mapped[int] = mapped_column(default=0)
     deneyim_yili: Mapped[int] = mapped_column(default=0)
+    # default=list her kayıt için ayrı liste üretir. JSON listesi değişirken
+    # yeni liste atayın; yerinde append işlemi otomatik izlenmez.
     ekoller: Mapped[list] = mapped_column(JSON, default=list)
     kitle: Mapped[list] = mapped_column(JSON, default=list)
     formatlar: Mapped[list] = mapped_column(JSON, default=list)
@@ -50,6 +76,13 @@ class Uzman(Base):
 
 
 class Oturum(Base):
+    """Sunucuda iptal edilebilen, kullanıcıya bağlı giriş oturumu.
+
+    Tarayıcıdaki ham oturum ve CSRF değerleri yerine özetleri saklanır.
+    Zamanlar Unix saniyesidir; süre aşımı security.py içinde denetlenir.
+    Çıkış veya hesap kurtarma bu satırları kaldırarak erişimi sonlandırır.
+    """
+
     __tablename__ = "oturumlar"
 
     ozet: Mapped[str] = mapped_column(primary_key=True)
@@ -60,6 +93,14 @@ class Oturum(Base):
 
 
 class Randevu(Base):
+    """Hesap gerektirmeyen danışan talebini uzman ve zamana bağlar.
+
+    baslangic/olusturma Unix saniyesidir; gösterimde İstanbul'a çevrilir.
+    Danışanın adı ve telefonu danisan_sifreli içinde şifreli JSON tutulur.
+    aydinlatma_surumu talep anındaki metni belirtir. İzin verilen durum
+    geçişleri API iş kuralıdır; bu model tek başına geçişleri doğrulamaz.
+    """
+
     __tablename__ = "randevular"
 
     id: Mapped[str] = mapped_column(primary_key=True, default=yeni_id)
@@ -72,6 +113,9 @@ class Randevu(Base):
     olusturma: Mapped[int]
     aydinlatma_surumu: Mapped[str]
 
+    # Aynı uzmanda aynı anda yalnızca bir aktif talep bulunabilir.
+    # İptal/reddedilen kayıt korunur fakat saati kapatmaz. Kısıt, API kontrolü
+    # dışında yazıldığında ve yarışan taleplerde de çakışmayı engeller.
     __table_args__ = (
         Index(
             "uq_aktif_randevu",
@@ -85,6 +129,12 @@ class Randevu(Base):
 
 
 class Tavsiye(Base):
+    """Uzmandan uzmana yönlü tavsiye; birleşik anahtar tekrarı engeller.
+
+    Kendi kendine tavsiye ve onaysız uzman denetimleri API katmanındadır.
+    Bu tablo danışan yorumu veya tedavi sonucu değerlendirmesi içermez.
+    """
+
     __tablename__ = "tavsiyeler"
 
     veren_id: Mapped[str] = mapped_column(
@@ -96,6 +146,14 @@ class Tavsiye(Base):
 
 
 class Denetim(Base):
+    """İşlemin kim, ne zaman ve hangi kayıt üzerinde olduğunu saklar.
+
+    Kullanıcı/kaynak kimlikleri bilerek FK değildir; geçmiş olay kaydı
+    hedef kaydın yaşam döngüsünden bağımsız kalır. Danışan adı, telefon,
+    parola veya şifreli içeriğin kopyası buraya yazılmaz. Yazma işlemleri
+    denetim kaydıyla aynı veritabanı işlemi içinde tamamlanmalıdır.
+    """
+
     __tablename__ = "denetim"
 
     id: Mapped[str] = mapped_column(primary_key=True, default=yeni_id)

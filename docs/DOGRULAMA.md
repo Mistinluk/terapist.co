@@ -1,5 +1,21 @@
 # Doğrulama sonucu
 
+## Kod açıklamaları ve Google Maps — 20 Eylül 2026
+
+| Kontrol | Sonuç |
+| --- | --- |
+| Python: SQLite + PostgreSQL + Redis | 127 başarılı, 3 kasıtlı atlandı; PostgreSQL'e özgü senaryoların SQLite parametreleri |
+| Ruff / PEP 8 ve biçim | 32 dosya başarılı; test açıklamaları da 79 karakter sınırında |
+| Vitest | 10 başarılı; adres kodlama, boş adres/çevrim içi profil ve uzun URL senaryoları dahil |
+| TypeScript, Vite, Prettier | Başarılı |
+| Docker | API, web, PostgreSQL ve Redis sağlıklı |
+| Tarayıcı | Erdee profilinin bölge bağlantısı yeni sekmede gerçek Google Maps Kadıköy/İstanbul sonucunu açtı |
+
+Models/CLI/main ile testlerin açıklamaları genişletildi. Harita kontrolünde
+yalnızca kurgusal profilin ilçe/şehir bilgisi kullanıldı; gerçek danışan veya
+randevu verisi gönderilmedi. Bir açık adresin doğru binayı bulması bu kontrolün
+kapsamında değildir. Önceki bağımlılık uyarıları devam eder; test hatası yoktur.
+
 ## Tercihe dayalı eşleştirme — 19 Eylül 2026
 
 | Kontrol | Sonuç |

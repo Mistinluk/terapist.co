@@ -1,3 +1,8 @@
+/**
+ * Tercihlerin JSON sözleşmesi: boş bütçe sınırsız, 0 ise ücretsiz demektir.
+ * Bu dosya puanlamayı test etmez; puan ve sayfalama backend testlerindedir.
+ * Varsayılan durumun değişmemesi diğer aramalara tercih taşınmasını önler.
+ */
 import { describe, expect, it } from "vitest";
 import { emptyMatchingFilters, matchingRequest } from "./lib/matching";
 

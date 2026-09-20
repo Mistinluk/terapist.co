@@ -1,3 +1,8 @@
+/**
+ * FormData → API dönüşümü ve cihazdan bağımsız Türkçe gösterim testleri.
+ * Kapalı günün saat alanları dolu kalsa bile programa eklenmemesi gerekir.
+ * Gerçek DOM veya API kullanılmaz; form ve biçimlendirme kuralları yalıtılır.
+ */
 import { describe, expect, it } from "vitest";
 import { readProfile } from "./components/ProfileForm";
 import { para, tarih } from "./lib/api";

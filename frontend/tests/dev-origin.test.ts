@@ -1,3 +1,9 @@
+/**
+ * Gerçek Vite sunucusu ile yerel adres yönlendirmesi ve proxy regresyonları.
+ * API yerine yalnızca Origin başlığını geri veren geçici HTTP sunucusu kurulur.
+ * port=0 işletim sisteminden boş port ister; çalışan uygulamaya dokunulmaz.
+ * HTML sayfası localhost'a taşınabilir, POST gövdesi/Origin'i taşınmamalıdır.
+ */
 import { createServer as createHttpServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { afterAll, beforeAll, expect, it } from "vitest";

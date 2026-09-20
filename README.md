@@ -9,6 +9,7 @@ Kodun akışını öğrenmek için [geliştirici rehberini](docs/GELISTIRICI_REH
 danışan tercihlerine göre sıralama için [eşleştirme rehberini](docs/ESLESTIRME.md)
 okuyun. Eşleştirmeyi denemek için giriş gerekmez: ana sayfadan destek alanlarını
 seçin; en yüksek tercih uyumuna sahip uzmanlar önce gösterilir.
+Testlerin kapsamı ve ortak ortamı [test rehberinde](docs/TEST_REHBERI.md) açıklanır.
 
 **Bu sürüm, KVKK uygunluğu belgesi veya HIPAA sertifikası değildir.** Kullanım
 yalnızca Türkiye olarak belirlendi. Gerçek danışan verisine geçmeden önce
@@ -79,6 +80,7 @@ terapist.co/
 │   │   │   └── Privacy.tsx        # Gizlilik bilgilendirmesi
 │   │   ├── components/            # Sayfalar arasında paylaşılan bileşenler
 │   │   │   ├── ProfileForm.tsx    # Ortak profil düzenleme formu
+│   │   │   ├── ProfileLocation.tsx # İş adresini/bölgeyi Google Maps'te açma
 │   │   │   ├── Avatar.tsx         # Profil görseli
 │   │   │   └── Status.tsx         # Yüklenme ve hata durumları
 │   │   ├── lib/                   # Arayüzün ortak veri ve oturum yardımcıları
@@ -132,6 +134,7 @@ terapist.co/
 ├── docs/                          # Teknik ve operasyonel belgeler
 │   ├── DOCKER.md                  # Tek komutla çalışma ve PostgreSQL geçişi
 │   ├── GELISTIRICI_REHBERI.md      # İstek akışı, kod sorumlulukları ve geliştirme
+│   ├── TEST_REHBERI.md             # Fixture yaşam döngüsü ve test senaryoları
 │   ├── ESLESTIRME.md              # Puanlama formülü, API sözleşmesi ve sınırlar
 │   ├── ESLESTIRME_VERISI.md        # Kurgusal veri seti ve test hesabı kullanımı
 │   ├── diyagramlar/               # ER diyagramı: SVG ve Mermaid kaynağı
@@ -388,6 +391,8 @@ ayrı kanaldan doğrulandıktan sonra `kurtar --email ...` kullanılır; tüm ot
   Varsayılan olarak en yüksek uyum önce; alternatif ad/ücret sıralaması ve
   sunucu tarafında sayfalama. [Puanlama ayrıntıları](docs/ESLESTIRME.md).
 - Onaylı uzman profili, çalışma saatleri ve meslektaş tavsiyesi.
+- Yüz yüze görüşme sunan profilde Google Maps bağlantısı; açık adres yoksa
+  yalnızca ilçe/şehir bölgesi gösterilir. Harita yeni sekmede açılır.
 - Türkiye saatine göre 15 günlük takvim; bir saatlik randevu talepleri.
 - Uzman başvurusu, Argon2id parola özeti, TOTP ve süreli çerez oturumu.
 - Uzmanın kendi randevularını görmesi, onaylaması, reddetmesi ve iptal etmesi.

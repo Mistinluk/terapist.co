@@ -1,4 +1,9 @@
-"""Gerçek dosyaları ve kişisel verileri kullanmayan yalıtılmış testler."""
+"""Her test için bağımsız istemci, veritabanı ve kurgusal kayıtlar kurar.
+
+Ayarlar app import edilmeden önce değiştirilir; gerçek .env anahtarları
+yerine geçici anahtarlar kullanılır. SQLite her zaman, TEST_POSTGRES_URL
+verildiyse PostgreSQL de çalışır. Gerçek uygulama DB'si hedeflenmemelidir:
+fixture bitince test tabloları kaldırılır. Çalıştırma: docs/TEST_REHBERI.md."""
 
 import os
 import secrets
@@ -30,6 +35,15 @@ PAROLA = "Yalnizca-Test-123456!"
     + (["postgresql"] if os.environ.get("TEST_POSTGRES_URL") else [])
 )
 def env(request):
+    """(client, session_factory, uzman_ids, randevu_id) dörtlüsünü
+    üretir.
+
+    İki uzman, bir yönetici ve şifreli tek talep oluşturulur;
+    kimlikler rastgeledir. get_db bağımlılığı geçici session ile
+    değiştirilir. Bellek içi SQLite'ın TestClient iş parçacığında da
+    aynı DB'yi görmesi için StaticPool gerekir. Bu tablolar ortak
+    olduğundan PostgreSQL testleri paralel çalıştırılmamalıdır.
+    """
     if request.param == "postgresql":
         url = os.environ["TEST_POSTGRES_URL"]
         if not url.endswith("/terapist_test") or "127.0.0.1:55439" not in url:
@@ -45,6 +59,9 @@ def env(request):
     factory = sessionmaker(engine, expire_on_commit=False)
 
     def override():
+        """Test isteğini geçici session'a bağlar; başarıda commit, hatada
+        rollback.
+        """
         with factory() as db:
             try:
                 yield db
@@ -104,6 +121,9 @@ def env(request):
 
 
 def login(client, index=0):
+    """Seçilen kurgusal hesapla girer ve sonraki yazmalara CSRF başlığı
+    ekler.
+    """
     response = client.post(
         "/api/oturum/giris",
         json={
