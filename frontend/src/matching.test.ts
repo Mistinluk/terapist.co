@@ -15,6 +15,8 @@ describe("eşleştirme istek sözleşmesi", () => {
       sayfa: 2,
       uzmanliklar: [],
       ekoller: [],
+      dil: "",
+      meslektas_alani: "",
     });
   });
   it("sıfır bütçeyi kaybetmez, çoklu Türkçe tercihleri korur", () => {
@@ -26,6 +28,8 @@ describe("eşleştirme istek sözleşmesi", () => {
           deneyim: "5",
           uzmanliklar: ["Kaygı", "Yas / kayıp"],
           ekoller: ["BDT", "EMDR"],
+          dil: "İngilizce",
+          meslektas_alani: "Kaygı",
         },
         1,
       ),
@@ -34,6 +38,8 @@ describe("eşleştirme istek sözleşmesi", () => {
     expect(result.deneyim).toBe(5);
     expect(result.uzmanliklar).toEqual(["Kaygı", "Yas / kayıp"]);
     expect(result.ekoller).toEqual(["BDT", "EMDR"]);
+    expect(result.dil).toBe("İngilizce");
+    expect(result.meslektas_alani).toBe("Kaygı");
     expect(emptyMatchingFilters.uzmanliklar).toEqual([]);
   });
 });

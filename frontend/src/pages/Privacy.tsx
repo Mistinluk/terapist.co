@@ -1,8 +1,15 @@
 import { Aydinlatma } from "../lib/api";
 import { useApi } from "../lib/useApi";
 import { Status } from "../components/Status";
+import { usePageMetadata } from "../lib/seoMetadata";
 
 export function Privacy() {
+  usePageMetadata({
+    title: "KVKK ve Aydınlatma Metni | terapist.co",
+    description:
+      "terapist.co kişisel verilerin korunması, veri minimizasyonu, çerez politikası ve danışan gizliliği ilkeleri hakkında aydınlatma metni.",
+    path: "/aydinlatma",
+  });
   const { data, loading, error, reload } = useApi<Aydinlatma>("/aydinlatma");
   return (
     <section className="narrow-page">
@@ -24,8 +31,13 @@ export function Privacy() {
           {data.veri_sorumlusu && <p>Veri sorumlusu: {data.veri_sorumlusu}</p>}
           <p className="muted small">Metin sürümü: {data.surum}</p>
           <p className="muted">
-            Giriş oturumu için zorunlu çerez kullanılır. Bu uygulamaya reklam
-            veya analiz izleyicisi eklenmemiştir.
+            Giriş oturumu ve güvenlik kontrolleri için zorunlu oturum çerezleri
+            kullanılır. Platform görünürlüğünü ve terapist profil performansını
+            anlamak amacıyla IP adresi veya danışan kimliği saklamayan
+            toplulaştırılmış trafik ölçümü ve yönetici tarafından
+            etkinleştirildiğinde anonimleştirilmiş Google Analytics 4 (GA4)
+            istatistikleri kullanılabilir; randevu formu bilgileri ya da sağlık
+            verileri hiçbir analitik sisteme gönderilmez.
           </p>
           <p className="muted">
             Google Maps bağlantıları yeni sekmede açılır. Bağlantıya

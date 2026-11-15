@@ -4,15 +4,26 @@ from typing import Annotated, Literal
 
 from fastapi import APIRouter, HTTPException, Query
 from sqlalchemy import func, select
-from sqlalchemy.exc import IntegrityError
 
-from app.eslestirme import listede_var, turkce_ad_sirasi
-from app.models import Tavsiye, Uzman
-from app.schemas import ProfilCikti, ProfilGirdi, TavsiyeGirdi
+from app.eslestirme import (
+    listede_var,
+    meslektas_alan_sinyalleri,
+    turkce_ad_sirasi,
+)
+from app.media import eski_fotografi_sil
+from app.models import TerapistDogrulama, Uzman
+from app.schemas import ProfilCikti, ProfilGirdi
 from app.security import AktifUzman, Db, denetle
 from app.services import musait_saatler, profil_bul
 
 router = APIRouter(tags=["Uzmanlar"])
+
+
+def public_profile(profile: Uzman) -> ProfilCikti:
+    result = ProfilCikti.model_validate(profile)
+    if not profile.kurucu_durumunu_goster:
+        result = result.model_copy(update={"kurucu_no": None})
+    return result
 
 
 @router.get("/uzmanlar")
@@ -23,6 +34,7 @@ def uzmanlar(
     ekol: Annotated[str, Query(max_length=100)] = "",
     kitle: Annotated[str, Query(max_length=100)] = "",
     format: Annotated[str, Query(max_length=100)] = "",
+    dil: Annotated[str, Query(max_length=100)] = "",
     uzmanlik: Annotated[str, Query(max_length=100)] = "",
     deneyim: Annotated[int, Query(ge=0, le=70)] = 0,
     sayfa: Annotated[int, Query(ge=1)] = 1,
@@ -47,6 +59,7 @@ def uzmanlar(
         (Uzman.ekoller, ekol),
         (Uzman.kitle, kitle),
         (Uzman.formatlar, format),
+        (Uzman.diller, dil),
         (Uzman.uzmanliklar, uzmanlik),
     ]:
         if not value:
@@ -66,7 +79,7 @@ def uzmanlar(
     return {
         "toplam": count,
         "sayfa": sayfa,
-        "sonuclar": [ProfilCikti.model_validate(p) for p in profiles],
+        "sonuclar": [public_profile(p) for p in profiles],
     }
 
 
@@ -80,58 +93,49 @@ def secenekler(db: Db):
         )
     )
     result = {"sehirler": sorted({p.sehir for p in profiles})}
-    for field in ["ekoller", "kitle", "uzmanliklar"]:
+    for field in ["ekoller", "kitle", "diller", "uzmanliklar"]:
         result[field] = sorted(
             {item for p in profiles for item in getattr(p, field)}
         )
+    signals = meslektas_alan_sinyalleri(db, profiles)
+    result["meslektas_alanlari"] = sorted(
+        {
+            signal["uzmanlik"]
+            for profile_signals in signals.values()
+            for signal in profile_signals
+        }
+    )
     return result
 
 
 @router.get("/uzmanlar/{uzman_id}", response_model=ProfilCikti)
 def profil(uzman_id: str, db: Db):
-    return profil_bul(db, uzman_id)
+    return public_profile(profil_bul(db, uzman_id))
+
+
+@router.get("/uzmanlar/kullanici-adi/{username}", response_model=ProfilCikti)
+def kullanici_adiyla_profil(username: str, db: Db):
+    profile = db.scalar(
+        select(Uzman)
+        .join(TerapistDogrulama, TerapistDogrulama.uzman_id == Uzman.id)
+        .where(
+            Uzman.kullanici_adi == username,
+            Uzman.onayli.is_(True),
+            Uzman.arsivli.is_(False),
+            TerapistDogrulama.durum == "verified",
+        )
+    )
+    if not profile:
+        raise HTTPException(404, "Uzman bulunamadı.")
+    return public_profile(profile)
 
 
 @router.get("/uzmanlar/{uzman_id}/saatler")
 def saatler(uzman_id: str, db: Db):
-    return {"saatler": musait_saatler(db, profil_bul(db, uzman_id))}
-
-
-@router.get("/uzmanlar/{uzman_id}/tavsiyeler")
-def tavsiyeler(uzman_id: str, db: Db):
-    profil_bul(db, uzman_id)
-    return {
-        "toplam": db.scalar(
-            select(func.count())
-            .select_from(Tavsiye)
-            .join(Uzman, Uzman.id == Tavsiye.veren_id)
-            .where(
-                Tavsiye.alan_id == uzman_id,
-                Uzman.onayli.is_(True),
-                Uzman.arsivli.is_(False),
-            )
-        )
-    }
-
-
-@router.put("/uzmanlar/{uzman_id}/tavsiye", status_code=204)
-def tavsiye(uzman_id: str, body: TavsiyeGirdi, me: AktifUzman, db: Db):
-    profil_bul(db, uzman_id)
-    if not me.onayli or me.id == uzman_id:
-        raise HTTPException(403, "Bu profili tavsiye edemezsiniz.")
-    current = db.get(Tavsiye, (me.id, uzman_id))
-    if body.tavsiye and not current:
-        db.add(Tavsiye(veren_id=me.id, alan_id=uzman_id))
-    elif not body.tavsiye and current:
-        db.delete(current)
-    denetle(db, "profil.tavsiye", me.kullanici_id, uzman_id)
-    try:
-        db.commit()
-    except IntegrityError:
-        db.rollback()
-        raise HTTPException(
-            409, "Tavsiye değişti. Sayfayı yenileyin."
-        ) from None
+    result = musait_saatler(db, profil_bul(db, uzman_id))
+    # Google Takvim eşitlemesi yapıldıysa son aralıklar saklanır.
+    db.commit()
+    return {"saatler": result}
 
 
 @router.get("/uzman/profil", response_model=ProfilCikti)
@@ -143,10 +147,31 @@ def kendi_profili(me: AktifUzman):
 def profil_guncelle(body: ProfilGirdi, me: AktifUzman, db: Db):
     # Randevu ekleme ve takvim değişikliği aynı uzman satırını kilitler.
     db.refresh(me, with_for_update=True)
-    if me.ad != body.ad or me.egitim != body.egitim:
+    if any(
+        [
+            me.ad != body.ad,
+            me.unvan != body.unvan,
+            me.egitim != body.egitim,
+            me.egitim_universite != body.egitim_universite,
+            me.egitim_program != body.egitim_program,
+            me.egitim_derece != body.egitim_derece,
+        ]
+    ):
         me.onayli = False
+        verification = db.scalar(
+            select(TerapistDogrulama).where(
+                TerapistDogrulama.uzman_id == me.id
+            )
+        )
+        if verification:
+            verification.durum = "pending"
+            verification.incelenme = None
+            verification.inceleyen_kullanici_id = None
+    old_photo = me.profil_fotografi_url
     for key, value in body.model_dump(mode="json").items():
         setattr(me, key, value)
     denetle(db, "profil.guncelle", me.kullanici_id, me.id)
     db.commit()
+    if old_photo and old_photo != me.profil_fotografi_url:
+        eski_fotografi_sil(old_photo)
     return me

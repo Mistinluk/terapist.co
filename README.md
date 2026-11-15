@@ -391,9 +391,32 @@ ayrı kanaldan doğrulandıktan sonra `kurtar --email ...` kullanılır; tüm ot
   Varsayılan olarak en yüksek uyum önce; alternatif ad/ücret sıralaması ve
   sunucu tarafında sayfalama. [Puanlama ayrıntıları](docs/ESLESTIRME.md).
 - Onaylı uzman profili, çalışma saatleri ve meslektaş tavsiyesi.
+- Arama kartlarında doğrulanmış meslektaşların alan ilişkilendirme sayıları;
+  kalite/rating dili veya sıralama etkisi olmadan açıklayıcı network sinyali.
+- Doğrulanmış meslektaşların yalnız kontrollü profesyonel bağlam ve profil
+  alanı seçerek oluşturduğu ilişki kanıtları; serbest testimonial veya
+  reputation score üretmeden. Görünen sayı ilgili alanı seçen doğrulanmış
+  terapistlerin sayısıdır; rating veya kalite puanı değildir.
+- Kısa profil adresinde mobil öncelikli iki sütunlu kart düzeni; kimlik,
+  çalışma alanları, eğitim, meslektaş bağlantıları ve gerçek uygun saatler.
+- Uzman dashboard'unda bağlantı, davet, danışan yönlendirme ve meslektaş
+  önerilerini ilgili yönetim adımlarına bağlayan kişisel büyüme özeti.
+- Danışan kimliği veya sağlık sonucu toplamadan, her yönlendirme bağlantısı
+  için anonim görüntülenme sayısı ve hedef profil tıklaması takibi.
+- `/{kullanici_adi}` adresinde tek etkileşimli profil; sunucu HTML'i kanonik
+  adres, sosyal paylaşım metaverisi ve JavaScript kapalıyken okunabilir özet sunar.
+  Eski `/passport/{kullanici_adi}` ve `/uzman/{id}` bağlantıları 308 ile kısa
+  adrese yönlenir.
+- Profil sahibinin eklediği HTTPS kaynakları kategori ve aramayla görüntüleme,
+  sıralama ve yalnız sahibine açık ekleme/kaldırma; anonim toplu açılma sayısı.
+- Doğrulama sırasına göre otomatik ve değişmez `Founding Therapist #0001`
+  kimliği; yönetici tarafından belirlenen program kapasitesi ve profil badge'i.
+- Doğrulanmış terapistin dış sitesine ekleyebildiği responsive Terapist.co
+  rozeti; kısa profil adresine yönlendirme ile `badge_created`/`badge_clicked` takibi.
 - Yüz yüze görüşme sunan profilde Google Maps bağlantısı; açık adres yoksa
   yalnızca ilçe/şehir bölgesi gösterilir. Harita yeni sekmede açılır.
-- Türkiye saatine göre 15 günlük takvim; bir saatlik randevu talepleri.
+- Türkiye saatine göre 15 günlük takvim; saat başlarında 30, 45, 50 veya
+  60 dakikalık görüşme talepleri. Uygun saat başvuruda yeniden doğrulanır.
 - Uzman başvurusu, Argon2id parola özeti, TOTP ve süreli çerez oturumu.
 - Uzmanın kendi randevularını görmesi, onaylaması, reddetmesi ve iptal etmesi.
 - Ortak form üzerinden profil, eğitim, ücret ve haftalık saatlerin düzenlenmesi.
@@ -402,8 +425,9 @@ ayrı kanaldan doğrulandıktan sonra `kurtar --email ...` kullanılır; tüm ot
   Açık randevusu olan uzman arşivlenemez.
 
 Yeni randevu formunda serbest sağlık/terapi notu toplanmaz. Eski Google yorumları
-bağlantısı zaten anahtar yer tutucusuydu; yeni uygulamaya eklenmedi. Dış avatar,
-font ve CDN istekleri kaldırıldı. Güncel mimari
+bağlantısı zaten anahtar yer tutucusuydu; yeni uygulamaya eklenmedi. Profil
+fotoğrafı ve isteğe bağlı sosyal bağlantılar HTTPS adresleriyle sınırlıdır.
+Güncel mimari
 [geliştirici rehberinde](docs/GELISTIRICI_REHBERI.md) açıklanır.
 
 ## Test ve derleme

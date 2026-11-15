@@ -88,6 +88,12 @@ ALANLAR = [
     ),
     (["Uyku sorunları", "Kaygı"], ["BDT", "ACT"], ["Yetişkin", "İleri yaş"]),
 ]
+DILLER = [
+    ["Türkçe"],
+    ["Türkçe", "İngilizce"],
+    ["Türkçe", "Almanca"],
+    ["Türkçe", "Arapça"],
+]
 
 
 class UretimAyarlari(BaseModel):
@@ -118,6 +124,7 @@ def profil_uret(index: int) -> ProfilGirdi:
     selected_areas = rng.sample(areas, rng.randint(1, len(areas)))
     return ProfilGirdi(
         ad=f"{title} {name}",
+        unvan=profession,
         sehir=city,
         ilce=district,
         biyografi=(
@@ -132,8 +139,12 @@ def profil_uret(index: int) -> ProfilGirdi:
         ekoller=rng.sample(schools, rng.randint(1, len(schools))),
         kitle=audiences,
         formatlar=formats,
+        diller=DILLER[index % len(DILLER)],
         uzmanliklar=selected_areas,
         egitim=[f"Kurgusal Örnek Üniversitesi · {education}"],
+        egitim_universite="Kurgusal Örnek Üniversitesi",
+        egitim_program=education,
+        egitim_derece="Lisansüstü" if title != "Psk." else "Lisans",
         kurumlar=["Kurgusal Örnek Danışmanlık Merkezi"],
         adres=(ornek_adres(index + 6) if "Yüz yüze" in formats else ""),
         calisma_saatleri=schedule,

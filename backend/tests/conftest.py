@@ -24,7 +24,13 @@ os.environ["UYGULAMA_ADRESI"] = "http://localhost:5173"
 
 from app.db import Base, get_db  # noqa: E402
 from app.main import app  # noqa: E402
-from app.models import Kullanici, Randevu, Uzman  # noqa: E402
+from app.models import (  # noqa: E402
+    BaglantiIliskiTuru,
+    Kullanici,
+    Randevu,
+    TerapistDogrulama,
+    Uzman,
+)
 from app.security import hiz_siniri, parolalar, sifrele  # noqa: E402
 
 PAROLA = "Yalnizca-Test-123456!"
@@ -73,6 +79,42 @@ def env(request):
     app.dependency_overrides[get_db] = override
     hiz_siniri.kayitlar.clear()
     with factory() as db:
+        for order, (slug, label, selectable) in enumerate(
+            [
+                ("colleague", "Meslektaş", True),
+                ("worked_together", "Birlikte çalıştık", True),
+                ("same_institution", "Aynı kurumda çalıştık", True),
+                (
+                    "training_colleague",
+                    "Aynı eğitim programındaydık",
+                    True,
+                ),
+                (
+                    "supervision_relationship",
+                    "Süpervizyon ilişkisi",
+                    True,
+                ),
+                (
+                    "professional_acquaintance",
+                    "Profesyonel tanışıklık",
+                    True,
+                ),
+                (
+                    "invited_to_platform",
+                    "Terapist.co'ya davet etti",
+                    False,
+                ),
+            ]
+        ):
+            db.add(
+                BaglantiIliskiTuru(
+                    slug=slug,
+                    ad=label,
+                    secilebilir=selectable,
+                    aktif=True,
+                    sira=order,
+                )
+            )
         ids = []
         for index in range(3):
             user = Kullanici(
@@ -99,6 +141,15 @@ def env(request):
                 )
                 db.add(profile)
                 db.flush()
+                db.add(
+                    TerapistDogrulama(
+                        uzman_id=profile.id,
+                        durum="verified",
+                        gonderilme=int(time.time()),
+                        incelenme=int(time.time()),
+                        inceleyen_kullanici_id=None,
+                    )
+                )
                 ids.append(profile.id)
         booking = Randevu(
             uzman_id=ids[0],

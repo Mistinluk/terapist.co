@@ -5,12 +5,12 @@ her uzman için ayrı sorgu yoktur. SQLite testleri ve PostgreSQL aynı
 kuralları uygular. Ağırlıklar ürün tercihidir, klinik doğrulama değildir.
 """
 
-from sqlalchemy import Float, case, cast, exists, func, literal, select
+from sqlalchemy import Float, case, cast, exists, func, literal, or_, select
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 from sqlalchemy.sql.elements import ColumnElement
 
-from app.models import Uzman
+from app.models import MeslektasUzmanlikIliskisi, TerapistDogrulama, Uzman
 from app.schemas import (
     EslesenProfil,
     EslesmeAciklamasi,
@@ -44,6 +44,44 @@ def turkce_ad_sirasi() -> ColumnElement[str]:
     for upper, lower in zip("IİÇĞÖŞÜ", "ıiçğöşü", strict=True):
         normalized = func.replace(normalized, upper, lower)
     return func.lower(normalized)
+
+
+def meslektas_alani_var(db: Session, value: str) -> ColumnElement[bool]:
+    """Görünür ve doğrulanmış en az bir meslektaş ilişkilendirmesi arar.
+
+    Alan hedef profilin güncel çalışma alanı veya yaklaşımında da bulunmalı.
+    Bu ifade yalnız kesin filtre olarak kullanılır; puan ve sıralamaya girmez.
+    """
+    contributor = aliased(Uzman, name="ag_katkida_bulunan")
+    verification = aliased(
+        TerapistDogrulama, name="ag_katkida_bulunan_dogrulamasi"
+    )
+    association_exists = exists(
+        select(1)
+        .select_from(MeslektasUzmanlikIliskisi)
+        .join(
+            contributor,
+            contributor.id
+            == MeslektasUzmanlikIliskisi.iliskilendiren_uzman_id,
+        )
+        .join(verification, verification.uzman_id == contributor.id)
+        .where(
+            MeslektasUzmanlikIliskisi.hedef_uzman_id == Uzman.id,
+            MeslektasUzmanlikIliskisi.uzmanlik == value,
+            contributor.onayli.is_(True),
+            contributor.arsivli.is_(False),
+            verification.durum == "verified",
+        )
+        .correlate(Uzman)
+    )
+    return (
+        Uzman.uzmanlik_iliskilerini_goster.is_(True)
+        & or_(
+            listede_var(db, Uzman.uzmanliklar, value),
+            listede_var(db, Uzman.ekoller, value),
+        )
+        & association_exists
+    )
 
 
 def kapsama_orani(
@@ -104,12 +142,72 @@ def aciklama_uret(
     )
 
 
-def uzman_eslestir(db: Session, request: EslestirmeGirdi) -> EslestirmeCikti:
-    """İki SELECT ile kesin filtrelere uyan uzmanları sıralı döndürür.
+def meslektas_alan_sinyalleri(
+    db: Session, profiles: list[Uzman]
+) -> dict[str, list[dict]]:
+    """Sonuç sayfasının meslektaş alan sayılarını tek toplu sorguyla getirir.
 
-    Onay ve arşiv koşulları zorunludur. Şehir, grup, görüşme şekli, bütçe,
-    deneyim ve ad araması puan uğruna gevşetilmez. Uzmanlık/yaklaşım ise
-    kısmi eşleşmelere izin verir; karşılanmayanlar kartta açıkça belirtilir.
+    Yalnız doğrulanmış ve yayındaki meslektaşlar sayılır. Kayıt sonradan
+    profilden kaldırılmış bir alana aitse arama kartında gösterilmez. Bu
+    sinyaller eşleşme puanına veya ORDER BY ifadesine hiçbir katkı yapmaz.
+    """
+    if not profiles:
+        return {}
+    profile_by_id = {profile.id: profile for profile in profiles}
+    visible_profile_ids = [
+        profile.id
+        for profile in profiles
+        if profile.uzmanlik_iliskilerini_goster
+    ]
+    if not visible_profile_ids:
+        return {profile.id: [] for profile in profiles}
+    rows = db.execute(
+        select(
+            MeslektasUzmanlikIliskisi.hedef_uzman_id,
+            MeslektasUzmanlikIliskisi.uzmanlik,
+            func.count(MeslektasUzmanlikIliskisi.id),
+        )
+        .join(
+            Uzman,
+            Uzman.id == MeslektasUzmanlikIliskisi.iliskilendiren_uzman_id,
+        )
+        .join(
+            TerapistDogrulama,
+            TerapistDogrulama.uzman_id == Uzman.id,
+        )
+        .where(
+            MeslektasUzmanlikIliskisi.hedef_uzman_id.in_(visible_profile_ids),
+            Uzman.onayli.is_(True),
+            Uzman.arsivli.is_(False),
+            TerapistDogrulama.durum == "verified",
+        )
+        .group_by(
+            MeslektasUzmanlikIliskisi.hedef_uzman_id,
+            MeslektasUzmanlikIliskisi.uzmanlik,
+        )
+        .order_by(
+            MeslektasUzmanlikIliskisi.hedef_uzman_id,
+            MeslektasUzmanlikIliskisi.uzmanlik,
+        )
+    )
+    signals: dict[str, list[dict]] = {profile.id: [] for profile in profiles}
+    for target_id, specialty, count in rows:
+        profile = profile_by_id[target_id]
+        if specialty not in {*profile.uzmanliklar, *profile.ekoller}:
+            continue
+        signals[target_id].append(
+            {"uzmanlik": specialty, "meslektas_sayisi": count}
+        )
+    return signals
+
+
+def uzman_eslestir(db: Session, request: EslestirmeGirdi) -> EslestirmeCikti:
+    """Üç SELECT ile kesin filtrelere uyan uzmanları sıralı döndürür.
+
+    Onay ve arşiv koşulları zorunludur. Şehir, grup, görüşme şekli, dil,
+    bütçe, deneyim, ad ve ağ alanı puan uğruna gevşetilmez.
+    Uzmanlık/yaklaşım ise kısmi eşleşmelere izin verir; karşılanmayanlar
+    kartta açıkça belirtilir.
     Aynı veri anında eşit puanlar ad ve UUID ile kararlı biçimde sıralanır.
     """
     query = select(Uzman).where(
@@ -124,9 +222,12 @@ def uzman_eslestir(db: Session, request: EslestirmeGirdi) -> EslestirmeCikti:
     for field, value in [
         (Uzman.kitle, request.kitle),
         (Uzman.formatlar, request.format),
+        (Uzman.diller, request.dil),
     ]:
         if value:
             query = query.where(listede_var(db, field, value))
+    if request.meslektas_alani:
+        query = query.where(meslektas_alani_var(db, request.meslektas_alani))
     name = turkce_ad_sirasi()
     if request.arama:
         term = request.arama.translate(str.maketrans("Iİ", "ıi")).lower()
@@ -145,13 +246,26 @@ def uzman_eslestir(db: Session, request: EslestirmeGirdi) -> EslestirmeCikti:
         .offset((request.sayfa - 1) * SAYFA_BOYUTU)
         .limit(SAYFA_BOYUTU)
     ).all()
+    profiles = [profile for profile, _ in rows]
+    network_signals = meslektas_alan_sinyalleri(db, profiles)
     return EslestirmeCikti(
         toplam=count,
         sayfa=request.sayfa,
         sonuclar=[
             EslesenProfil(
-                **ProfilCikti.model_validate(profile).model_dump(),
+                **ProfilCikti.model_validate(profile)
+                .model_copy(
+                    update={
+                        "kurucu_no": (
+                            profile.kurucu_no
+                            if profile.kurucu_durumunu_goster
+                            else None
+                        )
+                    }
+                )
+                .model_dump(),
                 eslesme=aciklama_uret(profile, request, points),
+                meslektas_alanlari=network_signals.get(profile.id, []),
             )
             for profile, points in rows
         ],

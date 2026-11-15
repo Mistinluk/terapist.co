@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from app.config import get_settings
 from app.db import get_db
-from app.models import Denetim, Kullanici, Oturum, Uzman
+from app.models import Denetim, Kullanici, Oturum, TerapistDogrulama, Uzman
 
 settings = get_settings()
 parolalar = PasswordHash.recommended()
@@ -151,6 +151,23 @@ def uzman_bul(user: AktifKullanici, db: Db) -> Uzman:
 
 
 AktifUzman = Annotated[Uzman, Depends(uzman_bul)]
+
+
+def dogrulanmis_uzman_bul(me: AktifUzman, db: Db) -> Uzman:
+    from sqlalchemy import select
+
+    verification = db.scalar(
+        select(TerapistDogrulama).where(
+            TerapistDogrulama.uzman_id == me.id,
+            TerapistDogrulama.durum == "verified",
+        )
+    )
+    if not me.onayli or not verification:
+        raise HTTPException(403, "Bu işlem için doğrulanmış hesap gereklidir.")
+    return me
+
+
+DogrulanmisUzman = Annotated[Uzman, Depends(dogrulanmis_uzman_bul)]
 
 
 def yonetici_bul(user: AktifKullanici) -> Kullanici:

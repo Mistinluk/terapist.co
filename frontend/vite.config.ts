@@ -1,7 +1,41 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
+const reservedPaths = [
+  "api",
+  "assets",
+  "aydinlatma",
+  "badge",
+  "basvuru",
+  "cozumler",
+  "davet",
+  "favicon",
+  "giris",
+  "karsilastirma",
+  "kesfet",
+  "panel",
+  "passport",
+  "passport-assets",
+  "r",
+  "rehber",
+  "uzman",
+  "yonetim",
+  "admin",
+].join("|");
+const publicProfilePath = `^/(?!(${reservedPaths})(?:\\?|$))[a-z][a-z0-9-]{1,38}[a-z0-9](?:\\?.*)?$`;
+
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: "assets/app.js",
+        assetFileNames: (asset) =>
+          asset.name?.endsWith(".css")
+            ? "assets/app.css"
+            : "assets/[name]-[hash][extname]",
+      },
+    },
+  },
   plugins: [
     react(),
     {
@@ -38,6 +72,14 @@ export default defineConfig({
     host: "localhost",
     port: 5173,
     strictPort: true,
-    proxy: { "/api": "http://127.0.0.1:8000" },
+    proxy: {
+      [publicProfilePath]: "http://127.0.0.1:8000",
+      "/api": "http://127.0.0.1:8000",
+      "/badge": "http://127.0.0.1:8000",
+      "/passport": "http://127.0.0.1:8000",
+      "/uzman/": "http://127.0.0.1:8000",
+      "/robots.txt": "http://127.0.0.1:8000",
+      "/sitemap.xml": "http://127.0.0.1:8000",
+    },
   },
 });

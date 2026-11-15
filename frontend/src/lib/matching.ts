@@ -6,6 +6,8 @@ export type MatchingFilters = {
   ekoller: string[];
   format: string;
   kitle: string;
+  dil: string;
+  meslektas_alani: string;
   deneyim: string;
   azami_ucret: string;
   sirala: string;
@@ -18,6 +20,8 @@ export const emptyMatchingFilters: MatchingFilters = {
   ekoller: [],
   format: "",
   kitle: "",
+  dil: "",
+  meslektas_alani: "",
   deneyim: "0",
   azami_ucret: "",
   sirala: "eslesme",

@@ -14,6 +14,7 @@ dependencies = [
   "psycopg[binary]>=3.2,<4", "cryptography>=50,<51",
   "pwdlib[argon2]>=0.2,<1", "pyotp>=2.9,<3",
   "email-validator>=2.2,<3", "redis>=5,<7", "tzdata>=2025.1",
+  "pillow>=11,<12", "pillow-heif>=0.21,<1", "python-multipart>=0.0.20,<1",
 ]
 
 [project.optional-dependencies]

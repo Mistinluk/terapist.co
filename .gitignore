@@ -1,20 +1,39 @@
+# Ortam ve gizli anahtar dosyaları (şablonlar hariç)
 .env
+.env.*
+!.env.example
+!.env.production.example
+*.key
+*.pem
+
+# Python sanal ortamı ve önbellekler
 .venv/
+backend/.venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
 *.egg-info/
+
+# Frontend bağımlılıkları ve derleme çıktıları
 node_modules/
+.pnpm-store/
 dist/
+*.tsbuildinfo
+coverage/
+
+# Yerel veritabanı, yüklemeler ve günlükler
 *.sqlite*
 *.db
 *.log
+backend/uploads/
+/backend/backups/
+
+# Test, yerel araç ve işletim sistemi kalıntıları
 .sites-runtime/
 playwright-report/
 test-results/
-coverage/
-*.tsbuildinfo
-*.key
+.agents/
+.DS_Store
+**/.DS_Store
 /legacy/URL-DB Yedek.md
-/backend/backups/

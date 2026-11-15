@@ -5,6 +5,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { readProfile } from "./components/ProfileForm";
+import { slugifyTurkishName } from "./components/UsernameField";
 import { para, tarih } from "./lib/api";
 
 describe("Türkçe profil ve tarih dönüşümleri", () => {
@@ -29,5 +30,11 @@ describe("Türkçe profil ve tarih dönüşümleri", () => {
   it("cihaz saatinden bağımsız Türkiye saatini gösterir", () => {
     expect(tarih("2026-09-14T06:00:00Z")).toContain("09:00");
     expect(para(1800)).toContain("1.800");
+  });
+  it("kullanıcı adlarını Türkçe karakterlerden ve tirelerden arındırarak üretir", () => {
+    expect(slugifyTurkishName("Arda Ekin Tuncay")).toBe("ardaekintuncay");
+    expect(slugifyTurkishName("Uzm. Psk. Şeyma Çelik-Öztürk")).toBe(
+      "uzmpskseymacelikozturk",
+    );
   });
 });

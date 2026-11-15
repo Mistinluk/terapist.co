@@ -30,10 +30,29 @@ erDiagram
     direction LR
 
     kullanicilar ||..o| uzmanlar : "uzman profili"
+    kullanicilar o|..o| founding_program_settings : "son güncelleyen"
     kullanicilar ||..o{ oturumlar : "oturumları"
     uzmanlar ||..o{ randevular : "randevuları"
     uzmanlar ||--o{ tavsiyeler : "veren_id"
     uzmanlar ||--o{ tavsiyeler : "alan_id"
+    uzmanlar ||..o| therapist_verifications : "doğrulaması"
+    uzmanlar ||..o{ invitations : "davet eden"
+    uzmanlar o|..o| invitations : "kabul eden"
+    uzmanlar ||..o| founding_members : "kurucu statüsü"
+    uzmanlar ||..o{ professional_connections : "isteyen uzman"
+    uzmanlar ||..o{ professional_connections : "alıcı uzman"
+    connection_relationship_types ||..o{ professional_connections : "ilişki türü"
+    uzmanlar ||..o{ client_referrals : "yönlendiren uzman"
+    client_referrals ||--|{ referral_targets : "önerilen terapistler"
+    uzmanlar ||--o{ referral_targets : "hedef uzman"
+    client_referrals ||..o{ referral_events : "izleme olayları"
+    uzmanlar o|..o{ referral_events : "tıklanan profil"
+    uzmanlar ||..o| website_badges : "website rozeti"
+    website_badges ||--o{ website_badge_events : "izleme olayları"
+    uzmanlar ||--o{ peer_specialty_associations : "ilişkilendiren"
+    uzmanlar ||--o{ peer_specialty_associations : "hedef terapist"
+    kullanicilar o|..o{ therapist_verifications : "inceleyen"
+    kullanicilar ||..o{ founding_members : "atayan"
 
     kullanicilar {
         string id PK
@@ -47,12 +66,15 @@ erDiagram
     uzmanlar {
         string id PK
         string kullanici_id FK, UK
+        string kullanici_adi UK "Pasaport adresi"
+        integer uye_olma "Unix saniye"
         string ad
         string sehir
         integer ucret
         json calisma_saatleri
         boolean onayli
         boolean arsivli
+        integer davet_limiti
     }
 
     oturumlar {
@@ -76,6 +98,109 @@ erDiagram
     tavsiyeler {
         string veren_id PK, FK "Tavsiye eden uzman"
         string alan_id PK, FK "Tavsiye edilen uzman"
+        string uzmanlik "Çalışılmayan yönlendirme alanı"
+        integer olusturma "Unix saniye"
+    }
+
+    therapist_verifications {
+        string id PK
+        string uzman_id FK, UK
+        string durum "pending / verified / rejected"
+        integer gonderilme "Unix saniye"
+        integer incelenme "Unix saniye; boş olabilir"
+        string inceleyen_kullanici_id FK "boş olabilir"
+    }
+
+    invitations {
+        string id PK
+        string davet_eden_uzman_id FK
+        string email "aktif davette UK"
+        string token_ozeti UK "SHA-256"
+        integer sure_bitimi "Unix saniye"
+        string durum
+        string kabul_eden_uzman_id FK, UK "boş olabilir"
+        string iliski_turu "invited_to_platform"
+    }
+
+    founding_members {
+        string id PK
+        string uzman_id FK, UK
+        integer kurucu_no UK
+        integer verilme "Unix saniye"
+        string veren_kullanici_id FK
+    }
+
+    founding_program_settings {
+        integer id PK "Daima 1"
+        integer azami_uye
+        integer guncelleme "Unix saniye"
+        string guncelleyen_kullanici_id FK "boş olabilir"
+    }
+
+    connection_relationship_types {
+        string slug PK
+        string ad
+        boolean secilebilir
+        boolean aktif
+        integer sira
+    }
+
+    professional_connections {
+        string id PK
+        string isteyen_uzman_id FK
+        string alici_uzman_id FK
+        string cift_anahtari UK "yön bağımsız uzman çifti"
+        string iliski_turu FK
+        string durum "pending / accepted / rejected / revoked"
+        integer istek_zamani "Unix saniye"
+        integer yanit_zamani "Unix saniye; boş olabilir"
+    }
+
+    client_referrals {
+        string id PK
+        string yonlendiren_uzman_id FK
+        string token_ozeti UK "SHA-256"
+        string neden "kontrollü kategori"
+        string durum "active / expired / revoked"
+        integer olusturma "Unix saniye"
+        integer sure_bitimi "Unix saniye"
+    }
+
+    referral_targets {
+        string yonlendirme_id PK, FK
+        string uzman_id PK, FK
+        integer sira
+    }
+
+    referral_events {
+        string id PK
+        string yonlendirme_id FK
+        string olay "created / opened / profile clicked"
+        string hedef_uzman_id FK "boş olabilir"
+        integer zaman "Unix saniye"
+    }
+
+    website_badges {
+        string id PK
+        string uzman_id FK, UK
+        integer olusturma "Unix saniye"
+    }
+
+    website_badge_events {
+        string id PK
+        string rozet_id FK
+        string olay "badge_created / badge_clicked"
+        integer zaman "Unix saniye"
+    }
+
+    peer_specialty_associations {
+        string id PK
+        string iliskilendiren_uzman_id FK
+        string hedef_uzman_id FK
+        string uzmanlik
+        string profesyonel_baglam
+        integer olusturma "Unix saniye"
+        integer guncelleme "Unix saniye"
     }
 
     denetim {

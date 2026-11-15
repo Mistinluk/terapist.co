@@ -2,8 +2,15 @@ import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { LockKeyhole } from "lucide-react";
 import { useAuth } from "../lib/auth";
+import { usePageMetadata } from "../lib/seoMetadata";
 
 export function Login() {
+  usePageMetadata({
+    title: "Uzman Girişi | terapist.co",
+    description: "Doğrulanmış terapist çalışma alanına giriş yapın.",
+    path: "/giris",
+    robots: "noindex, nofollow",
+  });
   const { login } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");

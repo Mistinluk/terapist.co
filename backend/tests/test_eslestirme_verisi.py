@@ -9,10 +9,12 @@ import sys
 
 import pyotp
 import pytest
+from pydantic import ValidationError
 from sqlalchemy import func, select
 
 from app import eslestirme_verisi as veri
 from app.models import Kullanici, Randevu, Uzman
+from app.schemas import ProfilGirdi
 from app.security import parolalar
 
 
@@ -24,11 +26,29 @@ def test_bin_gecerli_ve_tekrarlanabilir_profil():
     assert len({p.ad for p in profiles}) == 1000
     assert len({p.sehir for p in profiles}) == 20
     assert len({tuple(p.formatlar) for p in profiles}) == 3
+    assert {language for p in profiles for language in p.diller} == {
+        "Türkçe",
+        "İngilizce",
+        "Almanca",
+        "Arapça",
+    }
     assert any(s.gun == 6 for p in profiles for s in p.calisma_saatleri)
     assert any(s.bitis >= 21 for p in profiles for s in p.calisma_saatleri)
     assert min(p.ucret for p in profiles) == 800
     assert max(p.ucret for p in profiles) == 5000
     assert veri.profil_uret(42) == profiles[42]
+
+
+def test_profil_fotografi_yalniz_guvenli_https_adresi_kabul_eder():
+    profile = veri.profil_uret(0).model_dump(mode="json")
+    with pytest.raises(ValidationError):
+        ProfilGirdi.model_validate(
+            {**profile, "profil_fotografi_url": "http://example.com/a.jpg"}
+        )
+    accepted = ProfilGirdi.model_validate(
+        {**profile, "profil_fotografi_url": "https://example.com/a.jpg"}
+    )
+    assert accepted.profil_fotografi_url.startswith("https://")
 
 
 def test_ekleme_tekrari_ve_mfa(env, monkeypatch):

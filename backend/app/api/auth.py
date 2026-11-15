@@ -1,5 +1,6 @@
 """Uzman başvurusu ve iptal edilebilir çerez oturumları."""
 
+import re
 import secrets
 import time
 
@@ -8,9 +9,10 @@ from fastapi import APIRouter, HTTPException, Request, Response
 from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 
+from app.accounts import mfa_yaniti, uzman_hesabi_hazirla
 from app.config import get_settings
 from app.models import Kullanici, Oturum, Uzman
-from app.schemas import GirisGirdi, KayitGirdi
+from app.schemas import RESERVED_USERNAMES, GirisGirdi, KayitGirdi
 from app.security import (
     COOKIE,
     AktifKullanici,
@@ -23,29 +25,50 @@ from app.security import (
     ozet,
     parolalar,
     sahte_ozet,
-    sifrele,
 )
 
 router = APIRouter(prefix="/oturum", tags=["Oturum"])
 settings = get_settings()
 
 
+@router.get("/kullanici-adi/{username}")
+def kullanici_adi_durumu(username: str, request: Request, db: Db):
+    """Anlık müsaitliği bildirir; benzersizliği kayıt işlemi belirler."""
+    hiz_siniri.kontrol("kullanici-adi:" + istemci(request), 60, 60)
+    if not re.fullmatch(r"[a-z][a-z0-9]{1,38}[a-z0-9]", username):
+        raise HTTPException(
+            422,
+            "Kullanıcı adı 3–40 küçük harf veya rakam olmalıdır (tire yok).",
+        )
+    if username in RESERVED_USERNAMES:
+        raise HTTPException(422, "Bu profil adresi kullanılamaz.")
+    used = db.scalar(select(Uzman.id).where(Uzman.kullanici_adi == username))
+    if not used:
+        return {"musait": True, "oneriler": []}
+    base = username[:37]
+    suggestions = []
+    for suffix in range(2, 12):
+        candidate = f"{base}{suffix}"
+        if not db.scalar(
+            select(Uzman.id).where(Uzman.kullanici_adi == candidate)
+        ):
+            suggestions.append(candidate)
+        if len(suggestions) == 3:
+            break
+    return {"musait": False, "oneriler": suggestions}
+
+
 @router.post("/basvuru", status_code=201)
 def basvur(body: KayitGirdi, request: Request, db: Db):
     hiz_siniri.kontrol("basvuru:" + istemci(request), 5, 3600)
-    secret = pyotp.random_base32()
-    user = Kullanici(
-        email=str(body.email).lower(),
-        parola_ozeti=parolalar.hash(body.parola.get_secret_value()),
-        mfa_sirri=sifrele({"anahtar": secret}),
-    )
-    db.add(user)
     try:
-        db.flush()
-        profile = Uzman(
-            kullanici_id=user.id, **body.profil.model_dump(mode="json")
+        user, _, secret = uzman_hesabi_hazirla(
+            db,
+            str(body.email),
+            body.parola.get_secret_value(),
+            body.profil,
+            body.kullanici_adi,
         )
-        db.add(profile)
         denetle(db, "uzman.basvuru", user.id)
         db.commit()
     except IntegrityError:
@@ -53,16 +76,11 @@ def basvur(body: KayitGirdi, request: Request, db: Db):
         raise HTTPException(
             409, "Bu bilgilerle başvuru oluşturulamıyor."
         ) from None
-    return {
-        "mesaj": (
-            "Başvurunuz alındı. Profiliniz yönetici onayından "
-            "sonra yayınlanır."
-        ),
-        "mfa_anahtari": secret,
-        "mfa_uri": pyotp.TOTP(secret).provisioning_uri(
-            user.email, issuer_name="Terapist.co"
-        ),
-    }
+    return mfa_yaniti(
+        user,
+        secret,
+        ("Başvurunuz alındı. Profiliniz yönetici onayından sonra yayınlanır."),
+    )
 
 
 @router.post("/giris")

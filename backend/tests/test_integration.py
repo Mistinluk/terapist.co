@@ -29,7 +29,14 @@ def test_basvuru_mfa_profil_onayi(env):
     """
     client, factory, ids, _ = env
     profile = client.get(f"/api/uzmanlar/{ids[0]}").json()
-    for field in ["id", "onayli", "arsivli"]:
+    for field in [
+        "id",
+        "kullanici_adi",
+        "uye_olma",
+        "kurucu_no",
+        "onayli",
+        "arsivli",
+    ]:
         profile.pop(field)
     body = {"email": "yeni@example.com", "parola": PAROLA, "profil": profile}
     created = client.post("/api/oturum/basvuru", json=body)
@@ -75,6 +82,58 @@ def test_basvuru_mfa_profil_onayi(env):
         == 204
     )
     assert client.get(f"/api/uzmanlar/{expert_id}").status_code == 200
+
+
+def test_kullanici_adi_secimi_ve_cakisma(env):
+    client, factory, ids, _ = env
+    profile = client.get(f"/api/uzmanlar/{ids[0]}").json()
+    for field in [
+        "id",
+        "kullanici_adi",
+        "uye_olma",
+        "kurucu_no",
+        "onayli",
+        "arsivli",
+    ]:
+        profile.pop(field)
+    status = client.get("/api/oturum/kullanici-adi/ornekterapist")
+    assert status.status_code == 200
+    assert status.json()["musait"] is True
+    body = {
+        "email": "slug@example.com",
+        "parola": PAROLA,
+        "profil": profile,
+        "kullanici_adi": "ornekterapist",
+    }
+    assert client.post("/api/oturum/basvuru", json=body).status_code == 201
+    with factory() as db:
+        assert db.scalar(
+            select(Uzman.id).where(Uzman.kullanici_adi == "ornekterapist")
+        )
+    taken = client.get("/api/oturum/kullanici-adi/ornekterapist").json()
+    assert taken["musait"] is False
+    assert "ornekterapist2" in taken["oneriler"]
+    duplicate = client.post(
+        "/api/oturum/basvuru", json={**body, "email": "other-slug@example.com"}
+    )
+    assert duplicate.status_code == 409
+    assert (
+        client.get("/api/oturum/kullanici-adi/ornek-terapist").status_code
+        == 422
+    )
+    assert client.get("/api/oturum/kullanici-adi/Bad_Name").status_code == 422
+    assert client.get("/api/oturum/kullanici-adi/kesfet").status_code == 422
+    assert (
+        client.post(
+            "/api/oturum/basvuru",
+            json={
+                **body,
+                "email": "reserved@example.com",
+                "kullanici_adi": "kesfet",
+            },
+        ).status_code
+        == 422
+    )
 
 
 def test_turkce_arama_json_filtreleri(env):

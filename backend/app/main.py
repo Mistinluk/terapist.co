@@ -6,6 +6,8 @@ güvenlik katmanından sonra Pydantic ve ilgili API işlevine ulaşır. Hesap
 yetkisi/CSRF denetimi ayrıca security.py bağımlılıklarında uygulanır.
 """
 
+import re
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -13,10 +15,33 @@ from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from app.api import admin, appointments, auth, matching, profiles
+from app.api import (
+    admin,
+    analytics,
+    appointments,
+    auth,
+    badges,
+    connections,
+    google_calendar,
+    growth_analytics,
+    invitations,
+    matching,
+    media,
+    moderation,
+    notifications,
+    peer_specialties,
+    profiles,
+    public_pages,
+    recommendations,
+    referrals,
+    resources,
+    themes,
+    waitlist,
+)
 from app.config import get_settings
 from app.db import engine
 from app.models import Uzman
+from app.schemas import RESERVED_USERNAMES
 
 settings = get_settings()
 # Geliştirmede sözleşme JSON'u kullanılabilir; üretimde yayınlanmaz.
@@ -41,21 +66,39 @@ async def istegi_dogrula(request: Request) -> JSONResponse | None:
     başarıda sonraki katmana geçmek için None döner. Kimlik kontrolü yapmaz.
     """
     if request.method not in {"GET", "HEAD", "OPTIONS"}:
-        if not settings.kaynak_izinli(request.headers.get("origin")):
+        google_webhook = (
+            request.method == "POST"
+            and request.url.path == "/api/google-takvim/webhook"
+        )
+        media_upload = (
+            request.method == "POST"
+            and request.url.path == "/api/medya/profil-fotografi"
+        )
+        if not google_webhook and not settings.kaynak_izinli(
+            request.headers.get("origin")
+        ):
             return JSONResponse(
                 {"detail": "İstek kaynağı doğrulanamadı."}, status_code=403
             )
-        if not request.headers.get("content-type", "").startswith(
+        content_type = request.headers.get("content-type", "")
+        if media_upload:
+            if not content_type.startswith("multipart/form-data"):
+                return JSONResponse(
+                    {"detail": "Çok parçalı dosya içeriği gereklidir."},
+                    status_code=415,
+                )
+        elif not google_webhook and not content_type.startswith(
             "application/json"
         ):
             return JSONResponse(
                 {"detail": "JSON içerik gereklidir."}, status_code=415
             )
+        max_body = 13 * 1024 * 1024 if media_upload else 32768
         size = 0
         chunks = []
         async for chunk in request.stream():
             size += len(chunk)
-            if size > 32768:
+            if size > max_body:
                 return JSONResponse(
                     {"detail": "İstek çok büyük."}, status_code=413
                 )
@@ -84,19 +127,67 @@ async def guvenlik(request: Request, call_next):
             {"detail": "İşlem tamamlanamadı. Lütfen tekrar deneyin."},
             status_code=500,
         )
+    badge_asset = request.url.path.startswith("/badge/") and (
+        request.url.path.endswith(".svg")
+    )
+    media_asset = request.method == "GET" and request.url.path.startswith(
+        "/api/medya/profil/"
+    )
+    short_profile = (
+        bool(re.fullmatch(r"/[a-z][a-z0-9-]{1,38}[a-z0-9]", request.url.path))
+        and request.url.path[1:] not in RESERVED_USERNAMES
+    )
+    profile_document = (
+        request.url.path.startswith("/passport/") or short_profile
+    )
+    public_document = (
+        request.url.path.startswith("/passport/")
+        or request.url.path in {"/robots.txt", "/sitemap.xml"}
+        or badge_asset
+        or short_profile
+    )
+    privacy_sensitive_document = profile_document
+    content_security_policy = (
+        "default-src 'self'; script-src 'self' "
+        "https://www.googletagmanager.com; style-src 'self'"
+        + (" 'unsafe-inline'" if settings.ortam != "uretim" else "")
+        + "; img-src 'self' data: https:; connect-src 'self' "
+        "https://www.google-analytics.com https://*.google-analytics.com "
+        "https://*.analytics.google.com https://www.googletagmanager.com"
+        + (" ws: wss:" if settings.ortam != "uretim" else "")
+        + "; frame-src 'self' https://www.youtube-nocookie.com "
+        "https://www.youtube.com https://open.spotify.com; "
+        "object-src 'none'; base-uri 'self'; form-action 'self'; "
+        "frame-ancestors 'none'"
+        if profile_document
+        else "default-src 'none'; frame-ancestors 'none'"
+    )
     response.headers.update(
         {
-            "Cache-Control": "no-store",
-            "Pragma": "no-cache",
+            "Cache-Control": (
+                "public, max-age=31536000, immutable"
+                if media_asset
+                else (
+                    "public, max-age=60, must-revalidate"
+                    if badge_asset
+                    else (
+                        "public, max-age=300"
+                        if public_document and not privacy_sensitive_document
+                        else "no-store"
+                    )
+                )
+            ),
             "X-Content-Type-Options": "nosniff",
             "X-Frame-Options": "DENY",
-            "Referrer-Policy": "no-referrer",
+            "Referrer-Policy": "strict-origin-when-cross-origin",
             "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
-            "Content-Security-Policy": (
-                "default-src 'none'; frame-ancestors 'none'"
-            ),
+            "Content-Security-Policy": content_security_policy,
         }
     )
+    if badge_asset or media_asset:
+        response.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
+    if (not public_document or privacy_sensitive_document) and not media_asset:
+        response.headers["Pragma"] = "no-cache"
     if settings.ortam == "uretim":
         response.headers["Strict-Transport-Security"] = (
             "max-age=31536000; includeSubDomains"
@@ -174,11 +265,29 @@ def aydinlatma():
 
 
 # Ortak /api öneki hem Nginx hem Vite vekilinin yönlendirmesiyle eşleşir.
+app.include_router(public_pages.router)
+app.include_router(badges.router)
+
 for router in [
     auth.router,
+    badges.api_router,
     profiles.router,
     matching.router,
+    moderation.router,
     appointments.router,
+    notifications.router,
+    google_calendar.router,
+    analytics.router,
+    invitations.router,
+    connections.router,
+    growth_analytics.router,
+    recommendations.router,
+    referrals.router,
+    resources.router,
+    themes.router,
+    waitlist.router,
+    peer_specialties.router,
+    media.router,
     admin.router,
 ]:
     app.include_router(router, prefix="/api")

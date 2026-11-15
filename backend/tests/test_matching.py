@@ -4,10 +4,20 @@
 senaryo puanlamanın ilk sayfayla sınırlı kalmadığını ve N+1 sorgu olmadığını
 denetler. Aynı testler env aracılığıyla SQLite/PostgreSQL'de yürütülür."""
 
+import time
+
 import pytest
 from sqlalchemy import event, func, select
 
-from app.models import Denetim, Kullanici, Randevu, Uzman
+from app.models import (
+    Denetim,
+    Kullanici,
+    KurucuUye,
+    MeslektasUzmanlikIliskisi,
+    Randevu,
+    TerapistDogrulama,
+    Uzman,
+)
 from app.schemas import EslestirmeGirdi
 
 
@@ -34,6 +44,7 @@ def ayarla(factory, ids):
         second.ekoller = ["BDT", "ACT"]
         for p in (first, second):
             p.kitle = ["Yetişkin"]
+            p.diller = ["Türkçe"]
             p.deneyim_yili = 5
 
 
@@ -78,12 +89,115 @@ def test_alan_yaklasimdan_once_gelir_ve_unvan_bonus_degildir(env):
     assert [p["eslesme"]["puan"] for p in result["sonuclar"]] == [70, 30]
 
 
+def test_kurucu_statusu_eslestirme_sirasini_degistirmez(env):
+    client, factory, ids, _ = env
+    ayarla(factory, ids)
+    with factory.begin() as db:
+        admin = db.scalar(select(Kullanici).where(Kullanici.rol == "yonetici"))
+        db.add(
+            KurucuUye(
+                uzman_id=ids[0],
+                kurucu_no=1,
+                verilme=1,
+                veren_kullanici_id=admin.id,
+            )
+        )
+    result = arama(
+        client,
+        uzmanliklar=["Kaygı", "Travma"],
+        ekoller=["BDT", "ACT"],
+    )
+    assert [profile["id"] for profile in result["sonuclar"]] == ids[::-1]
+    assert result["sonuclar"][1]["kurucu_no"] == 1
+
+
+def test_meslektas_alan_sinyali_gosterilir_ama_siralamayi_degistirmez(env):
+    client, factory, ids, _ = env
+    ayarla(factory, ids)
+    with factory.begin() as db:
+        password_hash = db.scalar(select(Kullanici)).parola_ozeti
+        now = int(time.time())
+        for index in range(7):
+            user = Kullanici(
+                email=f"meslektas{index}@example.com",
+                parola_ozeti=password_hash,
+            )
+            db.add(user)
+            db.flush()
+            colleague = Uzman(
+                kullanici_id=user.id,
+                ad=f"Kurgusal Meslektaş {index}",
+                sehir="Ankara",
+                ilce="Çankaya",
+                biyografi="Network arama testi için kurgusal profil.",
+                onayli=True,
+                formatlar=["Çevrim içi"],
+            )
+            db.add(colleague)
+            db.flush()
+            db.add_all(
+                [
+                    TerapistDogrulama(
+                        uzman_id=colleague.id,
+                        durum="verified",
+                        gonderilme=now,
+                        incelenme=now,
+                        inceleyen_kullanici_id=None,
+                    ),
+                    MeslektasUzmanlikIliskisi(
+                        iliskilendiren_uzman_id=colleague.id,
+                        hedef_uzman_id=ids[0],
+                        uzmanlik="Kaygı",
+                        profesyonel_baglam="follows_professional_work",
+                        olusturma=now,
+                        guncelleme=now,
+                    ),
+                ]
+            )
+
+    result = arama(
+        client,
+        sehir="İstanbul",
+        uzmanliklar=["Kaygı", "Travma"],
+        ekoller=["BDT", "ACT"],
+    )
+
+    assert [profile["id"] for profile in result["sonuclar"]] == ids[::-1]
+    assert [profile["eslesme"]["puan"] for profile in result["sonuclar"]] == [
+        100,
+        50,
+    ]
+    assert result["sonuclar"][0]["meslektas_alanlari"] == []
+    assert result["sonuclar"][1]["meslektas_alanlari"] == [
+        {"uzmanlik": "Kaygı", "meslektas_sayisi": 7}
+    ]
+    options = client.get("/api/secenekler")
+    assert options.status_code == 200
+    assert options.json()["meslektas_alanlari"] == ["Kaygı"]
+    assert options.json()["diller"] == ["Türkçe"]
+
+    filtered = arama(
+        client,
+        sehir="İstanbul",
+        meslektas_alani="Kaygı",
+        uzmanliklar=["Kaygı", "Travma"],
+        ekoller=["BDT", "ACT"],
+    )
+    assert [profile["id"] for profile in filtered["sonuclar"]] == [ids[0]]
+    assert filtered["sonuclar"][0]["eslesme"]["puan"] == 50
+
+    with factory.begin() as db:
+        db.get(Uzman, ids[0]).uzmanlik_iliskilerini_goster = False
+    assert arama(client, meslektas_alani="Kaygı")["sonuclar"] == []
+
+
 @pytest.mark.parametrize(
     "change,criteria",
     [
         ({"sehir": "Ankara"}, {"sehir": "İstanbul"}),
         ({"kitle": ["Çocuk"]}, {"kitle": "Yetişkin"}),
         ({"formatlar": ["Yüz yüze"]}, {"format": "Çevrim içi"}),
+        ({"diller": ["İngilizce"]}, {"dil": "Türkçe"}),
         ({"ucret": 1501}, {"azami_ucret": 1500}),
         ({"deneyim_yili": 4}, {"deneyim": 5}),
         ({"onayli": False}, {}),
@@ -121,8 +235,8 @@ def test_sifir_butce_fiyat_sirasi_ve_turkce_ad(env):
     assert arama(client, sehir="Olmayan Şehir")["toplam"] == 0
 
 
-def test_global_siralama_sayfalama_ve_iki_sorgu(env):
-    """27 profilin tamamı puanlanmalı; üç sayfa tekrarsız ve iki
+def test_global_siralama_sayfalama_ve_uc_sorgu(env):
+    """27 profilin tamamı puanlanmalı; üç sayfa tekrarsız ve üç
     sorguyla dönmelidir.
     """
     client, factory, ids, _ = env
@@ -161,7 +275,7 @@ def test_global_siralama_sayfalama_ve_iki_sorgu(env):
         first = arama(client, uzmanliklar=["Travma"])
     finally:
         event.remove(engine, "before_cursor_execute", capture)
-    assert len(queries) == 2
+    assert len(queries) == 3
     assert first["sonuclar"][0]["id"] == ids[1]
     assert first["toplam"] == 27
     pages = [first] + [

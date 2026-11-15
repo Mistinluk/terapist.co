@@ -55,7 +55,7 @@ ornek: veritabani
 	$(PY) -m app.cli demo
 
 api: veritabani
-	$(UV) run --directory backend --locked --extra dev uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log
+	$(UV) run --directory backend --locked --extra dev uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload --no-access-log
 
 arayuz:
 	$(PNPM) --dir frontend dev --port 5173 --strictPort

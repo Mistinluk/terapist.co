@@ -5,6 +5,11 @@ etiketleriyle karşılaştırır. Üyelik veya danışan hesabı gerektirmez. Va
 `Tercihlerime en uygun` sıralaması en yüksek puanı başa getirir; her kartta
 eşleşen ve profilde belirtilmeyen tercihler gösterilir.
 
+Arama kartı ayrıca doğrulanmış meslektaşların terapisti ilişkilendirdiği
+çalışma alanlarını sayısal ve betimleyici bilgi olarak gösterebilir. Bu sayı
+eşleşme puanına, filtrelemeye veya sonuç sırasına katılmaz; değerlendirme,
+kalite ya da başarı ölçütü değildir.
+
 Bu ilk sürüm deterministik, açıklanabilir bir kural sistemidir. Puan, klinik
 uygunluk, tanı veya tedavi başarısı olasılığı değildir. Ağırlıklar klinik olarak
 doğrulanmış katsayılar değil, değiştirilebilir ürün tercihleridir.
@@ -20,6 +25,7 @@ doğrulanmış katsayılar değil, değiştirilebilir ürün tercihleridir.
 | Uzman adı | Türkçe büyük/küçük harf dönüşümü ile gerçek alt metin araması |
 | Destek alanları | En fazla 5 seçim; eşleşme oranı puana katkı sağlar |
 | Terapi yaklaşımları | En fazla 3 seçim; isteğe bağlı, eşleşme oranı puana katkı sağlar |
+| Meslektaş alan ilişkilendirmeleri | Kartta bilgi olarak gösterilir; puana ve sıralamaya katkısı **0** |
 
 Örneğin bütçesi 1.500 TL olan danışana, bütün destek alanları eşleşse bile
 2.000 TL ücretli profil gösterilmez. Buna karşılık iki destek alanından yalnızca
@@ -58,6 +64,12 @@ kazandırmaz. Unvan, yüksek ücret, fotoğraf, tavsiye sayısı veya seçilmemi
 özellikleri bonus değildir. Profil adındaki meslek/unvan serbest metindir;
 buradan bir yetkinlik çıkarımı yapılmaz.
 
+Meslektaş ilişkilendirme sayısı da bonus değildir. Örneğin daha düşük tercih
+uyumuna sahip bir profili yedi meslektaşı bir alanla ilişkilendirmiş olsa bile,
+daha yüksek specialty/yaklaşım uyumlu profilin önüne geçmez. Konum ve görüşme
+formatı seçimleri kesin filtre olarak kalır. Randevu müsaitliği mevcut profil
+takviminden ayrıca doğrulanır; network verisi müsaitlik yerine kullanılamaz.
+
 Etiketler `/api/secenekler` tarafından verilen değerlerle **tam** karşılaştırılır;
 eş anlamlı sözcük, yazım hatası veya tanı çıkarımı yapılmaz. API'den bilinmeyen
 bir etiket gönderilirse eşleşmez. Profilde olmayan bir alan, uzmanın o konuda
@@ -65,10 +77,12 @@ bir etiket gönderilirse eşleşmez. Profilde olmayan bir alan, uzmanın o konud
 
 ## Sıralama ve sayfalama
 
-`backend/app/eslestirme.py` iki SELECT çalıştırır: filtrelenmiş toplam ve puanlı
-sonuç sayfası. SQL önce bütün uygun adayların puanını hesaplar, sıralar ve sonra
-12 kayıtlık sayfayı alır. Böylece ilk alfabetik sayfanın dışında kalan güçlü bir
-eşleşme de ilk sıraya gelebilir. Her profil için ayrı sorgu yapılmaz.
+`backend/app/eslestirme.py` üç SELECT çalıştırır: filtrelenmiş toplam, puanlı
+sonuç sayfası ve yalnız o sayfadaki profiller için toplu meslektaş alan
+sayımları. SQL önce bütün uygun adayların puanını hesaplar, sıralar ve sonra 12
+kayıtlık sayfayı alır. Böylece ilk alfabetik sayfanın dışında kalan güçlü bir
+eşleşme de ilk sıraya gelebilir. Her profil için ayrı sorgu yapılmaz; network
+sinyali `ORDER BY` ifadesine eklenmez.
 
 PostgreSQL'de JSONB kapsama, SQLite testlerinde ilişkili `json_each` sorgusu
 kullanılır. Bu sürüm tablo veya şema değişikliği gerektirmez. Eşitliklerde
@@ -112,7 +126,10 @@ alanlarına ek olarak şu açıklamayı taşır:
     "eslesen_ekoller": ["BDT"],
     "eksik_alanlar": ["Travma"],
     "eksik_ekoller": []
-  }
+  },
+  "meslektas_alanlari": [
+    {"uzmanlik": "Kaygı", "meslektas_sayisi": 7}
+  ]
 }
 ```
 
@@ -141,8 +158,9 @@ için POST kullanır; GET'teki eski uzmanlık/ekol filtreleri kısmi eşleşme p
 - Senaryolar: `backend/tests/test_matching.py`, `frontend/src/matching.test.ts`.
 
 Testler ağırlıkları, boş/tekrarlı tercihleri, 0 TL sınırını, Türkçe ad aramasını,
-onay/arşiv koşullarını, tüm adayların sayfalamadan önce sıralanmasını, iki sorgu
-sınırını ve aramanın tablo/oturum oluşturmamasını denetler. Aynı senaryolar
+onay/arşiv koşullarını, tüm adayların sayfalamadan önce sıralanmasını, üç sorgu
+sınırını, network sinyalinin sıralamayı değiştirmemesini ve aramanın
+tablo/oturum oluşturmamasını denetler. Aynı senaryolar
 SQLite ve ayrılmış PostgreSQL veritabanında çalışır. Test komutları
 [geliştirici rehberindedir](GELISTIRICI_REHBERI.md).
 
