@@ -2,6 +2,7 @@
 
 import hashlib
 import hmac
+import posixpath
 import time
 from collections import defaultdict
 from datetime import UTC, datetime, timedelta
@@ -24,6 +25,39 @@ from app.models import (
 )
 
 ISTANBUL_TZ = ZoneInfo("Europe/Istanbul")
+
+
+def olcum_yolu(adres: str) -> str | None:
+    """Özel yolları dışlar; kodlama ve nokta parçalarıyla filtre aşılamaz.
+
+    İstemci filtresine güvenilmez. Sorgu ve fragment hiçbir zaman ölçüme
+    yazılmaz; mutlak adresler ve belirsiz çoklu kodlamalar reddedilir.
+    """
+    try:
+        parsed = urlsplit(adres.strip())
+        decoded = unquote(parsed.path, errors="strict")
+        if (
+            not decoded.startswith("/")
+            or decoded.startswith("//")
+            or "%" in decoded
+            or "\\" in decoded
+            or any(ord(char) < 32 for char in decoded)
+            or parsed.netloc
+            or parsed.scheme
+        ):
+            return None
+        path = posixpath.normpath(urlsplit(decoded).path)
+    except (ValueError, UnicodeError):
+        return None
+    private_paths = ("/panel", "/yonetim", "/davet", "/r")
+    lower_path = path.lower()
+    if any(
+        lower_path == item or lower_path.startswith(f"{item}/")
+        for item in private_paths
+    ):
+        return None
+    return path
+
 
 SAYFA_TURU_ETIKETLERI = {
     "ana_sayfa": "Ana sayfa",

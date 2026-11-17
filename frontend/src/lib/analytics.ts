@@ -1,11 +1,6 @@
-/** Site geneli mahremiyet güvenli ölçüm ve GA4 entegrasyon yardımcısı. */
-
-declare global {
-  interface Window {
-    dataLayer?: unknown[];
-    gtag?: (...args: unknown[]) => void;
-  }
-}
+/** Yalnızca aynı kaynak API'sine, özel bağlantıları dışlayarak ölçüm gönderir.
+ * GA4 tarayıcı etiketi yüklenmez: otomatik olaylar bu filtreleri atlayabilir.
+ */
 
 export type AnalitikOlayTuru =
   | "page_view"
@@ -31,10 +26,8 @@ type OturumKaynagi = {
 
 const VISIT_KEY_STORAGE = "terapist_ziyaret_anahtari";
 const ATTRIBUTION_STORAGE = "terapist_oturum_kaynagi";
-const GA_ID_PATTERN = /^G-[A-Z0-9]{4,20}$/;
 
 let configPromise: Promise<AnalitikYapilandirma> | null = null;
-let loadedGaId: string | null = null;
 let internalReferrer = "";
 const recentEvents = new Map<string, number>();
 
@@ -68,43 +61,101 @@ function disAlanMi(url: string): boolean {
   }
 }
 
-export function oturumKaynaginiAl(): OturumKaynagi {
+/** Kodlanmış yolları da denetler; sorgu, parça ve özel yolları dışlar. */
+function olcumYolu(adres: string): string | null {
   try {
+    const decoded = decodeURIComponent(adres.split(/[?#]/)[0]);
+    if (
+      !decoded.startsWith("/") ||
+      decoded.startsWith("//") ||
+      decoded.includes("%") ||
+      decoded.includes("\\")
+    )
+      return null;
+    const url = new URL(decoded, window.location.origin);
+    if (
+      url.origin !== window.location.origin ||
+      /^\/(panel|yonetim|davet|r)(\/|$)/i.test(url.pathname)
+    )
+      return null;
+    return url.pathname;
+  } catch {
+    return null;
+  }
+}
+
+/** Referansın yalnızca kökenini tutar; eski önbellek değerlerine güvenmez. */
+function referansUrlTemizle(adres: unknown): string {
+  if (typeof adres !== "string") return "";
+  try {
+    const url = new URL(adres);
+
+    if (
+      !["http:", "https:"].includes(url.protocol) ||
+      olcumYolu(url.pathname) === null
+    ) {
+      return "";
+    }
+
+    return url.origin;
+  } catch {
+    return "";
+  }
+}
+
+export function oturumKaynaginiAl(): OturumKaynagi {
+  const empty = { referans_url: "", utm_kaynak: "" };
+  try {
+    if (olcumYolu(window.location.pathname) === null) {
+      internalReferrer = "";
+      window.sessionStorage.removeItem(ATTRIBUTION_STORAGE);
+      return empty;
+    }
     const search = new URLSearchParams(window.location.search);
     const utm = (search.get("utm_source") || "").trim().slice(0, 60);
     const rawRef = (document.referrer || "").trim();
-    const externalRef = disAlanMi(rawRef) ? rawRef : "";
+    const externalRef = disAlanMi(rawRef) ? referansUrlTemizle(rawRef) : "";
     const cachedRaw = window.sessionStorage.getItem(ATTRIBUTION_STORAGE);
-    const cached: OturumKaynagi | null = cachedRaw
-      ? (JSON.parse(cachedRaw) as OturumKaynagi)
-      : null;
-
-    if (utm || externalRef) {
-      const next: OturumKaynagi = {
-        referans_url: externalRef || cached?.referans_url || "",
-        utm_kaynak: utm || cached?.utm_kaynak || "",
-      };
-      window.sessionStorage.setItem(ATTRIBUTION_STORAGE, JSON.stringify(next));
-      return next;
+    let cached: Partial<OturumKaynagi> | null = null;
+    try {
+      const parsed: unknown = cachedRaw ? JSON.parse(cachedRaw) : null;
+      if (parsed && typeof parsed === "object") cached = parsed;
+    } catch {
+      // Bozuk eski kayıt güncel, temiz değerle değiştirilir.
     }
+    const next: OturumKaynagi = {
+      referans_url: externalRef || referansUrlTemizle(cached?.referans_url),
+      utm_kaynak:
+        utm ||
+        (typeof cached?.utm_kaynak === "string"
+          ? cached.utm_kaynak.trim().slice(0, 60)
+          : ""),
+    };
+    // Önceki sürümün sakladığı tam URL'leri de temizle.
+    window.sessionStorage.setItem(ATTRIBUTION_STORAGE, JSON.stringify(next));
 
-    if (cached && (cached.referans_url || cached.utm_kaynak)) {
-      return cached;
-    }
+    if (next.referans_url || next.utm_kaynak) return next;
 
     if (internalReferrer) {
-      return { referans_url: internalReferrer, utm_kaynak: "" };
+      return {
+        referans_url: referansUrlTemizle(internalReferrer),
+        utm_kaynak: "",
+      };
     }
   } catch {
     // sessionStorage kısıtlı ortamlarda sessizce devam edilir.
   }
-  return { referans_url: "", utm_kaynak: "" };
+  return empty;
 }
 
 export function sonIcerikYolunuAyarla(yol: string) {
-  if (yol && !yol.startsWith("/panel") && !yol.startsWith("/yonetim")) {
-    internalReferrer = `${window.location.origin}${yol}`;
+  // Gizli bağlantılar sonraki olaylara referans olarak taşınmaz.
+  if (!yol || olcumYolu(yol) === null) {
+    internalReferrer = "";
+    return;
   }
+
+  internalReferrer = window.location.origin;
 }
 
 function cihazTuru(): "masaustu" | "mobil" | "tablet" | "bilinmiyor" {
@@ -124,34 +175,6 @@ function saatDilimi(): string {
   }
 }
 
-function gtagYukle(gaId: string) {
-  if (typeof document === "undefined" || !GA_ID_PATTERN.test(gaId)) return;
-  if (loadedGaId === gaId) return;
-
-  window.dataLayer = window.dataLayer || [];
-  if (typeof window.gtag !== "function") {
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer?.push(args);
-    };
-  }
-
-  const scriptId = "terapist-ga4-script";
-  if (!document.getElementById(scriptId)) {
-    const script = document.createElement("script");
-    script.id = scriptId;
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
-    document.head.append(script);
-    window.gtag("js", new Date());
-  }
-
-  window.gtag("config", gaId, {
-    send_page_view: false,
-    anonymize_ip: true,
-  });
-  loadedGaId = gaId;
-}
-
 export function analitikYapilandirmaGetir(
   force = false,
 ): Promise<AnalitikYapilandirma> {
@@ -163,15 +186,9 @@ export function analitikYapilandirmaGetir(
       .then((res) =>
         res.ok
           ? (res.json() as Promise<AnalitikYapilandirma>)
-          : { olcum_etkin: true, ga_olcum_kimligi: null },
+          : { olcum_etkin: false, ga_olcum_kimligi: null },
       )
-      .then((cfg) => {
-        if (cfg.olcum_etkin && cfg.ga_olcum_kimligi) {
-          gtagYukle(cfg.ga_olcum_kimligi);
-        }
-        return cfg;
-      })
-      .catch(() => ({ olcum_etkin: true, ga_olcum_kimligi: null }));
+      .catch(() => ({ olcum_etkin: false, ga_olcum_kimligi: null }));
   }
   return configPromise;
 }
@@ -183,12 +200,19 @@ async function olcumGonder(
     uzman_id?: string;
     uzman_kullanici_adi?: string;
     hedef_kaynak_id?: string;
-    ga_parametre?: Record<string, unknown>;
   } = {},
 ) {
   if (typeof window === "undefined") return;
-  const yol = detay.sayfa_yolu || window.location.pathname || "/";
-  if (yol.startsWith("/panel") || yol.startsWith("/yonetim")) return;
+  const currentPath = window.location.pathname;
+  const yol = olcumYolu(detay.sayfa_yolu || currentPath || "/");
+  if (yol === null || olcumYolu(currentPath) === null) {
+    oturumKaynaginiAl();
+    return;
+  }
+
+  const cfg = await analitikYapilandirmaGetir();
+  // Bekleyen olay başka sayfaya geçildikten sonra gönderilmez.
+  if (!cfg.olcum_etkin || window.location.pathname !== currentPath) return;
 
   if (olay_turu === "page_view" || olay_turu === "profile_view") {
     const dedupKey = `${olay_turu}:${yol}:${detay.uzman_id || ""}`;
@@ -196,25 +220,6 @@ async function olcumGonder(
     const prev = recentEvents.get(dedupKey);
     if (prev && now - prev < 2000) return;
     recentEvents.set(dedupKey, now);
-  }
-
-  const cfg = await analitikYapilandirmaGetir();
-  if (!cfg.olcum_etkin) return;
-
-  if (cfg.ga_olcum_kimligi && typeof window.gtag === "function") {
-    if (olay_turu === "page_view" || olay_turu === "profile_view") {
-      window.gtag("event", "page_view", {
-        page_path: yol,
-        page_title: document.title,
-        ...detay.ga_parametre,
-      });
-    }
-    if (olay_turu !== "page_view") {
-      window.gtag("event", olay_turu, {
-        page_path: yol,
-        ...detay.ga_parametre,
-      });
-    }
   }
 
   const kaynak = oturumKaynaginiAl();
@@ -229,7 +234,7 @@ async function olcumGonder(
         sayfa_yolu: yol.slice(0, 200),
         uzman_id: detay.uzman_id,
         uzman_kullanici_adi: detay.uzman_kullanici_adi,
-        referans_url: kaynak.referans_url.slice(0, 500),
+        referans_url: referansUrlTemizle(kaynak.referans_url),
         utm_kaynak: kaynak.utm_kaynak.slice(0, 60),
         ziyaret_anahtari: ziyaretAnahtariAl(),
         cihaz: cihazTuru(),
@@ -243,8 +248,8 @@ async function olcumGonder(
 }
 
 export function sayfaGoruntulemeBildir(yol: string) {
-  void olcumGonder("page_view", { sayfa_yolu: yol }).finally(() => {
-    sonIcerikYolunuAyarla(yol);
+  return olcumGonder("page_view", { sayfa_yolu: yol }).finally(() => {
+    sonIcerikYolunuAyarla(window.location.pathname);
   });
 }
 
@@ -254,16 +259,12 @@ export function profilGoruntulemeBildir(uzman: {
   kullanici_adi: string;
 }) {
   const yol = `/${uzman.kullanici_adi}`;
-  void olcumGonder("profile_view", {
+  return olcumGonder("profile_view", {
     sayfa_yolu: yol,
     uzman_id: uzman.id,
     uzman_kullanici_adi: uzman.kullanici_adi,
-    ga_parametre: {
-      therapist_username: uzman.kullanici_adi,
-      therapist_name: uzman.ad,
-    },
   }).finally(() => {
-    sonIcerikYolunuAyarla(yol);
+    sonIcerikYolunuAyarla(window.location.pathname);
   });
 }
 
@@ -274,8 +275,7 @@ export function olayBildir(
     uzman_id?: string;
     uzman_kullanici_adi?: string;
     hedef_kaynak_id?: string;
-    ga_parametre?: Record<string, unknown>;
   } = {},
 ) {
-  void olcumGonder(olay, detay);
+  return olcumGonder(olay, detay);
 }

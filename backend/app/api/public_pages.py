@@ -185,7 +185,7 @@ def _profile_html(profile: Uzman) -> str:
     return f"""<!doctype html><html lang="tr"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="referrer" content="strict-origin">
 <title>{name} · {title} | terapist.co</title>
 <meta name="description" content="{escape(description, quote=True)}">
 <link rel="canonical" href="{canonical}">

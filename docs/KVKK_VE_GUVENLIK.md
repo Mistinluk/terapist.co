@@ -31,6 +31,9 @@ erişebilen sistem yöneticisi şifreli alanları çözebilir.
 
 ## Üretim öncesinde tamamlanması gerekenler
 
+Site içi ölçümün veri akışı, özel bağlantı filtreleri ve GA4 toplama sınırı
+[Analitik güvenliği](ANALITIK_GUVENLIGI.md) belgesinde açıklanır.
+
 1. Veri sorumlusunu ve veri işleyenleri belirleyin; işlenen her veri için amaç,
    hukuki şart, alıcılar, erişim rolleri ve saklama süresini kayda geçirin. Sağlık
    verileri için sıradan meşru menfaat varsayımıyla hareket edilmemelidir. 2024'te

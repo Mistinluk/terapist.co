@@ -148,12 +148,9 @@ async def guvenlik(request: Request, call_next):
     )
     privacy_sensitive_document = profile_document
     content_security_policy = (
-        "default-src 'self'; script-src 'self' "
-        "https://www.googletagmanager.com; style-src 'self'"
+        "default-src 'self'; script-src 'self'; style-src 'self'"
         + (" 'unsafe-inline'" if settings.ortam != "uretim" else "")
-        + "; img-src 'self' data: https:; connect-src 'self' "
-        "https://www.google-analytics.com https://*.google-analytics.com "
-        "https://*.analytics.google.com https://www.googletagmanager.com"
+        + "; img-src 'self' data: https:; connect-src 'self'"
         + (" ws: wss:" if settings.ortam != "uretim" else "")
         + "; frame-src 'self' https://www.youtube-nocookie.com "
         "https://www.youtube.com https://open.spotify.com; "
@@ -179,7 +176,7 @@ async def guvenlik(request: Request, call_next):
             ),
             "X-Content-Type-Options": "nosniff",
             "X-Frame-Options": "DENY",
-            "Referrer-Policy": "strict-origin-when-cross-origin",
+            "Referrer-Policy": "strict-origin",
             "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
             "Content-Security-Policy": content_security_policy,
         }

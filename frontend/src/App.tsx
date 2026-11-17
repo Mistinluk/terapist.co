@@ -33,10 +33,7 @@ import { NotificationBell } from "./components/NotificationBell";
 import { Referral } from "./pages/Referral";
 import { SeoDetailPage, SeoHubPage } from "./pages/SeoLanding";
 import { SEO_FOOTER_GROUPS } from "./data/seoPages";
-import {
-  analitikYapilandirmaGetir,
-  sayfaGoruntulemeBildir,
-} from "./lib/analytics";
+import { sayfaGoruntulemeBildir } from "./lib/analytics";
 
 const fixedPublicRoutes = new Set([
   "/",
@@ -88,7 +85,6 @@ export default function App() {
   const navigate = useNavigate();
   const whiteLabel = whiteLabelPath === location.pathname;
   useEffect(() => {
-    void analitikYapilandirmaGetir();
     const onWhiteLabel = (event: Event) => {
       const detail = (
         event as CustomEvent<{ hidden?: boolean; pathname?: string }>

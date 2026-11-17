@@ -16,6 +16,7 @@ from app.analytics_service import (
     istanbul_gunu,
     kaynak_siniflandir,
     konum_cozumle,
+    olcum_yolu,
     sayfa_turu_belirle,
     uzman_trafik_raporu,
     yonetim_site_ici_rapor,
@@ -130,9 +131,8 @@ def analitik_olcum(body: TrafikOlcumGirdi, request: Request, db: Db):
     """IP saklamadan mahremiyet güvenli trafik ve kaynak olayı kaydeder."""
     hiz_siniri.kontrol("analitik:" + istemci(request), 120, 60)
 
-    clean_path = body.sayfa_yolu.split("?")[0].strip() or "/"
-    # Panel ve yönetim çalışma alanı gezintileri genel site trafiğine karışmaz.
-    if clean_path.startswith(("/panel", "/yonetim")):
+    clean_path = olcum_yolu(body.sayfa_yolu)
+    if clean_path is None:
         return Response(status_code=204)
 
     ayar = db.get(AnalitikAyari, "varsayilan")

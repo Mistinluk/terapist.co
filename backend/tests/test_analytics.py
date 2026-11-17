@@ -1,5 +1,6 @@
 """Site ölçümü, kaynak ayrıştırma ve Google Analytics (GA4) testleri."""
 
+import pytest
 from sqlalchemy import select
 
 from app import google_analytics
@@ -346,7 +347,8 @@ def test_ga4_ayarlari_hizmet_hesabi_ve_raporlama(env, monkeypatch):
     assert after.json()["ga4_durumu"]["baglanti_durumu"] == "bagli_degil"
 
 
-def test_kisa_profil_belgesi_ga4_csp_ve_referrer_basliklari(env):
+def test_kisa_profil_belgesi_izleyici_ve_referrer_basliklari(env):
+    """Profil belgesi Google etiketine izin vermez, URL yolunu paylaşmaz."""
     client, factory, ids, _ = env
     with factory() as db:
         slug = db.get(Uzman, ids[0]).kullanici_adi
@@ -354,7 +356,64 @@ def test_kisa_profil_belgesi_ga4_csp_ve_referrer_basliklari(env):
     res = client.get(f"/{slug}")
     assert res.status_code == 200
     csp = res.headers["content-security-policy"]
-    assert "https://www.googletagmanager.com" in csp
-    assert "https://www.google-analytics.com" in csp
-    assert res.headers["referrer-policy"] == "strict-origin-when-cross-origin"
-    assert 'content="strict-origin-when-cross-origin"' in res.text
+    assert "googletagmanager.com" not in csp
+    assert "google-analytics.com" not in csp
+    assert res.headers["referrer-policy"] == "strict-origin"
+    assert 'content="strict-origin"' in res.text
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        "/davet",
+        "/davet/SENTINEL",
+        "/DAVET/SENTINEL",
+        "/R/SENTINEL",
+        "/r/SENTINEL",
+        "/panel/onizleme",
+        "/yonetim",
+        "/%64avet/SENTINEL",
+        "/r%2FSENTINEL",
+        "/x/../davet/SENTINEL",
+        "/davet?token=SENTINEL",
+        "/davet#SENTINEL",
+        "/%2564avet/SENTINEL",
+        "/%invalid",
+        "https://other.test/davet/SENTINEL",
+        "//other.test/SENTINEL",
+    ],
+)
+def test_ozel_olcum_yollari_veritabanina_yazilmaz(env, path):
+    """İstemci filtresi atlanıp doğrudan POST yapılsa bile token saklanmaz."""
+    client, factory, _, _ = env
+    response = client.post(
+        "/api/analitik/olcum",
+        json={
+            "olay_turu": "page_view",
+            "sayfa_yolu": path,
+            "ziyaret_anahtari": "test-ziyaretci-001",
+        },
+    )
+    assert response.status_code == 204
+    with factory() as db:
+        assert db.scalars(select(TrafikOlayi)).all() == []
+
+
+def test_acik_sayfa_sorgu_fragment_ve_referans_tokeni_saklamaz(env):
+    """Geçerli kamu sayfası ölçülür; URL sırları kayda taşınmaz."""
+    client, factory, _, _ = env
+    response = client.post(
+        "/api/analitik/olcum",
+        json={
+            "olay_turu": "page_view",
+            "sayfa_yolu": "/davetci?token=SENTINEL#SENTINEL",
+            "referans_url": "https://source.test/davet/SENTINEL?q=SENTINEL",
+            "ziyaret_anahtari": "test-ziyaretci-001",
+        },
+    )
+    assert response.status_code == 204
+    with factory() as db:
+        event = db.scalars(select(TrafikOlayi)).one()
+        assert event.sayfa_yolu == "/davetci"
+        assert event.kaynak_alani == "source.test"
+        assert "SENTINEL" not in str(vars(event))

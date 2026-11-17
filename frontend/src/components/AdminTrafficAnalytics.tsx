@@ -95,9 +95,7 @@ export function AdminTrafficAnalytics({
       });
       await analitikYapilandirmaGetir(true);
       setServiceAccountJson("");
-      setMessage(
-        "Analitik ve ölçüm ayarları kaydedildi. GA4 ölçüm kodu site genelinde etkinleşti.",
-      );
+      setMessage("Site içi ölçüm ve GA4 rapor bağlantısı ayarları kaydedildi.");
       report.reload();
     } catch (error) {
       setErrorMsg((error as Error).message);
@@ -228,7 +226,7 @@ export function AdminTrafficAnalytics({
             <Settings2 size={15} aria-hidden="true" />
             {ga4Status?.olcum_kimligi
               ? `GA4: ${ga4Status.olcum_kimligi}`
-              : "GA4 ölçüm kodu & bağlantı"}
+              : "GA4 rapor bağlantısı"}
           </button>
         </div>
       </div>
@@ -259,7 +257,7 @@ export function AdminTrafficAnalytics({
             <div>
               <span className="eyebrow">GOOGLE ANALYTICS 4 (GA4) AYARLARI</span>
               <h3 id="ga4-config-heading">
-                Site geneli ölçüm kodu ve Google Analytics bağlantısı
+                Site içi ölçüm ve Google Analytics rapor bağlantısı
               </h3>
             </div>
             {isGaConnected && (
@@ -273,12 +271,10 @@ export function AdminTrafficAnalytics({
           </div>
 
           <p className="muted small">
-            Ölçüm kimliğini (<code>G-XXXXXXXXXX</code>) kaydettiğiniz anda tüm
-            sitede Google Analytics <code>gtag.js</code> izleme kodu etkinleşir.
-            Panelde canlı GA4 raporu görmek için GA4 Mülk Kimliğini (Property
-            ID) girip Google hesabınızı bağlayın veya Hizmet Hesabı JSON
-            ekleyin. Site içi mahremiyet odaklı ölçüm bu arada da tüm
-            ziyaretleri ve yönlendiren adresleri kesintisiz kaydeder.
+            Site içi ölçüm yalnızca herkese açık sayfalarda çalışır. Özel
+            bağlantıları korumak için tarayıcıdan Google Analytics'e yeni olay
+            gönderilmez. Mevcut GA4 raporlarını görüntülemek için Mülk Kimliğini
+            girip Google hesabınızı veya hizmet hesabınızı bağlayın.
           </p>
 
           <form className="analytics-config-form" onSubmit={saveSettings}>
@@ -292,7 +288,7 @@ export function AdminTrafficAnalytics({
                   onChange={(e) => setMeasurementId(e.target.value)}
                 />
                 <span className="muted small">
-                  Siteye eklenecek <code>gtag.js</code> izleme kodu kimliği.
+                  Kayıtlı GA4 kimliğidir; tarayıcıda izlemeyi etkinleştirmez.
                 </span>
               </label>
 
@@ -318,7 +314,7 @@ export function AdminTrafficAnalytics({
                 onChange={(e) => setTrackingEnabled(e.target.checked)}
               />
               <span>
-                Site geneli trafik ve Google Analytics ölçümünü etkin tut
+                Herkese açık sayfalarda site içi trafik ölçümünü etkin tut
               </span>
             </label>
 
