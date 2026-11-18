@@ -21,6 +21,8 @@ beforeAll(async () => {
   const apiPort = (api.address() as AddressInfo).port;
   vite = await createServer({
     logLevel: "silent",
+    // Yalnızca HTTP yönlendirmeleri sınanır; React bağımlılıkları derlenmez.
+    optimizeDeps: { noDiscovery: true, include: [] },
     plugins: [
       {
         name: "sinama-sayfasi",
@@ -40,12 +42,23 @@ beforeAll(async () => {
       port: 0,
       strictPort: false,
       watch: null,
+      preTransformRequests: false,
       proxy: { "/api": `http://127.0.0.1:${apiPort}` },
     },
   });
   await vite.listen();
   port = (vite.httpServer!.address() as AddressInfo).port;
 });
+
+it.each(["ozellikler", "randevularim"])(
+  "%s sayfasını profil API'sine yönlendirmez",
+  async (path) => {
+    const response = await fetch(`http://127.0.0.1:${port}/${path}`);
+    expect(response.status).toBe(200);
+    expect(response.headers.get("content-type")).toContain("text/html");
+    expect(await response.text()).toContain('id="root"');
+  },
+);
 
 afterAll(async () => {
   await vite?.close();

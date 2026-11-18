@@ -9,7 +9,9 @@ FROM python:3.12-slim
 ENV PYTHONUNBUFFERED=1 PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1
 ENV PATH="/app/.venv/bin:$PATH"
 WORKDIR /app
-RUN useradd --system --uid 10001 --create-home terapist
+RUN useradd --system --uid 10001 --create-home terapist \
+    && mkdir -p /app/uploads \
+    && chown terapist:terapist /app/uploads
 COPY --from=build /app/.venv /app/.venv
 COPY app ./app
 COPY migrations ./migrations

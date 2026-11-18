@@ -1,9 +1,9 @@
 """Google Takvim OAuth istemcisi ve dolu/müsait zaman eşitlemesi.
 
-Bağlantı yalnız iki kapsam ister: FreeBusy (zaman aralıkları) ve takvim
-listesi (uzmanın hangi takvimlerin kontrol edileceğini seçebilmesi). Etkinlik
-başlığı, açıklaması, konumu veya katılımcıları okunmaz; Google bu kapsamlarla
-bu alanları zaten döndürmez. HTTP için standart kütüphane kullanılır; testler
+Bağlantı doluluk ve liste izinlerine ek olarak uzmanın kendi takvimine
+randevu yazma izni ister. Uygulama kişisel etkinlik ayrıntılarını okumaz;
+yalnız kendi oluşturduğu etkinlikleri kimlikleriyle günceller. HTTP için
+standart kütüphane kullanılır; testler
 `google_istemcisi` nesnesini taklit eder.
 
 Herkese açık saat listesi her istekte Google'a gitmez: son deneme verilen
@@ -41,7 +41,14 @@ KAPSAM_ETKINLIK_DOLULUK = (
     "https://www.googleapis.com/auth/calendar.events.freebusy"
 )
 KAPSAM_LISTE = "https://www.googleapis.com/auth/calendar.calendarlist.readonly"
-KAPSAMLAR = ("openid", "email", KAPSAM_ETKINLIK_DOLULUK, KAPSAM_LISTE)
+KAPSAM_YAZMA = "https://www.googleapis.com/auth/calendar.events.owned"
+KAPSAMLAR = (
+    "openid",
+    "email",
+    KAPSAM_ETKINLIK_DOLULUK,
+    KAPSAM_LISTE,
+    KAPSAM_YAZMA,
+)
 # Herkese açık saat listesi bugün dahil 15 günü kapsar.
 ESITLEME_GUNU = 16
 AZAMI_TAKVIM = 20
@@ -57,7 +64,7 @@ HATA_MESAJLARI = {
         "Google Takvim izni kaldırılmış. Bağlantıyı yeniden kurun."
     ),
     "izin_eksik": (
-        "Takvim izinleri verilmedi. Bağlarken iki takvim iznini de onaylayın."
+        "Takvim izni eksik. Google Takvim bağlantısını yeniden kurun."
     ),
     "baglanti": "Google Takvim'e şu anda ulaşılamıyor. Biraz sonra deneyin.",
     "gecersiz_yanit": "Google Takvim yanıtı okunamadı. Biraz sonra deneyin.",
@@ -70,9 +77,10 @@ HATA_MESAJLARI = {
 class GoogleHatasi(Exception):
     """Kullanıcıya gösterilebilir hata kodu; ham Google yanıtı taşımaz."""
 
-    def __init__(self, kod: str):
+    def __init__(self, kod: str, status: int | None = None):
         super().__init__(kod)
         self.kod = kod
+        self.status = status
 
 
 def _zaman(value: str) -> int:
@@ -130,6 +138,7 @@ class GoogleIstemcisi:
         form: dict | None = None,
         govde: dict | None = None,
         erisim: str | None = None,
+        yontem: str | None = None,
     ) -> dict:
         headers = {"Accept": "application/json"}
         data = None
@@ -141,7 +150,9 @@ class GoogleIstemcisi:
             headers["Content-Type"] = "application/json"
         if erisim:
             headers["Authorization"] = f"Bearer {erisim}"
-        request = urllib.request.Request(url, data=data, headers=headers)
+        request = urllib.request.Request(
+            url, data=data, headers=headers, method=yontem
+        )
         try:
             with urllib.request.urlopen(
                 request, timeout=ZAMAN_ASIMI, context=_ssl_baglami()
@@ -158,10 +169,10 @@ class GoogleIstemcisi:
             else:
                 reason = str(error or "")
             if reason in {"invalid_grant", "unauthorized_client"}:
-                raise GoogleHatasi("yetki_kaldirildi") from None
+                raise GoogleHatasi("yetki_kaldirildi", exc.code) from None
             if exc.code == 403:
-                raise GoogleHatasi("izin_eksik") from None
-            raise GoogleHatasi("baglanti") from None
+                raise GoogleHatasi("izin_eksik", exc.code) from None
+            raise GoogleHatasi("baglanti", exc.code) from None
         except (urllib.error.URLError, TimeoutError, OSError):
             raise GoogleHatasi("baglanti") from None
         try:
@@ -186,6 +197,40 @@ class GoogleIstemcisi:
             }
         )
         return f"{YETKI_ADRESI}?{query}"
+
+    def etkinlik_yaz(self, erisim: str, etkinlik_id: str, govde: dict) -> None:
+        """Aynı kimliğe tekrar yazmak Google'da ikinci kayıt oluşturmaz."""
+        base = f"{API}/calendars/primary/events"
+        url = f"{base}/{etkinlik_id}?sendUpdates=none"
+        try:
+            self._istek(url, erisim=erisim, govde=govde, yontem="PUT")
+            return
+        except GoogleHatasi as exc:
+            if exc.status != 404:
+                raise
+        try:
+            self._istek(
+                f"{base}?sendUpdates=none",
+                erisim=erisim,
+                govde={**govde, "id": etkinlik_id},
+            )
+        except GoogleHatasi as exc:
+            if exc.status != 409:
+                raise
+            self._istek(url, erisim=erisim, govde=govde, yontem="PUT")
+
+    def etkinlik_sil(self, erisim: str, etkinlik_id: str) -> None:
+        """Tekrarlanan silme veya hiç oluşmamış kayıt başarı sayılır."""
+        try:
+            self._istek(
+                f"{API}/calendars/primary/events/{etkinlik_id}"
+                "?sendUpdates=none",
+                erisim=erisim,
+                yontem="DELETE",
+            )
+        except GoogleHatasi as exc:
+            if exc.status not in {404, 410}:
+                raise
 
     def kod_degistir(self, code: str, verifier: str) -> dict:
         settings = get_settings()

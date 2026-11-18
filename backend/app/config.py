@@ -15,7 +15,10 @@ class Settings(BaseSettings):
     )
 
     ortam: Literal["gelistirme", "test", "uretim"] = "gelistirme"
-    veritabani_url: str = "sqlite:///./gelistirme.db"
+    # Docker geliştirmede de derlenmiş React dosyalarını sunar.
+    arayuz_sunumu: Literal["vite", "derleme"] = "vite"
+    # Açıkça yapılandırılır; eksik ayar sessizce SQLite'a düşmez.
+    veritabani_url: str
     sifreleme_anahtari: SecretStr
     hiz_siniri_anahtari: SecretStr
     redis_url: str | None = None

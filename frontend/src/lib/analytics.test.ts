@@ -64,6 +64,8 @@ describe("Özel bağlantıların ölçümden dışlanması", () => {
     "/davet#SENTINEL",
     "/%2564avet/SENTINEL",
     "/%invalid",
+    "/randevularim",
+    "/RANDEVULARIM?kimlik=SENTINEL",
     "https://other.test/davet/SENTINEL",
     "//other.test/SENTINEL",
   ])("%s olayını API'ye göndermez", async (path) => {

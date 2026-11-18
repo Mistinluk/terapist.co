@@ -21,6 +21,7 @@ from app.models import (
     WebsiteRozetiOlayi,
     YonlendirmeHedefi,
     YonlendirmeOlayi,
+    baglanti_cifti,
 )
 from app.security import parolalar, sifrele
 from tests.conftest import PAROLA, login
@@ -49,6 +50,7 @@ def test_yonetici_yetki_siniri(env):
 
 
 def test_analitik_ve_uzman_detay_ozeti(env):
+    """Yönetici özetleri sayıları gösterir, gizli hesap verilerini gizler."""
     client, factory, ids, _ = env
     now = int(time.time())
     with factory() as db:
@@ -84,7 +86,8 @@ def test_analitik_ve_uzman_detay_ozeti(env):
                 olusturma=now,
             )
         )
-        cift = "::".join(sorted([ids[0], ids[1]]))
+        # Uygulamadaki 73 karakterlik anahtar PostgreSQL'de de geçerlidir.
+        cift = baglanti_cifti(ids[0], ids[1])
         db.add(
             ProfesyonelBaglanti(
                 isteyen_uzman_id=ids[0],

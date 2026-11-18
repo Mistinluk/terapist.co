@@ -120,6 +120,24 @@ def test_dogrulanmamis_profil_gizlenir_ve_sitemapten_cikar(env):
     assert "/ornek-meslektas" not in sitemap.text
 
 
+def test_docker_gelistirme_profili_derlenmis_arayuzu_kullanir(
+    env, monkeypatch
+):
+    """Geliştirme güvenlik ayarları derlenmiş React seçimini engellemez."""
+    client, factory, ids, _ = env
+    _prepare_profile(factory, ids)
+    monkeypatch.setattr(public_pages.settings, "ortam", "gelistirme")
+    monkeypatch.setattr(public_pages.settings, "arayuz_sunumu", "derleme")
+
+    response = client.get("/ornek-uzman")
+
+    assert response.status_code == 200
+    assert 'href="/assets/app.css"' in response.text
+    assert 'src="/assets/app.js"' in response.text
+    assert "/@vite/client" not in response.text
+    assert "/src/main.tsx" not in response.text
+
+
 def test_eski_stil_kaldirilir_ve_robots_korunur(env):
     client, _, _, _ = env
     assert client.get("/passport-assets/passport.css").status_code == 404
@@ -151,8 +169,13 @@ def test_profil_fotografi_yoksa_varsayilan_og_gorseli_kullanilir(env):
         '<meta property="og:image" content="http://localhost:5173/brand/terapistco-og.png">'
         in response.text
     )
-    assert '<meta name="twitter:card" content="summary_large_image">' in response.text
-    assert '<meta property="og:site_name" content="terapist.co">' in response.text
+    assert (
+        '<meta name="twitter:card" content="summary_large_image">'
+        in response.text
+    )
+    assert (
+        '<meta property="og:site_name" content="terapist.co">' in response.text
+    )
     assert '<meta property="og:locale" content="tr_TR">' in response.text
     ld_match = search(
         r'<script type="application/ld\+json">([^<]+)</script>',

@@ -24,6 +24,7 @@ from tests.conftest import login
 KAPSAM = (
     "openid email https://www.googleapis.com/auth/calendar.events.freebusy "
     "https://www.googleapis.com/auth/calendar.calendarlist.readonly"
+    " https://www.googleapis.com/auth/calendar.events.owned"
 )
 TAKVIMLER = [
     {"id": "uzman@example.com", "ad": "Kişisel", "birincil": True},
@@ -49,6 +50,17 @@ class SahteGoogle:
         self.watches: list[dict] = []
         self.stopped: list[tuple[str, str]] = []
         self.error: str | None = None
+        self.events: dict[str, dict] = {}
+        self.write_error: str | None = None
+
+    def etkinlik_yaz(self, erisim, etkinlik_id, govde):
+        self.events[etkinlik_id] = govde
+        if self.write_error:
+            # Google yazdı fakat yanıt kayboldu: retry aynı kaydı bulmalı.
+            raise GoogleHatasi(self.write_error)
+
+    def etkinlik_sil(self, erisim, etkinlik_id):
+        self.events.pop(etkinlik_id, None)
 
     def kod_degistir(self, code, verifier):
         assert code == "yetki-kodu"
@@ -113,6 +125,8 @@ def google(monkeypatch):
         "dolu_zamanlar",
         "izle",
         "izlemeyi_durdur",
+        "etkinlik_yaz",
+        "etkinlik_sil",
     ]:
         monkeypatch.setattr(google_istemcisi, name, getattr(fake, name))
     return fake
@@ -166,6 +180,9 @@ def test_yapilandirma_yoksa_baglanti_kapali(env, monkeypatch):
         "webhook_etkin": False,
         "webhook_kanal_sayisi": 0,
         "webhook_son_bildirim": None,
+        "randevu_yazma_izni": False,
+        "bekleyen_aktarim": 0,
+        "hatali_aktarim": 0,
     }
     response = client.post("/api/uzman/google-takvim/baglanti", json={})
     assert response.status_code == 503

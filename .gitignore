@@ -34,6 +34,7 @@ backend/uploads/
 playwright-report/
 test-results/
 .agents/
+.idea/
 .DS_Store
 **/.DS_Store
 /legacy/URL-DB Yedek.md

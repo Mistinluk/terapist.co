@@ -10,14 +10,15 @@ DOCKER ?= docker
 PY = $(UV) run --directory backend --locked --extra dev python
 COMPOSE = $(DOCKER) compose -p terapist-docker -f deploy/compose.yml
 
-.PHONY: yardim kurulum bagimliliklar ortam veritabani ornek api arayuz \
-	yonetici test kontrol derle docker-baslat docker-ornek docker-durdur \
+.PHONY: yardim kurulum bagimliliklar ortam postgres veritabani ornek api arayuz \
+	yonetici test kontrol derle docker-baslat docker-ornek docker-durdur docker-kontrol \
 	baslat durdur durum docker-ortam docker-yonetici docker-eslestirme docker-adresler
 
 yardim:
 	@echo "make baslat          - Tum uygulamayi Docker ile baslat: http://localhost:8080"
 	@echo "make durdur          - Docker uygulamasini durdur; verileri koru"
 	@echo "make durum           - Docker servislerinin durumunu goster"
+	@echo "make docker-kontrol  - Calisan Docker uygulamasini uctan uca dogrula"
 	@echo "make docker-eslestirme - 1000 kurgusal uzman ve 5 test hesabi ekle"
 	@echo "make docker-adresler  - Mevcut kurgusal profillerin ornek adreslerini tamamla"
 	@echo "make kurulum         - Bagimliliklar, yerel ayarlar ve veritabani"
@@ -45,9 +46,13 @@ bagimliliklar:
 ortam: backend/.env
 
 backend/.env:
-	$(PY) scripts/yerel_ayarlar.py
+	$(MAKE) docker-ortam
 
-veritabani: ortam
+# Doğrudan Python çalıştırılırken de aynı PostgreSQL birimi kullanılır.
+postgres: ortam
+	$(COMPOSE) up -d --wait postgres
+
+veritabani: postgres
 	$(UV) run --directory backend --locked --extra dev alembic upgrade head
 
 # Uygulamanın mevcut güvenlik kontrolü dolu tabloya örnek veri eklemez.
@@ -85,6 +90,10 @@ durum:
 
 # Docker akisi bilgisayarda Python, uv, Node.js veya pnpm gerektirmez.
 docker-ortam:
+	@if [ ! -f backend/.env ] && $(DOCKER) volume inspect terapist-docker_veriler >/dev/null 2>&1; then \
+		echo "Mevcut veritabani bulundu. Once bu veritabanina ait backend/.env dosyasini geri yukleyin; yeni anahtar uretilmedi."; \
+		exit 1; \
+	fi
 	$(DOCKER) run --rm --mount "type=bind,source=$(CURDIR)/backend,target=/calisma" -w /calisma python:3.12-slim python scripts/yerel_ayarlar.py
 
 docker-baslat: docker-ortam
@@ -95,6 +104,12 @@ docker-baslat: docker-ortam
 
 docker-ornek:
 	$(COMPOSE) run --rm api python -m app.cli demo
+
+# Çalışan uygulamada yalnızca kurgusal, geçici bir görsel oluşturulur.
+docker-kontrol:
+	$(COMPOSE) exec -T web nginx -t
+	$(COMPOSE) exec -T api alembic check
+	$(COMPOSE) exec -T api python scripts/docker_kontrol.py
 
 # Yalnızca tanınan demo profillerinin boş/eski yer tutucu adresleri doldurulur.
 docker-adresler:

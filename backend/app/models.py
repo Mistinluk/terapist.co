@@ -131,9 +131,7 @@ class Uzman(Base):
     buton_stili: Mapped[str] = mapped_column(String(16), default="yuvarlak")
     yazi_tipi: Mapped[str] = mapped_column(String(24), default="modern_sans")
     yuzey_stili: Mapped[str] = mapped_column(String(24), default="temiz")
-    arka_plan_gorseli_url: Mapped[str] = mapped_column(
-        String(500), default=""
-    )
+    arka_plan_gorseli_url: Mapped[str] = mapped_column(String(500), default="")
     terapistco_markasi_gizli: Mapped[bool] = mapped_column(default=False)
     # İlişkili kurucu numarası aynı Uzman sorgusundaki skaler alt sorguyla
     # okunur; dizin/eşleştirme sırasına veya sorgu sayısına etki etmez.
@@ -151,7 +149,7 @@ class TerapistDogrulama(Base):
 
     id: Mapped[str] = mapped_column(primary_key=True, default=yeni_id)
     uzman_id: Mapped[str] = mapped_column(
-        ForeignKey("uzmanlar.id"), unique=True, index=True
+        ForeignKey("uzmanlar.id"), index=True
     )
     durum: Mapped[str] = mapped_column(default="pending", index=True)
     gonderilme: Mapped[int]
@@ -162,6 +160,8 @@ class TerapistDogrulama(Base):
     notlar: Mapped[str] = mapped_column(Text, default="")
 
     __table_args__ = (
+        # Migration, benzersiz kısıt ve arama indeksini ayrı oluşturur.
+        UniqueConstraint("uzman_id"),
         CheckConstraint(
             "durum IN ('pending', 'verified', 'rejected')",
             name="ck_therapist_verifications_durum",
@@ -213,7 +213,7 @@ class KurucuUye(Base):
 
     id: Mapped[str] = mapped_column(primary_key=True, default=yeni_id)
     uzman_id: Mapped[str] = mapped_column(
-        ForeignKey("uzmanlar.id"), unique=True, index=True
+        ForeignKey("uzmanlar.id"), index=True
     )
     kurucu_no: Mapped[int] = mapped_column(unique=True)
     verilme: Mapped[int]
@@ -222,6 +222,7 @@ class KurucuUye(Base):
     )
 
     __table_args__ = (
+        UniqueConstraint("uzman_id"),
         CheckConstraint("kurucu_no > 0", name="ck_founding_members_no"),
     )
 
@@ -326,6 +327,11 @@ class Randevu(Base):
     )
     baslangic: Mapped[int] = mapped_column(index=True)
     danisan_sifreli: Mapped[str] = mapped_column(Text)
+    # Süre profil sonradan değişse de randevu oluşturulduğu gibi kalır.
+    bitis: Mapped[int | None]
+    danisan_oturum_ozeti: Mapped[str | None] = mapped_column(
+        String(64), index=True
+    )
     durum: Mapped[str] = mapped_column(default="bekliyor")
     olusturma: Mapped[int]
     aydinlatma_surumu: Mapped[str]
@@ -528,6 +534,9 @@ class WebsiteRozeti(Base):
     )
     olusturma: Mapped[int] = mapped_column(index=True)
 
+    # Mevcut migration benzersiz indeks yanında bu kısıtı da tanımlar.
+    __table_args__ = (UniqueConstraint("uzman_id"),)
+
 
 class WebsiteRozetiOlayi(Base):
     """Ziyaretçi verisi tutmadan rozet oluşturma ve tıklama olayı."""
@@ -678,11 +687,37 @@ class GoogleTakvimBaglantisi(Base):
     guncelleme: Mapped[int]
 
     __table_args__ = (
+        # Mevcut şemadaki ayrı kısıt, indeks ile birlikte korunur.
+        UniqueConstraint("uzman_id"),
         CheckConstraint(
             "durum IN ('aktif', 'koptu')",
             name="ck_google_calendar_connections_durum",
         ),
     )
+
+
+class RandevuTakvimIsi(Base):
+    """Randevuyla aynı işlemde kaydedilen, yeniden denenebilir Google işi.
+
+    Tek satır her zaman randevunun en son durumunu temsil eder. Google
+    yanıtı kaybolsa bile aynı etkinlik kimliği mükerrer kaydı önler.
+    """
+
+    __tablename__ = "appointment_calendar_jobs"
+
+    randevu_id: Mapped[str] = mapped_column(
+        ForeignKey("randevular.id", ondelete="CASCADE"), primary_key=True
+    )
+    baglanti_id: Mapped[str] = mapped_column(
+        ForeignKey("google_calendar_connections.id", ondelete="CASCADE"),
+        index=True,
+    )
+    etkinlik_id: Mapped[str] = mapped_column(String(64))
+    hedef_durum: Mapped[str] = mapped_column(String(20))
+    durum: Mapped[str] = mapped_column(String(20), default="bekliyor")
+    deneme: Mapped[int] = mapped_column(default=0)
+    sonraki_deneme: Mapped[int] = mapped_column(default=0, index=True)
+    son_hata: Mapped[str | None] = mapped_column(String(40))
 
 
 class GoogleTakvimKanali(Base):

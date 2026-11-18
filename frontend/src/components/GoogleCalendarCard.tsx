@@ -119,7 +119,7 @@ export function GoogleCalendarCardContent({
               </strong>
               <p>
                 {configured
-                  ? "Google hesabınızı bağladığınızda yalnız dolu/müsait zaman aralıkları kontrol edilir; kişisel etkinlik başlıkları veya katılımcılar profilinizde gösterilmez."
+                  ? "Dolu/müsait zamanlar kontrol edilir; kişisel etkinlik başlıkları veya katılımcılar profilinizde gösterilmez. Randevular birincil Google takviminize özel etkinlik olarak yazılır; danışan adı ve telefonu gönderilmez."
                   : "Planlanan bağlantıda yalnız dolu zamanlar eşleştirilecek; kişisel etkinlik ayrıntıları profilinizde gösterilmeyecek."}
               </p>
               <button
@@ -149,6 +149,27 @@ export function GoogleCalendarCardContent({
               {data?.hata && (
                 <p className="notice error" role="alert">
                   {data.hata}
+                </p>
+              )}
+              {active && !data?.randevu_yazma_izni && (
+                <div className="notice">
+                  Randevuları Google'a aktarmak için yeni takvim yazma izni
+                  gerekiyor. Bağlantıyı yeniden kurun.
+                  <button
+                    type="button"
+                    className="button secondary"
+                    disabled={busy}
+                    onClick={onConnect}
+                  >
+                    Randevu aktarımını etkinleştir
+                  </button>
+                </div>
+              )}
+              {active && data?.randevu_yazma_izni && (
+                <p>
+                  Randevular birincil Google takviminize aktarılır. Bekleyen:{" "}
+                  {data.bekleyen_aktarim ?? 0} · Yeniden denenecek hata:{" "}
+                  {data.hatali_aktarim ?? 0}
                 </p>
               )}
 
@@ -374,7 +395,7 @@ export function GoogleCalendarCard({
   async function disconnect() {
     if (
       !window.confirm(
-        "Google Takvim bağlantısını kaldırmak istiyor musunuz? Profilinizde yalnızca haftalık Terapist.co saatleriniz kullanılacak.",
+        "Google Takvim bağlantısı kaldırılsın mı? Mevcut Google etkinlikleri kalır ve sonraki değişiklikler aktarılmaz. Profilinizde haftalık Terapist.co saatleriniz kullanılacak.",
       )
     ) {
       return;

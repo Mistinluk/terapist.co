@@ -23,6 +23,7 @@ const statusLabels: Record<string, string> = {
   tumu: "Tümü",
   bekliyor: "Yanıt bekliyor",
   onaylandi: "Onaylandı",
+  tamamlandi: "Tamamlandı",
   reddedildi: "Reddedildi",
   iptal: "İptal edildi",
 };
@@ -31,6 +32,7 @@ const statusOptions = [
   "tumu",
   "bekliyor",
   "onaylandi",
+  "tamamlandi",
   "reddedildi",
   "iptal",
 ] as const;
@@ -161,8 +163,9 @@ export function AdminAppointmentsView({
   }
 
   async function updateBookingStatus(
-    nextStatus: "bekliyor" | "onaylandi" | "reddedildi" | "iptal",
-    escalated: boolean,
+    nextStatus:
+      "bekliyor" | "onaylandi" | "reddedildi" | "iptal" | "tamamlandi",
+    escalated = false,
   ) {
     if (!selectedId) return;
     setActionBusy(true);
@@ -222,6 +225,18 @@ export function AdminAppointmentsView({
           <div>
             <span>Onaylanan</span>
             <strong>{data.ozet.onaylandi}</strong>
+          </div>
+          <div>
+            <span>Tamamlanan</span>
+            <strong>{data.ozet.tamamlandi ?? 0}</strong>
+          </div>
+          <div>
+            <span>İptal edilen</span>
+            <strong>{data.ozet.iptal}</strong>
+          </div>
+          <div>
+            <span>Reddedilen</span>
+            <strong>{data.ozet.reddedildi}</strong>
           </div>
           <div>
             <span>Yaklaşan aktif</span>
@@ -428,6 +443,18 @@ export function AdminAppointmentsView({
                     <span>Terapiste durum değişikliği bildirimi bırak</span>
                   </label>
                   <div className="actions">
+                    {detail.durum === "onaylandi" &&
+                      (detail.bitis ?? detail.baslangic + 3600) * 1000 <=
+                        Date.now() && (
+                        <button
+                          type="button"
+                          className="button"
+                          disabled={actionBusy}
+                          onClick={() => updateBookingStatus("tamamlandi")}
+                        >
+                          Tamamlandı işaretle
+                        </button>
+                      )}
                     {detail.durum !== "onaylandi" && (
                       <button
                         type="button"
@@ -728,6 +755,9 @@ export function AdminAppointments() {
 
   const query = useApi<YonetimRandevularYaniti>(
     `/yonetim/randevular?${params.toString()}`,
+    undefined,
+    undefined,
+    30000,
   );
 
   return (

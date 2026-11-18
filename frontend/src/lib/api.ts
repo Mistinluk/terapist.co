@@ -284,6 +284,8 @@ export type Randevu = {
   ad: string;
   telefon: string;
   durum: string;
+  bitis?: string | null;
+  takvim_durumu?: string | null;
 };
 export type MfaSonucu = {
   mesaj: string;
@@ -406,6 +408,9 @@ export type GoogleTakvimi = {
   birincil: boolean;
 };
 export type GoogleTakvimDurumu = {
+  randevu_yazma_izni?: boolean;
+  bekleyen_aktarim?: number;
+  hatali_aktarim?: number;
   yapilandirildi: boolean;
   bagli: boolean;
   email: string | null;
@@ -428,6 +433,7 @@ export type YonetimUzmanOzeti = {
   sehir: string;
 };
 export type YonetimRandevuOzeti = {
+  tamamlandi?: number;
   toplam: number;
   bekliyor: number;
   onaylandi: number;
@@ -494,7 +500,7 @@ export type YonetimRandevuKaydi = {
   id: string;
   baslangic: number;
   olusturma: number;
-  durum: "bekliyor" | "onaylandi" | "reddedildi" | "iptal";
+  durum: "bekliyor" | "onaylandi" | "reddedildi" | "iptal" | "tamamlandi";
   aydinlatma_surumu: string;
   bekleme_suresi_saat?: number;
   yanit_gecikti?: boolean;
@@ -515,8 +521,9 @@ export type YonetimRandevularYaniti = {
 export type YonetimRandevuDetay = {
   id: string;
   baslangic: number;
+  bitis?: number;
   olusturma: number;
-  durum: "bekliyor" | "onaylandi" | "reddedildi" | "iptal";
+  durum: "bekliyor" | "onaylandi" | "reddedildi" | "iptal" | "tamamlandi";
   aydinlatma_surumu: string;
   bekleme_suresi_saat: number;
   yanit_gecikti: boolean;

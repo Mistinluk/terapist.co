@@ -5,6 +5,8 @@ services:
     env_file: ../backend/.env
     environment:
       ORTAM: gelistirme
+      ARAYUZ_SUNUMU: derleme
+      MEDYA_DIZINI: /app/uploads
       VERITABANI_URL: postgresql+psycopg://terapist:yerel-ornek@postgres:5432/terapist
       REDIS_URL: redis://redis:6379/0
       UYGULAMA_ADRESI: http://localhost:8080
@@ -22,6 +24,7 @@ services:
       retries: 20
       start_period: 10s
     read_only: true
+    volumes: ["medya:/app/uploads"]
     tmpfs: [/tmp]
     security_opt: ["no-new-privileges:true"]
     cap_drop: [ALL]
@@ -42,6 +45,8 @@ services:
     cap_drop: [ALL]
   postgres:
     image: postgres:17-alpine
+    # PyCharm/Ubuntu için yalnızca bu bilgisayardan erişim.
+    ports: ["127.0.0.1:55432:5432"]
     environment:
       POSTGRES_USER: terapist
       POSTGRES_PASSWORD: yerel-ornek
@@ -62,3 +67,4 @@ services:
       retries: 20
 volumes:
   veriler:
+  medya:

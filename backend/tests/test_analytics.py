@@ -372,6 +372,8 @@ def test_kisa_profil_belgesi_izleyici_ve_referrer_basliklari(env):
         "/r/SENTINEL",
         "/panel/onizleme",
         "/yonetim",
+        "/randevularim",
+        "/RANDEVULARIM?kimlik=SENTINEL",
         "/%64avet/SENTINEL",
         "/r%2FSENTINEL",
         "/x/../davet/SENTINEL",

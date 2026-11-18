@@ -50,4 +50,14 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: pnpm test
+      - run: pnpm format:check
       - run: pnpm audit --prod
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: make baslat
+      - run: make docker-ornek
+      - run: make docker-kontrol
+      - if: always()
+        run: make durdur

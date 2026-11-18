@@ -177,7 +177,7 @@ def _profile_html(profile: Uzman) -> str:
     assets = (
         '<link rel="stylesheet" href="/assets/app.css">'
         '<script type="module" src="/assets/app.js"></script>'
-        if settings.ortam == "uretim"
+        if settings.ortam == "uretim" or settings.arayuz_sunumu == "derleme"
         else '<script type="module" src="/react-preamble.js"></script>'
         '<script type="module" src="/@vite/client"></script>'
         '<script type="module" src="/src/main.tsx"></script>'

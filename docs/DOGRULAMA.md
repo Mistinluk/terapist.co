@@ -1,5 +1,73 @@
 # Doğrulama sonucu
 
+## Randevu takibi, istatistikler ve Google aktarımı — 17 Kasım 2026
+
+| Kontrol | Sonuç |
+| --- | --- |
+| Python, SQLite + gerçek PostgreSQL + Redis | **390 başarılı, 3 kasıtlı atlandı** |
+| Atlananlar | PostgreSQL'e özgü eşzamanlılık/kilit testlerinin SQLite kopyaları; PostgreSQL karşılıkları başarılı |
+| React / Vitest | **88 başarılı**, 16 dosya |
+| Ruff / PEP 8 ve biçim | **100 Python dosyası**, başarılı |
+| Prettier | Başarılı |
+| TypeScript + Vite | Docker üretim derlemesi başarılı |
+| PostgreSQL migration | Boş test DB'sine geçiş ve mevcut DB'de `alembic check` başarılı |
+| Docker | `make baslat` ve `make docker-kontrol` başarılı; dört servis sağlıklı |
+| Gerçek tarayıcı | Kurgusal talep gönderildi, danışan sayfasında görüldü, iptal edildi; toplam 1 / iptal 1 doğrulandı |
+| Erişim ve sayım | İki panelde aynı kayıt, başka danışan/uzman erişiminin engellenmesi, çerez süresi, tamamlanma kuralı ve 50 kaydı aşan toplamlar sınandı |
+| Google, sahte istemci | Talep/onay/iptal, yanıt kaybında yeniden deneme, tek etkinlik kimliği, iki çalışan ve OAuth bağlantı kilidi sınandı |
+
+Tarayıcı testindeki tek kurgusal randevu ve ona bağlı test kayıtları
+kaldırıldı; diğer uygulama verileri korundu. Ayrı test konteynerleri durduruldu.
+Google OAuth istemci ayarları bu ortamda tanımlı olmadığından gerçek Google
+hesabına aktarım sınanmadı. Kurulum ve davranış ayrıntıları
+[Randevu ve Takvim rehberindedir](RANDEVU_VE_TAKVIM.md).
+
+Python testlerinde mevcut Starlette/httpx ve AnyIO kullanımdan kaldırma
+uyarıları vardır. Vite büyük çıktı paketi uyarısı verir; derleme başarılıdır.
+
+## vibe-psych inceleme düzeltmeleri — 17 Kasım 2026
+
+| Kontrol | Sonuç |
+| --- | --- |
+| Python, SQLite + gerçek PostgreSQL + Redis | **371 başarılı, 1 kasıtlı atlandı**; SQLite eşzamanlılık senaryosunun PostgreSQL karşılığı geçti |
+| Model uyumu düzeltmesi sonrası tekrar kontrol | İlgili davet, takvim, kurucu üyelik, rozet ve yönetici testleri: **75 başarılı** |
+| React / Vitest | **82 başarılı**, 15 dosya; gerçek Vite yönlendirme kontrolü dahil |
+| Ruff / PEP 8 ve biçim | **94 Python dosyası**, başarılı |
+| Prettier | Başarılı; Windows/WSL satır sonları `.gitattributes` ile LF olarak tanımlandı |
+| TypeScript + Vite | Docker içinde üretim derlemesi başarılı; 22 statik SEO sayfası oluşturuldu |
+| Bağımlılık kilidi | `uv sync --locked --extra dev` ve Docker'ın `--locked --no-dev` kurulumu başarılı |
+| Python bağımlılık taraması | `pip-audit`: bilinen açık bulunmadı; yerel `terapist-api` paketi PyPI'da olmadığı için kapsam dışı |
+| React üretim bağımlılık taraması | `pnpm audit --prod`: bilinen açık bulunmadı |
+| PostgreSQL migration | Boş, ayrı test DB'sine bütün geçişler uygulandı; `alembic check` başarılı |
+| Mevcut uygulama şeması | `alembic check` başarılı; model/şema farkı yok |
+| Gerçek Docker akışı | `make baslat` ve `make docker-kontrol` başarılı; dört servis sağlıklı |
+
+Doğrudan profil sayfaları Docker'da derlenmiş React dosyalarını kullanır;
+`/ozellikler` kullanıcı adı olarak API'ye yönlendirilmez. Nginx profil yolu
+düzenli ifadesi geçerli söz dizimine getirildi. Fotoğraf yükleme uç noktası
+13 MiB istek kabul eder, API dosyayı 12 MiB ile sınırlar. Yüklemeler kalıcı,
+yazılabilir medya birimine gider. Diğer isteklerin 32 KiB sınırı korunur.
+
+PostgreSQL uygulamanın her iki geliştirme akışında da kullanılır. Eksik
+`VERITABANI_URL` ayarı sessizce SQLite'a geçmez. Mevcut Docker veri birimi
+varken `.env` kayıpsa başlangıç yeni şifreleme anahtarı üretmeden durur.
+
+PostgreSQL testinde bulunan 74 karakterlik hatalı bağlantı anahtarı, uygulamanın
+73 karakterlik anahtar üreticisiyle düzeltildi. Doğrulama, kurucu üyelik, rozet
+ve Google Takvim modellerindeki benzersizlik/indeks tanımları mevcut
+migration şemasına uyarlandı; veri taşıma veya tablo değiştirme gerekmedi.
+Pillow, pillow-heif ve taramada etkilenen geçişli bağımlılıklar güncellendi.
+
+HTTP kontrolü yaklaşık 77 KiB kurgusal PNG yükleyip WebP yanıtını okur ve
+dosyayı temizler. Testler için ayrı PostgreSQL/Redis konteynerleri kullanıldı;
+uygulama hesapları veya randevuları test verisi olarak değiştirilmedi.
+GitHub Actions'a Docker kontrolü ve arayüz biçim kontrolü eklendi; uzak CI
+çalıştırması henüz yapılmadı.
+
+Kalan uyarılar: test istemcisinden gelen iki bağımlılık kullanım dışı bırakma
+uyarısı ve Vite'ın 500 kB üzerindeki JavaScript paketi uyarısı. Bunlar test
+veya derleme hatası değildir; paket bölme bu düzeltmenin kapsamına alınmadı.
+
 ## Professional Network Phase 15 — 3 Ekim 2026
 
 | Kontrol | Sonuç |

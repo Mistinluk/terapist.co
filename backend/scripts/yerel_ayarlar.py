@@ -13,7 +13,8 @@ if target.exists():
     raise SystemExit(0)
 target.write_text(
     "ORTAM=gelistirme\n"
-    "VERITABANI_URL=sqlite:///./gelistirme.db\n"
+    "VERITABANI_URL=postgresql+psycopg://"
+    "terapist:yerel-ornek@127.0.0.1:55432/terapist\n"
     "SIFRELEME_ANAHTARI="
     f"{base64.urlsafe_b64encode(secrets.token_bytes(32)).decode()}\n"
     f"HIZ_SINIRI_ANAHTARI={secrets.token_urlsafe(48)}\n"

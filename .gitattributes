@@ -1,0 +1,2 @@
+# Windows, WSL ve CI aynı satır sonlarını kullanır; ikili dosyalar korunur.
+* text=auto eol=lf

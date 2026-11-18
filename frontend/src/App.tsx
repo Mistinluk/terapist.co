@@ -27,6 +27,7 @@ import { Apply } from "./pages/Apply";
 import { Profile } from "./pages/Profile";
 import { Privacy } from "./pages/Privacy";
 import { Dashboard } from "./pages/Dashboard";
+import { PatientAppointments } from "./pages/PatientAppointments";
 import { Admin } from "./pages/Admin";
 import { InvitationAccept } from "./pages/InvitationAccept";
 import { NotificationBell } from "./components/NotificationBell";
@@ -66,6 +67,7 @@ export function isProfileRoute(pathname: string): boolean {
     isNonProfilePublicRoute(pathname) ||
     pathname === "/panel" ||
     pathname.startsWith("/panel/") ||
+    pathname === "/randevularim" ||
     pathname === "/yonetim" ||
     pathname.startsWith("/yonetim/")
   ) {
@@ -202,6 +204,9 @@ export default function App() {
               </div>
               <div className="nav-cluster nav-account-links">
                 <span className="nav-group-label">Hesap</span>
+                <Link to="/randevularim" onClick={() => setMenuOpen(false)}>
+                  Randevularım
+                </Link>
                 {user ? (
                   <>
                     <NotificationBell
@@ -295,6 +300,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/ozellikler" element={<Features />} />
           <Route path="/kesfet" element={<Directory />} />
+          <Route path="/randevularim" element={<PatientAppointments />} />
           <Route path="/giris" element={<Login />} />
           <Route path="/basvuru" element={<Apply />} />
           <Route path="/davet/:token" element={<InvitationAccept />} />

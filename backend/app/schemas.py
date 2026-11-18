@@ -343,6 +343,8 @@ RESERVED_USERNAMES = frozenset(
         "karsilastirma",
         "kesfet",
         "panel",
+        "randevularim",
+        "ozellikler",
         "passport",
         "passport-assets",
         "r",
@@ -448,10 +450,32 @@ class RandevuCikti(Sema):
     ad: str
     telefon: str
     durum: str
+    bitis: datetime | None = None
+    takvim_durumu: str | None = None
+
+
+class DanisanRandevuCikti(Sema):
+    """Danışan paneli ad/telefon veya takip anahtarı döndürmez."""
+
+    id: str
+    uzman_id: str
+    uzman_adi: str
+    baslangic: datetime
+    bitis: datetime
+    durum: str
+
+
+class RandevuOzeti(Sema):
+    toplam: int
+    bekliyor: int
+    onaylandi: int
+    tamamlandi: int
+    iptal: int
+    reddedildi: int
 
 
 class DurumGirdi(Sema):
-    durum: Literal["onaylandi", "reddedildi", "iptal"]
+    durum: Literal["onaylandi", "reddedildi", "iptal", "tamamlandi"]
 
 
 class BeklemeListesiGirdi(Sema):
@@ -538,7 +562,9 @@ class TemaAyarlariGirdi(Sema):
             or not parsed.hostname
             or parsed.username
             or parsed.password
-            or any(ch in value for ch in ('"', "'", "<", ">", "\n", "\r", "\t"))
+            or any(
+                ch in value for ch in ('"', "'", "<", ">", "\n", "\r", "\t")
+            )
         ):
             raise ValueError(
                 "Arka plan görseli Unsplash gibi güvenilir bir kaynaktan "
@@ -624,6 +650,9 @@ class GoogleTakvimDurumu(Sema):
     webhook_etkin: bool = False
     webhook_kanal_sayisi: int = 0
     webhook_son_bildirim: int | None = None
+    randevu_yazma_izni: bool = False
+    bekleyen_aktarim: int = 0
+    hatali_aktarim: int = 0
 
 
 class TrafikOlcumGirdi(Sema):
@@ -707,7 +736,9 @@ class YonetimRandevuBildirimGirdi(Sema):
 class YonetimRandevuDurumGirdi(Sema):
     """Yöneticinin randevu durumunu değiştirme / gecikmiş işlemi tamamlama."""
 
-    durum: Literal["bekliyor", "onaylandi", "reddedildi", "iptal"]
+    durum: Literal[
+        "bekliyor", "onaylandi", "reddedildi", "iptal", "tamamlandi"
+    ]
     not_metni: str = Field(default="", max_length=500)
     eskalasyon_tamamla: bool = False
     terapiste_bildir: bool = True

@@ -75,7 +75,7 @@ function olcumYolu(adres: string): string | null {
     const url = new URL(decoded, window.location.origin);
     if (
       url.origin !== window.location.origin ||
-      /^\/(panel|yonetim|davet|r)(\/|$)/i.test(url.pathname)
+      /^\/(panel|yonetim|davet|r|randevularim)(\/|$)/i.test(url.pathname)
     )
       return null;
     return url.pathname;

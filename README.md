@@ -165,17 +165,28 @@ anahtarı, `UK` benzersizlik kısıtını belirtir. Okunabilirlik için temel al
 gösterilmiştir. [Veritabanı rehberi](docs/VERITABANI.md), ilişki çokluklarını,
 diğer alanları, randevu benzersizlik kuralını ve bağımsız denetim tablosunu açıklar.
 
-## Docker kullanmadan geliştirme (isteğe bağlı)
+## Randevu takibi ve Google Takvim
 
-Aşağıdaki adımlar önceki Python/Node.js geliştirme akışı içindir; Docker ile
-çalıştırırken uygulanmaz. SQLite yalnızca bu isteğe bağlı geliştirme ve test
-akışında kullanılır.
+Danışan, kayıt olmadan **Randevularım** sayfasından kendi tarayıcısıyla
+taleplerini takip eder. Uzman ve yönetim panelleri randevu durumlarını ve
+toplam/onaylı/tamamlanan/iptal/reddedilen sayılarını gösterir. Google bağlantısı
+olan uzmanlarda talepler birincil Google takvimine aktarılır; danışan için
+ayrı **Google Takvim'e ekle** düğmesi vardır.
+
+[Kullanım, Google kurulumu ve istatistik açıklamaları](docs/RANDEVU_VE_TAKVIM.md).
+
+## Python ve React'i doğrudan çalıştırarak geliştirme (isteğe bağlı)
+
+Aşağıdaki adımlarda Python ve React yerel terminalde, PostgreSQL ise Docker'da
+çalışır. Docker Desktop açık olmalıdır. `make api` veritabanı konteynerini
+otomatik başlatır; `make baslat` ile aynı PostgreSQL kayıtları kullanılır.
+SQLite yalnızca yalıtılmış otomatik testlerde kullanılır.
 
 ### macOS kurulumu ve çalıştırma
 
 Bu adımları macOS **Terminal** uygulamasında, varsayılan `zsh` kabuğunda
 çalıştırın. Yol ayarları Apple Silicon ve Intel için Homebrew konumunu otomatik
-kullanır. Yerel geliştirme SQLite kullanır; PostgreSQL veya Docker kurulumu gerekmez.
+kullanır. Docker Desktop kurulu ve açık olmalıdır; PostgreSQL'i ayrıca kurmayın.
 
 **1. Geliştirme araçlarını hazırlayın.** Command Line Tools kurulu değilse:
 

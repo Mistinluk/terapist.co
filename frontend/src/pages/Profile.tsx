@@ -1426,6 +1426,9 @@ export function Profile() {
                 <div className="notice" role="status">
                   <ShieldCheck size={20} aria-hidden="true" />
                   <p>{success}</p>
+                  <Link className="button" to="/randevularim">
+                    Randevularımı takip et
+                  </Link>
                   <button
                     className="text-button"
                     type="button"

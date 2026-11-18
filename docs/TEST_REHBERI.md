@@ -6,6 +6,28 @@ regresyonun önlendiğini anlamak içindir. Kurulum ve komutlar
 [geliştirici rehberinde](GELISTIRICI_REHBERI.md), tarihli sonuçlar
 [doğrulama kaydında](DOGRULAMA.md) bulunur.
 
+## Çalışan Docker uygulamasını kontrol etme
+
+Proje kökünde, Docker Desktop açıkken:
+
+```bash
+make baslat
+make docker-kontrol
+```
+
+Veritabanı tamamen boşsa, kontrolden önce bir kez `make docker-ornek`
+çalıştırın. Kontrol, Nginx yapılandırmasını, `alembic check` ile model/şema
+uyumunu ve gerçek HTTP akışını sınar:
+PostgreSQL hazırlık yanıtı, ana sayfa, özellikler, dizin, doğrudan profil,
+derlenmiş React dosyaları ve 32 KiB'den büyük bir PNG'nin WebP'ye dönüşmesi.
+Normal API isteklerinin 32 KiB sınırının korunduğunu da doğrular.
+
+`backend/scripts/docker_kontrol.py` yalnızca geliştirme ortamında çalışır.
+Geçici görselini `finally` bloğunda siler; kullanıcı veya randevu oluşturmaz.
+Bu kontrol, birim testlerinin göremediği ters vekil ve dosya izinlerini kapsar;
+tarayıcı etkileşim testinin yerine geçmez. GitHub Actions aynı adımları yeni
+Docker birimleri üzerinde çalıştıracak şekilde yapılandırılmıştır.
+
 ## Ortak ortam: `backend/tests/conftest.py`
 
 `env` fixture'ı `(client, factory, ids, booking_id)` döndürür:
@@ -40,6 +62,8 @@ test sonunda geri alır; `tmp_path` kurgusal dosyaları gerçek yedeklerden ayı
 | --- | --- |
 | `test_security.py` | Kimliksiz erişim, roller, CSRF/Origin, oturum, TOTP tekrarı, hız sınırı, veri sızıntısı |
 | `test_appointments.py` | Üyesiz talep, zaman doğrulama, DB benzersizliği, iptal sonrası saatin açılması |
+| `test_patient_appointments.py` | İki panelde aynı randevu, çerez sahipliği/süresi, danışan iptali, tamamlanma ve toplamlar |
+| `test_appointment_calendar.py` | Google talep/onay/iptali, yanıt kaybı, kalıcı tekrar deneme ve mükerrer kayıt önleme |
 | `test_integration.py` | Başvuru → MFA → yönetici onayı, Türkçe arama, PostgreSQL yarış koşulu, ortak Redis kotası |
 | `test_local_origin.py` | Yerel adres istisnası, üretim kaynak sınırı, DB kopukluğunda hazırlık yanıtı |
 | `test_matching.py` | Puan ağırlıkları, kesin filtreler, açıklamalar, global sayfalama, iki sorgu, kayıt oluşturmama |

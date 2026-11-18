@@ -18,11 +18,12 @@ from urllib.parse import urlencode
 from cryptography.fernet import InvalidToken
 from fastapi import APIRouter, HTTPException, Query, Request, Response
 from fastapi.responses import RedirectResponse
-from sqlalchemy import select
+from sqlalchemy import delete, func, select
 
 from app.config import get_settings
 from app.google_takvim import (
     HATA_MESAJLARI,
+    KAPSAM_YAZMA,
     WEBHOOK_ESITLEME_ARALIGI,
     GoogleHatasi,
     aktif_kanallar,
@@ -40,8 +41,11 @@ from app.models import (
     GoogleTakvimBaglantisi,
     GoogleTakvimKanali,
     Kullanici,
+    Randevu,
+    RandevuTakvimIsi,
     Uzman,
 )
+from app.randevu_takvim import kuyruga_ekle
 from app.schemas import GoogleTakvimAyarGirdi, GoogleTakvimDurumu
 from app.security import (
     AktifUzman,
@@ -97,6 +101,25 @@ def durum(db, me: Uzman) -> GoogleTakvimDurumu:
         webhook_etkin=bool(channels),
         webhook_kanal_sayisi=len(channels),
         webhook_son_bildirim=last_notification,
+        randevu_yazma_izni=account.get("randevu_yazma_izni", False),
+        bekleyen_aktarim=db.scalar(
+            select(func.count())
+            .select_from(RandevuTakvimIsi)
+            .where(
+                RandevuTakvimIsi.baglanti_id == baglanti.id,
+                RandevuTakvimIsi.durum != "esitlendi",
+            )
+        )
+        or 0,
+        hatali_aktarim=db.scalar(
+            select(func.count())
+            .select_from(RandevuTakvimIsi)
+            .where(
+                RandevuTakvimIsi.baglanti_id == baglanti.id,
+                RandevuTakvimIsi.durum == "hata",
+            )
+        )
+        or 0,
     )
 
 
@@ -216,6 +239,8 @@ def geri_donus(
     same_account = previous.get("email") == email
     account = {
         "email": email,
+        "randevu_yazma_izni": KAPSAM_YAZMA
+        in str(tokens.get("scope", "")).split(),
         "takvimler": calendars,
         "dolu_takvimleri": (
             [c for c in previous.get("dolu_takvimleri", []) if c in known]
@@ -238,6 +263,13 @@ def geri_donus(
             uzman_id=me.id, olusturma=now, guncelleme=now
         )
         db.add(baglanti)
+    elif not same_account:
+        # Önceki hesaba ait işleri yeni Google hesabına taşıma.
+        db.execute(
+            delete(RandevuTakvimIsi).where(
+                RandevuTakvimIsi.baglanti_id == baglanti.id
+            )
+        )
     baglanti.token_sifreli = sifrele(token_data)
     baglanti.hesap_sifreli = sifrele(account)
     baglanti.durum = "aktif"
@@ -247,6 +279,14 @@ def geri_donus(
     baglanti.son_hata = None
     esitle(baglanti, now)
     db.flush()
+    for booking in db.scalars(
+        select(Randevu).where(
+            Randevu.uzman_id == me.id,
+            Randevu.baslangic > now,
+            Randevu.durum.in_(["bekliyor", "onaylandi"]),
+        )
+    ):
+        kuyruga_ekle(db, booking)
     webhook_kanallarini_yenile(db, baglanti, now)
     denetle(db, "google_takvim.bagla", me.kullanici_id, me.id)
     db.commit()
@@ -306,6 +346,15 @@ def simdi_esitle(me: AktifUzman, db: Db):
     esitle(baglanti, takvim_listesi=True)
     if baglanti.son_hata is None:
         webhook_kanallarini_yenile(db, baglanti)
+    for booking in db.scalars(
+        select(Randevu)
+        .join(RandevuTakvimIsi)
+        .where(
+            Randevu.uzman_id == me.id,
+            RandevuTakvimIsi.durum != "esitlendi",
+        )
+    ):
+        kuyruga_ekle(db, booking)
     db.commit()
     return durum(db, me)
 
@@ -318,6 +367,11 @@ def baglantiyi_kaldir(me: AktifUzman, db: Db):
         return
     token = coz(baglanti.token_sifreli).get("refresh_token")
     webhook_kanallarini_kapat(db, baglanti)
+    db.execute(
+        delete(RandevuTakvimIsi).where(
+            RandevuTakvimIsi.baglanti_id == baglanti.id
+        )
+    )
     db.flush()
     db.delete(baglanti)
     denetle(db, "google_takvim.kaldir", me.kullanici_id, me.id)

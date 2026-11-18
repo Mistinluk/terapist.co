@@ -29,6 +29,7 @@ from app.api import (
     media,
     moderation,
     notifications,
+    patient_appointments,
     peer_specialties,
     profiles,
     public_pages,
@@ -41,11 +42,13 @@ from app.api import (
 from app.config import get_settings
 from app.db import engine
 from app.models import Uzman
+from app.randevu_takvim import takvim_yasam_dongusu
 from app.schemas import RESERVED_USERNAMES
 
 settings = get_settings()
 # Geliştirmede sözleşme JSON'u kullanılabilir; üretimde yayınlanmaz.
 app = FastAPI(
+    lifespan=takvim_yasam_dongusu,
     title="Terapist.co API",
     version="0.1.0",
     description="Türkçe uzman dizini ve güvenli randevu talepleri.",
@@ -272,6 +275,7 @@ for router in [
     matching.router,
     moderation.router,
     appointments.router,
+    patient_appointments.router,
     notifications.router,
     google_calendar.router,
     analytics.router,

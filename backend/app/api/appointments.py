@@ -4,14 +4,27 @@ import time
 from datetime import UTC, datetime
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Query, Request
+from fastapi import APIRouter, HTTPException, Query, Request, Response
 from sqlalchemy import func, select, update
 from sqlalchemy.exc import IntegrityError
 
 from app.api.notifications import bildirim_ekle, tarih_etiketi
 from app.config import get_settings
-from app.models import Bildirim, Kullanici, Randevu, RandevuBildirimi
-from app.schemas import DurumGirdi, RandevuCikti, RandevuGirdi
+from app.models import (
+    Bildirim,
+    Kullanici,
+    Randevu,
+    RandevuBildirimi,
+    RandevuTakvimIsi,
+)
+from app.randevu_takip import (
+    oturum_yaz,
+    sayimlar,
+    tamamlanma_dogrula,
+    yeni_veya_mevcut_anahtar,
+)
+from app.randevu_takvim import kuyruga_ekle
+from app.schemas import DurumGirdi, RandevuCikti, RandevuGirdi, RandevuOzeti
 from app.security import (
     AktifUzman,
     Db,
@@ -19,6 +32,7 @@ from app.security import (
     denetle,
     hiz_siniri,
     istemci,
+    ozet,
     sifrele,
 )
 from app.services import ISTANBUL, musait_saatler, profil_bul
@@ -27,7 +41,7 @@ router = APIRouter(tags=["Randevular"])
 
 
 @router.post("/randevular", status_code=201)
-def talep(body: RandevuGirdi, request: Request, db: Db):
+def talep(body: RandevuGirdi, request: Request, response: Response, db: Db):
     hiz_siniri.kontrol("randevu:" + istemci(request), 5, 3600)
     settings = get_settings()
     if body.aydinlatma_surumu != settings.aydinlatma_surumu:
@@ -40,9 +54,13 @@ def talep(body: RandevuGirdi, request: Request, db: Db):
     if slot not in musait_saatler(db, profile, takvim_tazeligi=60):
         db.commit()
         raise HTTPException(409, "Bu saat uygun değil. Başka bir saat seçin.")
+    token = yeni_veya_mevcut_anahtar(request)
     booking = Randevu(
         uzman_id=profile.id,
         baslangic=int(body.baslangic.timestamp()),
+        bitis=int(body.baslangic.timestamp())
+        + (profile.seans_suresi_dakika or 60) * 60,
+        danisan_oturum_ozeti=ozet(token),
         danisan_sifreli=sifrele({"ad": body.ad, "telefon": body.telefon}),
         olusturma=int(time.time()),
         aydinlatma_surumu=body.aydinlatma_surumu,
@@ -50,6 +68,7 @@ def talep(body: RandevuGirdi, request: Request, db: Db):
     db.add(booking)
     try:
         db.flush()
+        kuyruga_ekle(db, booking)
         denetle(db, "randevu.olustur", kaynak_id=booking.id)
         slot_label = tarih_etiketi(booking.baslangic)
         if profile.kullanici_id:
@@ -86,8 +105,11 @@ def talep(body: RandevuGirdi, request: Request, db: Db):
         raise HTTPException(
             409, "Bu saat doldu. Başka bir saat seçin."
         ) from None
+    oturum_yaz(response, token)
     return {
-        "mesaj": "Randevu talebiniz alındı. Uzman sizinle iletişime geçecek."
+        "mesaj": "Randevu talebiniz alındı. Uzman onayı bekleniyor.",
+        "randevu_id": booking.id,
+        "takip_yolu": "/randevularim",
     }
 
 
@@ -97,8 +119,9 @@ def randevular(
     db: Db,
     sayfa: Annotated[int, Query(ge=1)] = 1,
 ):
-    bookings = db.scalars(
-        select(Randevu)
+    bookings = db.execute(
+        select(Randevu, RandevuTakvimIsi.durum)
+        .outerjoin(RandevuTakvimIsi)
         .where(Randevu.uzman_id == me.id)
         .order_by(Randevu.baslangic.desc())
         .offset((sayfa - 1) * 50)
@@ -112,12 +135,20 @@ def randevular(
             durum=b.durum,
             ad=coz(b.danisan_sifreli)["ad"],
             telefon=coz(b.danisan_sifreli)["telefon"],
+            bitis=datetime.fromtimestamp(b.bitis or b.baslangic + 3600, UTC),
+            takvim_durumu=takvim_durumu,
         )
-        for b in bookings
+        for b, takvim_durumu in bookings
     ]
     denetle(db, "randevu.listele", me.kullanici_id, me.id)
     db.commit()
     return result
+
+
+@router.get("/uzman/randevu-ozeti", response_model=RandevuOzeti)
+def randevu_ozeti(me: AktifUzman, db: Db):
+    """Uzmanın tüm sayfalardaki kayıtlarını durum bazında sayar."""
+    return sayimlar(db, Randevu.uzman_id == me.id)
 
 
 @router.patch("/uzman/randevular/{randevu_id}", status_code=204)
@@ -131,11 +162,13 @@ def durum_degistir(randevu_id: str, body: DurumGirdi, me: AktifUzman, db: Db):
         raise HTTPException(404, "Randevu bulunamadı.")
     transitions = {
         "bekliyor": {"onaylandi", "reddedildi", "iptal"},
-        "onaylandi": {"iptal"},
+        "onaylandi": {"iptal", "tamamlandi"},
     }
     if body.durum not in transitions.get(booking.durum, set()):
         raise HTTPException(409, "Bu randevunun durumu değiştirilemez.")
+    tamamlanma_dogrula(booking, body.durum)
     booking.durum = body.durum
+    kuyruga_ekle(db, booking)
     now = int(time.time())
     db.execute(
         update(RandevuBildirimi)

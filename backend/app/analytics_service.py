@@ -49,7 +49,7 @@ def olcum_yolu(adres: str) -> str | None:
         path = posixpath.normpath(urlsplit(decoded).path)
     except (ValueError, UnicodeError):
         return None
-    private_paths = ("/panel", "/yonetim", "/davet", "/r")
+    private_paths = ("/panel", "/yonetim", "/davet", "/r", "/randevularim")
     lower_path = path.lower()
     if any(
         lower_path == item or lower_path.startswith(f"{item}/")

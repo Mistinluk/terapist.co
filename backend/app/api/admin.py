@@ -37,6 +37,8 @@ from app.models import (
     YonlendirmeHedefi,
     YonlendirmeOlayi,
 )
+from app.randevu_takip import tamamlanma_dogrula
+from app.randevu_takvim import kuyruga_ekle
 from app.schemas import (
     DavetLimitiGirdi,
     KurucuProgramiCikti,
@@ -317,6 +319,7 @@ def _randevu_durum_sayimlari(
     counts = {
         "bekliyor": 0,
         "onaylandi": 0,
+        "tamamlandi": 0,
         "reddedildi": 0,
         "iptal": 0,
     }
@@ -324,10 +327,9 @@ def _randevu_durum_sayimlari(
         if status in counts:
             counts[status] = int(total)
     total_all = sum(counts.values())
-    decided = counts["onaylandi"] + counts["reddedildi"] + counts["iptal"]
-    approval_rate = (
-        round((counts["onaylandi"] / decided) * 100) if decided else 0
-    )
+    approved = counts["onaylandi"] + counts["tamamlandi"]
+    decided = approved + counts["reddedildi"] + counts["iptal"]
+    approval_rate = round((approved / decided) * 100) if decided else 0
     return {
         "toplam": total_all,
         **counts,
@@ -614,7 +616,7 @@ def genel_randevular(
     db: Db,
     sayfa: Annotated[int, Query(ge=1)] = 1,
     durum: Literal[
-        "tumu", "bekliyor", "onaylandi", "reddedildi", "iptal"
+        "tumu", "bekliyor", "onaylandi", "reddedildi", "iptal", "tamamlandi"
     ] = "tumu",
     uzman_id: str | None = None,
     yanit_suresi_saat: Annotated[int, Query(ge=1, le=720)] = 24,
@@ -749,6 +751,7 @@ def randevu_detayi(
     return {
         "id": appointment.id,
         "baslangic": appointment.baslangic,
+        "bitis": appointment.bitis or appointment.baslangic + 3600,
         "olusturma": appointment.olusturma,
         "durum": appointment.durum,
         "aydinlatma_surumu": appointment.aydinlatma_surumu,
@@ -864,8 +867,10 @@ def randevu_durumu_yonetim(
     if appointment.durum == body.durum:
         raise HTTPException(409, "Randevu zaten seçili durumda.")
 
+    tamamlanma_dogrula(appointment, body.durum)
     previous_status = appointment.durum
     appointment.durum = body.durum
+    kuyruga_ekle(db, appointment)
     try:
         db.flush()
     except IntegrityError as exc:
@@ -886,6 +891,7 @@ def randevu_durumu_yonetim(
     status_tr = {
         "bekliyor": "Yanıt bekliyor",
         "onaylandi": "Onaylandı",
+        "tamamlandi": "Tamamlandı",
         "reddedildi": "Reddedildi",
         "iptal": "İptal edildi",
     }

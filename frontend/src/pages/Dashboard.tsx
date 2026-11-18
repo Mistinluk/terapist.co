@@ -57,10 +57,13 @@ import { PrivacyModeration } from "../components/PrivacyModeration";
 import { TherapistTrafficAnalytics } from "../components/TherapistTrafficAnalytics";
 import { ThemeCustomizer } from "../components/ThemeCustomizer";
 import { NotificationsAndMessages } from "../components/NotificationsAndMessages";
+import { AppointmentStats } from "../components/AppointmentStats";
+import { AppointmentStats as Stats } from "../lib/appointments";
 
 const statuses: Record<string, string> = {
   bekliyor: "Onay bekliyor",
   onaylandi: "Onaylandı",
+  tamamlandi: "Tamamlandı",
   reddedildi: "Reddedildi",
   iptal: "İptal edildi",
 };
@@ -1447,7 +1450,18 @@ export function Dashboard() {
   const ActiveNavigationIcon = activeNavigation.icon;
   const [page, setPage] = useState(1);
   const profile = useApi<Profil>("/uzman/profil");
-  const bookings = useApi<Randevu[]>(`/uzman/randevular?sayfa=${page}`);
+  const bookings = useApi<Randevu[]>(
+    `/uzman/randevular?sayfa=${page}`,
+    undefined,
+    undefined,
+    30000,
+  );
+  const appointmentStats = useApi<Stats>(
+    "/uzman/randevu-ozeti",
+    undefined,
+    undefined,
+    30000,
+  );
   const waitlist = useApi<BeklemeListesiKaydi[]>("/uzman/bekleme-listesi");
   const notifications = useApi<UzmanBildirimlerYaniti>("/uzman/bildirimler");
   const [appointmentsView, setAppointmentsView] = useState<
@@ -1490,6 +1504,7 @@ export function Dashboard() {
         body: JSON.stringify({ durum }),
       });
       bookings.reload();
+      appointmentStats.reload();
       notifications.reload();
       setMessage("Randevu durumu güncellendi.");
     } catch (e) {
@@ -1564,6 +1579,10 @@ export function Dashboard() {
         )}
       </header>
 
+      <AppointmentStats data={appointmentStats.data} />
+      {appointmentStats.error && (
+        <p role="alert">İstatistikler yenilenemedi: {appointmentStats.error}</p>
+      )}
       <details className="dashboard-mobile-nav" ref={mobileNavigation}>
         <summary>
           <span className="dashboard-nav-icon" aria-hidden="true">
@@ -1923,7 +1942,27 @@ export function Dashboard() {
                         <span className={`status-badge ${b.durum}`}>
                           {statuses[b.durum]}
                         </span>
+                        {b.takvim_durumu && (
+                          <small>
+                            {b.takvim_durumu === "esitlendi"
+                              ? "Google Takvim güncel"
+                              : b.takvim_durumu === "hata"
+                                ? "Google aktarımı yeniden denenecek"
+                                : "Google aktarımı bekliyor"}
+                          </small>
+                        )}
                         <div className="actions">
+                          {b.durum === "onaylandi" &&
+                            b.bitis &&
+                            new Date(b.bitis).getTime() <= Date.now() && (
+                              <button
+                                className="button"
+                                disabled={busy === b.id}
+                                onClick={() => change(b.id, "tamamlandi")}
+                              >
+                                Tamamlandı işaretle
+                              </button>
+                            )}
                           {b.durum === "bekliyor" && (
                             <>
                               <button
