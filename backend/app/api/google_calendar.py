@@ -155,7 +155,7 @@ def baglanti_baslat(request: Request, response: Response, me: AktifUzman):
             ).encode()
         ).decode(),
         httponly=True,
-        secure=get_settings().ortam == "uretim",
+        secure=get_settings().guvenli_yayin,
         # Google'dan dönen üst düzey GET gezintisinde gönderilmesi için Lax.
         samesite="lax",
         max_age=CEREZ_SURESI,

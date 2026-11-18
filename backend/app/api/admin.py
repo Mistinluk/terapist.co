@@ -274,7 +274,8 @@ def _telefon_maskele(value: str) -> str:
 def _bekleme_saati(appointment: Randevu, now: int) -> int:
     if appointment.durum != "bekliyor":
         return 0
-    return max(0, (now - appointment.olusturma) // 3600)
+    requested_at = appointment.son_talep_zamani or appointment.olusturma
+    return max(0, (now - requested_at) // 3600)
 
 
 def _randevu_durum_sayimlari(
@@ -307,7 +308,8 @@ def _randevu_durum_sayimlari(
         .select_from(Randevu)
         .where(
             Randevu.durum == "bekliyor",
-            Randevu.olusturma <= now - yanit_suresi_saat * 3600,
+            func.coalesce(Randevu.son_talep_zamani, Randevu.olusturma)
+            <= now - yanit_suresi_saat * 3600,
         )
     )
     if uzman_id:
@@ -635,10 +637,14 @@ def genel_randevular(
         count_query = count_query.where(Randevu.durum == durum)
     if gecikmis:
         query = query.where(
-            Randevu.durum == "bekliyor", Randevu.olusturma <= cutoff
+            Randevu.durum == "bekliyor",
+            func.coalesce(Randevu.son_talep_zamani, Randevu.olusturma)
+            <= cutoff,
         )
         count_query = count_query.where(
-            Randevu.durum == "bekliyor", Randevu.olusturma <= cutoff
+            Randevu.durum == "bekliyor",
+            func.coalesce(Randevu.son_talep_zamani, Randevu.olusturma)
+            <= cutoff,
         )
     if uzman_id:
         query = query.where(Randevu.uzman_id == uzman_id)
@@ -691,7 +697,8 @@ def genel_randevular(
                 "bekleme_suresi_saat": _bekleme_saati(appointment, now),
                 "yanit_gecikti": (
                     appointment.durum == "bekliyor"
-                    and appointment.olusturma <= cutoff
+                    and (appointment.son_talep_zamani or appointment.olusturma)
+                    <= cutoff
                 ),
                 "bildirim_sayisi": notif_stats.get(appointment.id, (0, None))[
                     0
@@ -757,7 +764,9 @@ def randevu_detayi(
         "aydinlatma_surumu": appointment.aydinlatma_surumu,
         "bekleme_suresi_saat": _bekleme_saati(appointment, now),
         "yanit_gecikti": (
-            appointment.durum == "bekliyor" and appointment.olusturma <= cutoff
+            appointment.durum == "bekliyor"
+            and (appointment.son_talep_zamani or appointment.olusturma)
+            <= cutoff
         ),
         "yanit_suresi_saat": yanit_suresi_saat,
         "uzman": therapist_summary,
@@ -870,9 +879,10 @@ def randevu_durumu_yonetim(
     tamamlanma_dogrula(appointment, body.durum)
     previous_status = appointment.durum
     appointment.durum = body.durum
-    kuyruga_ekle(db, appointment)
     try:
+        # Çakışmayı takvim sorgularının otomatik yazmasından önce yakala.
         db.flush()
+        kuyruga_ekle(db, appointment)
     except IntegrityError as exc:
         db.rollback()
         raise HTTPException(

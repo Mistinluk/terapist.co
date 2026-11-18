@@ -126,7 +126,7 @@ def giris(body: GirisGirdi, request: Request, response: Response, db: Db):
             denetle(db, "oturum.mfa_tekrar", user.id)
             db.commit()
             raise HTTPException(401, "Yeni doğrulama kodunu bekleyin.")
-    elif settings.ortam == "uretim":
+    elif settings.guvenli_yayin:
         raise HTTPException(403, "İki adımlı doğrulama kurulmalıdır.")
     old = request.cookies.get(COOKIE)
     if old:
@@ -151,7 +151,7 @@ def giris(body: GirisGirdi, request: Request, response: Response, db: Db):
         COOKIE,
         token,
         httponly=True,
-        secure=settings.ortam == "uretim",
+        secure=settings.guvenli_yayin,
         samesite="strict",
         max_age=settings.oturum_azami_suresi,
         path="/api",

@@ -77,7 +77,10 @@ def _icinde(start: int, end: int, araliklar: list[list[int]]) -> bool:
 
 
 def musait_saatler(
-    db: Session, profile: Uzman, takvim_tazeligi: int = 300
+    db: Session,
+    profile: Uzman,
+    takvim_tazeligi: int = 300,
+    sure_saniye: int | None = None,
 ) -> list[str]:
     """Bugün dahil 15 gün için boş bir saatlik başlangıçları döndürür.
 
@@ -90,6 +93,7 @@ def musait_saatler(
     Uzman bir müsaitlik takvimi seçtiyse aday saatler haftalık program yerine
     o takvimdeki etkinliklerden gelir; görüşme etkinliğin içine sığmalıdır.
     `takvim_tazeligi` Google verisinin en fazla kaç saniyelik olacağıdır.
+    Yeniden planlamada `sure_saniye` mevcut görüşmenin süresini korur.
     """
     now = datetime.now(ISTANBUL)
     busy = set(
@@ -102,7 +106,7 @@ def musait_saatler(
         )
     )
     google_busy, google_free = takvim_araliklari(db, profile, takvim_tazeligi)
-    duration = (profile.seans_suresi_dakika or 60) * 60
+    duration = sure_saniye or (profile.seans_suresi_dakika or 60) * 60
     schedule = {item["gun"]: item for item in profile.calisma_saatleri}
     slots = []
     for offset in range(15):

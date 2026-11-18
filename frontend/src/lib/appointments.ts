@@ -21,6 +21,20 @@ export type PatientAppointment = {
   durum: string;
 };
 
+export type AppointmentLink = {
+  takip_yolu: string;
+  takip_son_kullanim: string;
+};
+
+export type PrivateAppointment = PatientAppointment & {
+  takip_son_kullanim: string;
+};
+
+/** Anahtar URL sorgusuna, analitiğe veya kalıcı tarayıcı deposuna taşınmaz. */
+export function appointmentToken(hash: string): string {
+  return /^#anahtar=([A-Za-z0-9_-]{43})$/.exec(hash)?.[1] ?? "";
+}
+
 /** Kullanıcı tıklamadan Google'a istek gitmez; ad/telefon/link gönderilmez. */
 export function googleCalendarUrl(booking: PatientAppointment): string | null {
   if (!["bekliyor", "onaylandi"].includes(booking.durum)) return null;

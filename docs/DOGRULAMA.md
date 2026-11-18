@@ -1,5 +1,56 @@
 # Doğrulama sonucu
 
+## Üyesiz özel randevu bağlantısı — 18 Kasım 2026
+
+| Kontrol | Sonuç |
+| --- | --- |
+| Python, SQLite + gerçek PostgreSQL + Redis | **421 başarılı, 4 kasıtlı atlandı** |
+| Atlananlar | PostgreSQL kilit/eşzamanlılık senaryolarının SQLite kopyaları; PostgreSQL karşılıkları başarılı |
+| React / Vitest | **92 başarılı**, 16 dosya |
+| Ruff / PEP 8 ve biçim | Başarılı; 102 Python dosyası |
+| TypeScript + Vite | Yerel ve Docker üretim derlemesi başarılı |
+| Migration | Boş ayrı test DB'sinde tüm geçişler + model uyumu; mevcut uygulama DB'sinde eklemeli geçiş + model uyumu başarılı |
+| Docker | `make baslat`, `make docker-kontrol`, dört sağlıklı servis |
+| Nginx gizlilik başlıkları | SPA iç yönlendirmesinden sonra da `no-store`, `noindex, nofollow`, `no-referrer` korunuyor |
+| Gerçek tarayıcı | Kurgusal talep → özel bağlantı → kopyalama → 09:00'dan 10:00'a taşıma → iptal başarılı; üyelik/giriş yok |
+| Klavye erişimi | İçeriğe geç bağlantısı özel URL anahtarını değiştirmiyor |
+| Google, sahte istemci | Tarih değişimi aynı etkinliği taşıyor; iptal etkinliği kaldırıyor; anahtar dışarı aktarılmıyor |
+
+Çerezsiz erişim, başka randevuya erişim reddi, bağlantı süresi/yenilemesi,
+yeniden uzman onayı, görüşme süresinin korunması, çakışmada geri alma,
+yanıt bekleme süresinin sıfırlanması ve PostgreSQL'de eşzamanlı iki tarih
+değişiminin tek saati alamaması sınandı. Testler yalnız ayrı test DB'sini
+kullanır. Tarayıcı denemesindeki tek kurgusal randevu ve bildirimleri
+temizlendi; 1006 uzman ve mevcut uygulama verileri korundu.
+
+Gerçek Google OAuth ayarları bu ortamda tanımlı olmadığından canlı Google
+aktarımı sınanmadı. Otomatik e-posta/SMS gönderimi bu değişiklikte yoktur.
+Mevcut test bağımlılığı kullanım dışı bırakma ve Vite paket boyutu uyarıları
+sürüyor; test veya derleme hatası yoktur.
+
+## Randevu akışının yeniden sınanması — 18 Kasım 2026
+
+Randevu, danışan takibi, Google Takvim, yönetim, güvenlik ve entegrasyon
+testleri gerçek PostgreSQL + Redis ve SQLite üzerinde yeniden çalıştırıldı:
+**114 başarılı, 3 kasıtlı atlandı**. Atlananlar PostgreSQL kilit/yarış
+senaryolarının SQLite kopyalarıdır; PostgreSQL karşılıkları başarılıdır.
+React testlerinin tamamı **88 başarılı**. Değişen Python dosyaları Ruff
+ve biçim denetiminden geçti. `make baslat` ve `make docker-kontrol`
+başarılı; çalışan uygulamanın şeması modellerle uyumludur.
+
+Eklenen regresyon testi bir hatayı ortaya çıkardı: iptal edilen bir saatte
+yeni talep oluşturulduktan sonra yönetici eski kaydı yeniden açmaya
+çalışınca API 409 yerine 500 dönüyordu. DB çifte rezervasyonu engelliyordu;
+takvim kuyruğu sorgusunun otomatik yazması hata yakalama kapsamı dışında
+kalıyordu. Çakışma artık kuyruk sorgusundan önce yakalanır ve 409 döner.
+Test, iki kaydın durumunun korunduğunu ve yeni talep de iptal edilince
+eski kaydın yeniden açılabildiğini hem bekleyen hem onaylı durum için sınar.
+
+Randevu yazma testleri yalnızca ayrı test veritabanında çalıştırıldı;
+test konteynerleri kaldırıldı. Bu turda tarayıcıyla manuel form testi
+tekrarlanmadı. Google testleri sahte istemci kullanır; gerçek hesapta
+OAuth ve canlı Google aktarımı bu sonuçların kapsamında değildir.
+
 ## Randevu takibi, istatistikler ve Google aktarımı — 17 Kasım 2026
 
 | Kontrol | Sonuç |

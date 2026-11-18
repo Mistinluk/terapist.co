@@ -58,10 +58,16 @@ test sonunda geri alır; `tmp_path` kurgusal dosyaları gerçek yedeklerden ayı
 
 ## Hangi dosya hangi davranışı korur?
 
+`test_appointment_links.py`, üyesiz özel randevu sayfasının güvenlik ve
+iş kurallarını korur: farklı cihazdan tek kayda erişim, anahtar süresi ve
+yenileme, yetkisiz erişim reddi, atomik tarih değişimi, yeniden onay,
+istatistik/yanıt süresi ve aynı Google etkinliğinin güncellenmesi.
+Eşzamanlı iki tarih değişiminin aynı saati alamaması PostgreSQL'de sınanır.
+
 | Dosya | Korunan davranış |
 | --- | --- |
 | `test_security.py` | Kimliksiz erişim, roller, CSRF/Origin, oturum, TOTP tekrarı, hız sınırı, veri sızıntısı |
-| `test_appointments.py` | Üyesiz talep, zaman doğrulama, DB benzersizliği, iptal sonrası saatin açılması |
+| `test_appointments.py` | Üyesiz talep, zaman doğrulama, DB benzersizliği, iptal sonrası saatin açılması; dolan saate eski kaydı yeniden açarken 409 ve işlem geri alma |
 | `test_patient_appointments.py` | İki panelde aynı randevu, çerez sahipliği/süresi, danışan iptali, tamamlanma ve toplamlar |
 | `test_appointment_calendar.py` | Google talep/onay/iptali, yanıt kaybı, kalıcı tekrar deneme ve mükerrer kayıt önleme |
 | `test_integration.py` | Başvuru → MFA → yönetici onayı, Türkçe arama, PostgreSQL yarış koşulu, ortak Redis kotası |

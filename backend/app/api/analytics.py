@@ -294,7 +294,7 @@ def yonetim_ga_baglanti_baslat(response: Response, user: Yonetici):
             ).encode()
         ).decode(),
         httponly=True,
-        secure=settings.ortam == "uretim",
+        secure=settings.guvenli_yayin,
         samesite="lax",
         max_age=GA_CEREZ_SURESI,
         path=GA_CEREZ_YOLU,

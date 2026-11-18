@@ -54,7 +54,7 @@ app = FastAPI(
     description="Türkçe uzman dizini ve güvenli randevu talepleri.",
     docs_url=None,
     redoc_url=None,
-    openapi_url="/api/openapi.json" if settings.ortam != "uretim" else None,
+    openapi_url="/api/openapi.json" if not settings.guvenli_yayin else None,
 )
 app.add_middleware(
     TrustedHostMiddleware, allowed_hosts=settings.guvenilir_hostlar
@@ -152,9 +152,9 @@ async def guvenlik(request: Request, call_next):
     privacy_sensitive_document = profile_document
     content_security_policy = (
         "default-src 'self'; script-src 'self'; style-src 'self'"
-        + (" 'unsafe-inline'" if settings.ortam != "uretim" else "")
+        + (" 'unsafe-inline'" if not settings.guvenli_yayin else "")
         + "; img-src 'self' data: https:; connect-src 'self'"
-        + (" ws: wss:" if settings.ortam != "uretim" else "")
+        + (" ws: wss:" if not settings.guvenli_yayin else "")
         + "; frame-src 'self' https://www.youtube-nocookie.com "
         "https://www.youtube.com https://open.spotify.com; "
         "object-src 'none'; base-uri 'self'; form-action 'self'; "
@@ -188,7 +188,7 @@ async def guvenlik(request: Request, call_next):
         response.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
     if (not public_document or privacy_sensitive_document) and not media_asset:
         response.headers["Pragma"] = "no-cache"
-    if settings.ortam == "uretim":
+    if settings.guvenli_yayin:
         response.headers["Strict-Transport-Security"] = (
             "max-age=31536000; includeSubDomains"
         )

@@ -167,8 +167,12 @@ diğer alanları, randevu benzersizlik kuralını ve bağımsız denetim tablosu
 
 ## Randevu takibi ve Google Takvim
 
-Danışan, kayıt olmadan **Randevularım** sayfasından kendi tarayıcısıyla
-taleplerini takip eder. Uzman ve yönetim panelleri randevu durumlarını ve
+Danışana talep sonrası 90 gün geçerli **özel randevu bağlantısı** verilir.
+Bu bağlantıyla başka cihazdan da üyelik olmadan durum takibi, iptal ve tarih
+değişikliği yapılır. Yeni saat yeniden uzman onayına gider; aynı randevu
+kaydı korunur. Linki kaybeden danışan için uzman panelinden yenisi üretilebilir.
+**Randevularım** ayrıca aynı tarayıcıdaki talepleri listeler.
+Uzman ve yönetim panelleri randevu durumlarını ve
 toplam/onaylı/tamamlanan/iptal/reddedilen sayılarını gösterir. Google bağlantısı
 olan uzmanlarda talepler birincil Google takvimine aktarılır; danışan için
 ayrı **Google Takvim'e ekle** düğmesi vardır.

@@ -44,6 +44,8 @@ import { Avatar } from "../components/Avatar";
 import { ProfileLocation } from "../components/ProfileLocation";
 import { ProfileResources } from "../components/ProfileResources";
 import { AppointmentCalendar } from "../components/AppointmentCalendar";
+import { PrivateAppointmentLink } from "../components/AppointmentLink";
+import { AppointmentLink } from "../lib/appointments";
 import { WaitlistModal } from "../components/WaitlistModal";
 import { ProfileQrCard } from "../components/ProfileQrCard";
 import { olayBildir, profilGoruntulemeBildir } from "../lib/analytics";
@@ -668,6 +670,7 @@ export function Profile() {
   const [chosen, setChosen] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [tracking, setTracking] = useState<AppointmentLink | null>(null);
   const [busy, setBusy] = useState(false);
   const [bioExpanded, setBioExpanded] = useState(false);
   const [bookingInView, setBookingInView] = useState(false);
@@ -686,6 +689,7 @@ export function Profile() {
   useEffect(() => {
     setChosen("");
     setSuccess("");
+    setTracking(null);
     setError("");
     setBioExpanded(false);
     setWaitlistOpen(false);
@@ -831,18 +835,22 @@ export function Profile() {
     const form = event.currentTarget;
     const data = new FormData(form);
     try {
-      const result = await api<{ mesaj: string }>("/randevular", {
-        method: "POST",
-        body: JSON.stringify({
-          uzman_id: therapistId,
-          baslangic: chosen,
-          ad: data.get("ad"),
-          telefon: data.get("telefon"),
-          aydinlatma_okundu: data.has("okundu"),
-          aydinlatma_surumu: legal.data.surum,
-        }),
-      });
+      const result = await api<{ mesaj: string } & AppointmentLink>(
+        "/randevular",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            uzman_id: therapistId,
+            baslangic: chosen,
+            ad: data.get("ad"),
+            telefon: data.get("telefon"),
+            aydinlatma_okundu: data.has("okundu"),
+            aydinlatma_surumu: legal.data.surum,
+          }),
+        },
+      );
       setSuccess(result.mesaj);
+      setTracking(result);
       olayBildir("booking_submitted", {
         uzman_id: therapistId,
         uzman_kullanici_adi: p?.kullanici_adi,
@@ -1426,13 +1434,14 @@ export function Profile() {
                 <div className="notice" role="status">
                   <ShieldCheck size={20} aria-hidden="true" />
                   <p>{success}</p>
-                  <Link className="button" to="/randevularim">
-                    Randevularımı takip et
-                  </Link>
+                  {tracking && <PrivateAppointmentLink link={tracking} />}
                   <button
                     className="text-button"
                     type="button"
-                    onClick={() => setSuccess("")}
+                    onClick={() => {
+                      setSuccess("");
+                      setTracking(null);
+                    }}
                   >
                     Yeni talep oluştur
                   </button>

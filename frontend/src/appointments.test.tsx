@@ -3,7 +3,12 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import { expect, it } from "vitest";
 import { AppointmentStats } from "./components/AppointmentStats";
-import { googleCalendarUrl, PatientAppointment } from "./lib/appointments";
+import {
+  appointmentToken,
+  googleCalendarUrl,
+  PatientAppointment,
+} from "./lib/appointments";
+import { PrivateAppointmentLink } from "./components/AppointmentLink";
 import { PatientAppointmentCard } from "./pages/PatientAppointments";
 
 const booking: PatientAppointment = {
@@ -31,12 +36,62 @@ it("Google bağlantısına yalnız başlık ve doğru UTC zamanlarını koyar", 
 it("bekleyen talebi onaylı göstermeden güvenli takvim bağlantısı sunar", () => {
   const html = renderToStaticMarkup(
     <MemoryRouter>
-      <PatientAppointmentCard booking={{ ...booking, durum: "bekliyor" }} />
+      <PatientAppointmentCard
+        booking={{ ...booking, durum: "bekliyor" }}
+        onCancel={() => {}}
+      />
     </MemoryRouter>,
   );
   expect(html).toContain("Onay bekliyor");
   expect(html).toContain("noopener noreferrer");
   expect(html).toContain("Randevuyu iptal et");
+});
+
+it("yalnız eksiksiz fragment anahtarını kabul eder", () => {
+  const token = "a".repeat(43);
+  expect(appointmentToken(`#anahtar=${token}`)).toBe(token);
+  for (const hash of [
+    "",
+    `?anahtar=${token}`,
+    `#anahtar=${token}x`,
+    `#anahtar=${token}&extra=1`,
+    "#anahtar=short",
+    `#anahtar=${"%".repeat(43)}`,
+  ]) {
+    expect(appointmentToken(hash)).toBe("");
+  }
+});
+
+it("özel bağlantıda erişim uyarısı ve süreyi gösterir", () => {
+  const html = renderToStaticMarkup(
+    <MemoryRouter>
+      <PrivateAppointmentLink
+        link={{
+          takip_yolu: `/randevularim/private-id#anahtar=${"a".repeat(43)}`,
+          takip_son_kullanim: "2030-07-10T14:00:00Z",
+        }}
+      />
+    </MemoryRouter>,
+  );
+  expect(html).toContain("Randevuyu yönet");
+  expect(html).toContain("Bağlantıyı kopyala");
+  expect(html).toContain("Üyelik gerekmez");
+  expect(html).toContain("Geçerlilik:");
+  expect(html).toContain("nofollow noreferrer");
+});
+
+it("iptal edilmiş kartta iptal ve Google kopyası eylemleri bulunmaz", () => {
+  const html = renderToStaticMarkup(
+    <MemoryRouter>
+      <PatientAppointmentCard
+        booking={{ ...booking, durum: "iptal" }}
+        onCancel={() => {}}
+      />
+    </MemoryRouter>,
+  );
+  expect(html).toContain("İptal edildi");
+  expect(html).not.toContain("Randevuyu iptal et");
+  expect(html).not.toContain("calendar.google.com");
 });
 
 it("API toplamlarını tamamlanmış ve iptal edilmiş kayıtlarla gösterir", () => {

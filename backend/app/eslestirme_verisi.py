@@ -153,7 +153,7 @@ def profil_uret(index: int) -> ProfilGirdi:
 
 def veri_ekle(db: Session, settings: UretimAyarlari) -> dict:
     """Var olan hesapları, randevuları ve parolaları değiştirmeden ekler."""
-    if get_settings().ortam != "gelistirme":
+    if get_settings().ortam not in {"gelistirme", "onizleme"}:
         raise ValueError(
             "Bu komut yalnızca geliştirme ortamında kullanılabilir."
         )

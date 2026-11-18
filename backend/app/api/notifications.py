@@ -218,7 +218,9 @@ def sistem_hatirlatmalarini_senkronize_et(db: Db, user: Kullanici) -> None:
                     "randevunuz 24 saat içinde gerçekleşecek."
                 ),
                 hedef_yol="/panel?sekme=randevular",
-                kaynak_anahtari=f"yaklasan:{booking.id}",
+                kaynak_anahtari=(
+                    f"yaklasan:{booking.id}:{booking.son_talep_zamani or 0}"
+                ),
                 now=now,
             )
             if added:
@@ -229,7 +231,8 @@ def sistem_hatirlatmalarini_senkronize_et(db: Db, user: Kullanici) -> None:
             .where(
                 Randevu.uzman_id == therapist.id,
                 Randevu.durum == "bekliyor",
-                Randevu.olusturma <= now - 86400,
+                func.coalesce(Randevu.son_talep_zamani, Randevu.olusturma)
+                <= now - 86400,
             )
             .limit(10)
         ).all()
@@ -245,7 +248,10 @@ def sistem_hatirlatmalarini_senkronize_et(db: Db, user: Kullanici) -> None:
                     "talebi 24 saati aşkın süredir yanıt bekliyor."
                 ),
                 hedef_yol="/panel?sekme=randevular",
-                kaynak_anahtari=f"gecikmis_uzman:{booking.id}",
+                kaynak_anahtari=(
+                    f"gecikmis_uzman:{booking.id}:"
+                    f"{booking.son_talep_zamani or 0}"
+                ),
                 now=now,
             )
             if added:
@@ -257,7 +263,8 @@ def sistem_hatirlatmalarini_senkronize_et(db: Db, user: Kullanici) -> None:
             .join(Uzman, Uzman.id == Randevu.uzman_id)
             .where(
                 Randevu.durum == "bekliyor",
-                Randevu.olusturma <= now - 86400,
+                func.coalesce(Randevu.son_talep_zamani, Randevu.olusturma)
+                <= now - 86400,
             )
             .limit(10)
         ).all()
@@ -274,7 +281,10 @@ def sistem_hatirlatmalarini_senkronize_et(db: Db, user: Kullanici) -> None:
                     "tarihli randevu talebi 24 saattir yanıt bekliyor."
                 ),
                 hedef_yol="/yonetim?sekme=randevular",
-                kaynak_anahtari=f"gecikmis_yonetim:{booking.id}:{user.id}",
+                kaynak_anahtari=(
+                    f"gecikmis_yonetim:{booking.id}:{user.id}:"
+                    f"{booking.son_talep_zamani or 0}"
+                ),
                 now=now,
             )
             if added:

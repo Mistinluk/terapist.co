@@ -28,6 +28,7 @@ import { Profile } from "./pages/Profile";
 import { Privacy } from "./pages/Privacy";
 import { Dashboard } from "./pages/Dashboard";
 import { PatientAppointments } from "./pages/PatientAppointments";
+import { AppointmentDetails } from "./pages/AppointmentDetails";
 import { Admin } from "./pages/Admin";
 import { InvitationAccept } from "./pages/InvitationAccept";
 import { NotificationBell } from "./components/NotificationBell";
@@ -124,7 +125,17 @@ export default function App() {
   const profileRoute = isProfileRoute(location.pathname);
   return (
     <>
-      <a className="skip-link" href="#icerik">
+      <a
+        className="skip-link"
+        href="#icerik"
+        onClick={(event) => {
+          // Özel bağlantının #anahtar parçasını değiştirmeden odağı taşı.
+          event.preventDefault();
+          const main = document.getElementById("icerik");
+          main?.focus();
+          main?.scrollIntoView();
+        }}
+      >
         İçeriğe geç
       </a>
       {legal.data?.gelistirme && (
@@ -289,6 +300,7 @@ export default function App() {
       )}
       <main
         id="icerik"
+        tabIndex={-1}
         className={`container${profileRoute ? " is-profile-canvas" : ""}`}
       >
         {error && (
@@ -301,6 +313,7 @@ export default function App() {
           <Route path="/ozellikler" element={<Features />} />
           <Route path="/kesfet" element={<Directory />} />
           <Route path="/randevularim" element={<PatientAppointments />} />
+          <Route path="/randevularim/:id" element={<AppointmentDetails />} />
           <Route path="/giris" element={<Login />} />
           <Route path="/basvuru" element={<Apply />} />
           <Route path="/davet/:token" element={<InvitationAccept />} />

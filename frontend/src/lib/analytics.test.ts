@@ -65,6 +65,7 @@ describe("Özel bağlantıların ölçümden dışlanması", () => {
     "/%2564avet/SENTINEL",
     "/%invalid",
     "/randevularim",
+    "/randevularim/private-id#anahtar=private-token",
     "/RANDEVULARIM?kimlik=SENTINEL",
     "https://other.test/davet/SENTINEL",
     "//other.test/SENTINEL",

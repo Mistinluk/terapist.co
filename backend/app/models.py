@@ -332,6 +332,11 @@ class Randevu(Base):
     danisan_oturum_ozeti: Mapped[str | None] = mapped_column(
         String(64), index=True
     )
+    # Ham özel bağlantı anahtarı saklanmaz; yenileme eski linki iptal eder.
+    takip_anahtar_ozeti: Mapped[str | None] = mapped_column(String(64))
+    takip_son_kullanim: Mapped[int | None]
+    # Yeniden planlamada yanıt süresi sıfırlanır; oluşturma tarihi korunur.
+    son_talep_zamani: Mapped[int | None]
     durum: Mapped[str] = mapped_column(default="bekliyor")
     olusturma: Mapped[int]
     aydinlatma_surumu: Mapped[str]

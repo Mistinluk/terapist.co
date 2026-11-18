@@ -49,6 +49,7 @@ import {
   tarih,
 } from "../lib/api";
 import { useApi } from "../lib/useApi";
+import { AppointmentLinkButton } from "../components/AppointmentLink";
 import { Status } from "../components/Status";
 import { ProfileForm, ProfileSectionTab } from "../components/ProfileForm";
 import { ProfileResources } from "../components/ProfileResources";
@@ -1951,6 +1952,7 @@ export function Dashboard() {
                                 : "Google aktarımı bekliyor"}
                           </small>
                         )}
+                        <AppointmentLinkButton bookingId={b.id} therapist />
                         <div className="actions">
                           {b.durum === "onaylandi" &&
                             b.bitis &&

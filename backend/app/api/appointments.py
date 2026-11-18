@@ -18,13 +18,20 @@ from app.models import (
     RandevuTakvimIsi,
 )
 from app.randevu_takip import (
+    baglanti_uret,
     oturum_yaz,
     sayimlar,
     tamamlanma_dogrula,
     yeni_veya_mevcut_anahtar,
 )
 from app.randevu_takvim import kuyruga_ekle
-from app.schemas import DurumGirdi, RandevuCikti, RandevuGirdi, RandevuOzeti
+from app.schemas import (
+    DurumGirdi,
+    RandevuBaglantiCikti,
+    RandevuCikti,
+    RandevuGirdi,
+    RandevuOzeti,
+)
 from app.security import (
     AktifUzman,
     Db,
@@ -68,6 +75,7 @@ def talep(body: RandevuGirdi, request: Request, response: Response, db: Db):
     db.add(booking)
     try:
         db.flush()
+        link = baglanti_uret(booking)
         kuyruga_ekle(db, booking)
         denetle(db, "randevu.olustur", kaynak_id=booking.id)
         slot_label = tarih_etiketi(booking.baslangic)
@@ -109,8 +117,28 @@ def talep(body: RandevuGirdi, request: Request, response: Response, db: Db):
     return {
         "mesaj": "Randevu talebiniz alındı. Uzman onayı bekleniyor.",
         "randevu_id": booking.id,
-        "takip_yolu": "/randevularim",
+        **link.model_dump(mode="json"),
     }
+
+
+@router.post(
+    "/uzman/randevular/{randevu_id}/baglanti",
+    response_model=RandevuBaglantiCikti,
+)
+def danisan_baglantisi(randevu_id: str, me: AktifUzman, db: Db):
+    """Uzman kendi randevusunun linkini danışana iletmek için yenileyebilir."""
+    hiz_siniri.kontrol("takip-uret:" + me.id, 30, 3600)
+    booking = db.scalar(
+        select(Randevu)
+        .where(Randevu.id == randevu_id, Randevu.uzman_id == me.id)
+        .with_for_update()
+    )
+    if not booking:
+        raise HTTPException(404, "Randevu bulunamadı.")
+    result = baglanti_uret(booking)
+    denetle(db, "randevu.baglanti_yenile", me.kullanici_id, booking.id)
+    db.commit()
+    return result
 
 
 @router.get("/uzman/randevular", response_model=list[RandevuCikti])

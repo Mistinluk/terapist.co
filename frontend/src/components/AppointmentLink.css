@@ -1,0 +1,32 @@
+.private-appointment-link,
+.appointment-link-control,
+.appointment-change-form {
+  display: grid;
+  gap: 0.8rem;
+  min-width: 0;
+}
+.private-appointment-link {
+  padding: 1rem;
+  border: 1px solid var(--line, #374151);
+  border-radius: 12px;
+  margin: 1rem 0;
+}
+.private-appointment-link input,
+.appointment-change-form select {
+  width: 100%;
+  min-width: 0;
+}
+.private-appointment-link p {
+  margin: 0;
+}
+.appointment-link-control {
+  margin: 1rem 0;
+  grid-column: 1 / -1;
+}
+.private-appointment .appointment-change-form,
+.private-appointment .appointment-cancel-confirm {
+  padding: 1.25rem;
+  border: 1px solid var(--line, #374151);
+  border-radius: 12px;
+  margin: 1rem 0;
+}

@@ -10,6 +10,7 @@ import {
 } from "../lib/appointments";
 import { AppointmentStats } from "../components/AppointmentStats";
 import { Status } from "../components/Status";
+import { AppointmentLinkButton } from "../components/AppointmentLink";
 
 export function PatientAppointmentCard({
   booking,
@@ -40,15 +41,17 @@ export function PatientAppointmentCard({
             Google Takvim'e ekle
           </a>
         )}
-        {url && new Date(booking.baslangic).getTime() > Date.now() && (
-          <button
-            className="button secondary"
-            disabled={busy}
-            onClick={onCancel}
-          >
-            Randevuyu iptal et
-          </button>
-        )}
+        {onCancel &&
+          url &&
+          new Date(booking.baslangic).getTime() > Date.now() && (
+            <button
+              className="button secondary"
+              disabled={busy}
+              onClick={onCancel}
+            >
+              Randevuyu iptal et
+            </button>
+          )}
       </div>
     </article>
   );
@@ -100,7 +103,7 @@ export function PatientAppointments() {
   async function forget() {
     if (
       !window.confirm(
-        "Bu cihazdaki erişimi kapatırsanız randevularınızı burada tekrar göremezsiniz. Randevular iptal edilmez. Devam edilsin mi?",
+        "Önce özel randevu bağlantılarınızı saklayın. Bu cihazdaki liste erişimi kapanır; özel bağlantılar geçerli kalır ve randevular iptal edilmez. Devam edilsin mi?",
       )
     )
       return;
@@ -124,8 +127,9 @@ export function PatientAppointments() {
         ve iptal durumu 30 saniyede bir yenilenir.
       </p>
       <p className="notice">
-        Erişim bu tarayıcıda 90 gün saklanır. Çerezleri silerseniz veya başka
-        cihaz kullanırsanız bu listeye erişemezsiniz. Paylaşılan cihazda işiniz
+        Bu listeye erişim tarayıcıda 90 gün saklanır. Her randevu için özel
+        bağlantı oluşturup saklayın; başka cihazdan da takip edebilir, tarihini
+        değiştirebilir veya iptal edebilirsiniz. Paylaşılan cihazda işiniz
         bitince aşağıdaki erişimi kapatma düğmesini kullanın.
       </p>
       <AppointmentStats data={stats.data} />
@@ -154,12 +158,14 @@ export function PatientAppointments() {
         </p>
       )}
       {bookings.data?.map((booking) => (
-        <PatientAppointmentCard
-          key={booking.id}
-          booking={booking}
-          busy={busy === booking.id}
-          onCancel={() => void cancel(booking.id)}
-        />
+        <div key={booking.id}>
+          <PatientAppointmentCard
+            booking={booking}
+            busy={busy === booking.id}
+            onCancel={() => void cancel(booking.id)}
+          />
+          <AppointmentLinkButton bookingId={booking.id} />
+        </div>
       ))}
       <div className="actions">
         <button

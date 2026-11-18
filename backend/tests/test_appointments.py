@@ -142,3 +142,41 @@ def test_yetki_alanlarini_profil_girdisi_kabul_etmez(env):
     profile = client.get("/api/uzman/profil").json()
     response = client.put("/api/uzman/profil", json=profile)
     assert response.status_code == 422
+
+
+@pytest.mark.parametrize("durum", ["bekliyor", "onaylandi"])
+def test_yonetici_dolan_saate_eski_randevuyu_acamaz(env, durum):
+    """İptal sonrası dolan saati geri açmak 500 değil, 409 döndürmelidir.
+
+    Eski talep iptal olarak kalır; yeni danışanın talebi değişmez. Takvim
+    kuyruğunun sorguları da otomatik SQL yazması yapabildiği için çatışma
+    bütün durum güncellemesi boyunca ele alınmalıdır.
+    """
+    client, factory, ids, _ = env
+    body = payload(client, ids[0])
+    created = client.post("/api/randevular", json=body)
+    assert created.status_code == 201
+    cancelled_id = created.json()["randevu_id"]
+    login(client, 2)
+    path = f"/api/yonetim/randevular/{cancelled_id}/durum"
+    assert client.patch(path, json={"durum": "iptal"}).status_code == 200
+    replacement = client.post("/api/randevular", json=body)
+    assert replacement.status_code == 201
+    replacement_id = replacement.json()["randevu_id"]
+
+    result = client.patch(path, json={"durum": durum})
+    assert result.status_code == 409, result.text
+    with factory() as db:
+        assert db.get(Randevu, cancelled_id).durum == "iptal"
+        assert db.get(Randevu, replacement_id).durum == "bekliyor"
+
+    # Yeni talep de iptal edilirse eski kaydı açmak yeniden mümkün olur.
+    replacement_path = f"/api/yonetim/randevular/{replacement_id}/durum"
+    assert (
+        client.patch(replacement_path, json={"durum": "iptal"}).status_code
+        == 200
+    )
+    assert client.patch(path, json={"durum": durum}).status_code == 200
+    with factory() as db:
+        assert db.get(Randevu, cancelled_id).durum == durum
+        assert db.get(Randevu, replacement_id).durum == "iptal"

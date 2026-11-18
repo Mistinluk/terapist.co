@@ -61,6 +61,14 @@ def main() -> None:
         status, headers, _ = request(path)
         assert status == 200 and mime in headers["Content-Type"]
 
+    # SPA iç yönlendirmesi özel sayfanın gizlilik başlıklarını silmemeli.
+    for path in ("/randevularim", "/randevularim/test-id?kontrol=1"):
+        status, headers, body = request(path)
+        assert status == 200 and b"/assets/app.js" in body
+        assert headers["Cache-Control"] == "no-store"
+        assert headers["X-Robots-Tag"] == "noindex, nofollow"
+        assert headers["Referrer-Policy"] == "no-referrer"
+
     # Tekrarlanabilir gürültü PNG'nin 32 KiB altına sıkışmasını engeller.
     pixels = random.Random(42).randbytes(160 * 160 * 3)
     photo = Image.frombytes("RGB", (160, 160), pixels)

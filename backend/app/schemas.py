@@ -474,6 +474,25 @@ class RandevuOzeti(Sema):
     reddedildi: int
 
 
+class RandevuBaglantiGirdi(Sema):
+    """Anahtar yalnız POST gövdesinde taşınır; hata yanıtına yansıtılmaz."""
+
+    anahtar: SecretStr = Field(min_length=43, max_length=43)
+
+
+class RandevuTarihGirdi(RandevuBaglantiGirdi):
+    baslangic: AwareDatetime
+
+
+class RandevuBaglantiCikti(Sema):
+    takip_yolu: str
+    takip_son_kullanim: datetime
+
+
+class OzelRandevuCikti(DanisanRandevuCikti):
+    takip_son_kullanim: datetime
+
+
 class DurumGirdi(Sema):
     durum: Literal["onaylandi", "reddedildi", "iptal", "tamamlandi"]
 

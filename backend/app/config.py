@@ -14,7 +14,7 @@ class Settings(BaseSettings):
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
 
-    ortam: Literal["gelistirme", "test", "uretim"] = "gelistirme"
+    ortam: Literal["gelistirme", "test", "onizleme", "uretim"] = "gelistirme"
     # Docker geliştirmede de derlenmiş React dosyalarını sunar.
     arayuz_sunumu: Literal["vite", "derleme"] = "vite"
     # Açıkça yapılandırılır; eksik ayar sessizce SQLite'a düşmez.
@@ -52,6 +52,15 @@ class Settings(BaseSettings):
     ga4_mulk_kimligi: str = ""
     google_analitik_yonlendirme_adresi: str = ""
     medya_dizini: str = ""
+
+    @property
+    def guvenli_yayin(self) -> bool:
+        """İnternete açık önizlemede de HTTPS ve MFA zorunludur.
+
+        Önizleme kurgusal verilerle çalışır; üretimin aydınlatma metni
+        yerine geliştirme uyarısını gösterir. Güvenlik sınırları aynıdır.
+        """
+        return self.ortam in {"onizleme", "uretim"}
 
     @property
     def google_takvim_etkin(self) -> bool:
@@ -120,14 +129,14 @@ class Settings(BaseSettings):
             raise ValueError(
                 "Hız sınırı anahtarı en az 32 karakter olmalıdır."
             )
-        if self.ortam == "uretim":
+        if self.guvenli_yayin:
             if not self.veritabani_url.startswith("postgresql+psycopg://"):
                 raise ValueError("Üretimde PostgreSQL gereklidir.")
             if not self.redis_url or not self.uygulama_adresi.startswith(
                 "https://"
             ):
                 raise ValueError("Üretimde Redis ve HTTPS gereklidir.")
-            if (
+            if self.ortam == "uretim" and (
                 not self.veri_sorumlusu.strip()
                 or not self.aydinlatma_surumu.strip()
                 or self.aydinlatma_surumu == "taslak-1"
