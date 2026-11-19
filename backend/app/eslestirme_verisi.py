@@ -16,10 +16,14 @@ from app.config import get_settings
 from app.db import SessionLocal
 from app.models import Kullanici, Uzman
 from app.ornek_adresler import ornek_adres
+from app.ornek_profiller import (
+    ESLESTIRME_ETIKETI,
+    ornek_dogrulamalarini_tamamla,
+)
 from app.schemas import ProfilGirdi
 from app.security import denetle, parolalar, sifrele
 
-ETIKET = "[Kurgusal eşleştirme verisi v1]"
+ETIKET = ESLESTIRME_ETIKETI
 ADLAR = (
     "Ada Aylin Ayşe Baran Berk Burcu Can Ceren Cem Deniz Derya Ece Eda Efe "
     "Elif Emre Eren Esra Ezgi Gökçe Hakan İdil İpek Kerem Leyla Mert Nehir "
@@ -208,6 +212,7 @@ def veri_ekle(db: Session, settings: UretimAyarlari) -> dict:
                 }
             )
         added += 1
+    ornek_dogrulamalarini_tamamla(db)
     if added:
         denetle(db, "demo.eslestirme_verisi_ekle")
     return {

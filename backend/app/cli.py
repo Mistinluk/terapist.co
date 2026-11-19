@@ -32,6 +32,7 @@ from app.models import (
     baglanti_cifti,
 )
 from app.ornek_adresler import adresleri_tamamla, ornek_adres
+from app.ornek_profiller import DEMO_BIYOGRAFI, ornek_dogrulamalarini_tamamla
 from app.security import denetle, parolalar, sifrele
 
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
@@ -164,11 +165,7 @@ def demo() -> None:
                     ad=name,
                     sehir=city,
                     ilce=district,
-                    biyografi=(
-                        "Bu profil uygulamayı göstermek için hazırlanmış "
-                        "kurgusal bir örnektir. "
-                        "Gerçek bir uzmana ait değildir."
-                    ),
+                    biyografi=DEMO_BIYOGRAFI,
                     ucret=fee,
                     deneyim_yili=years,
                     adres=ornek_adres(i),
@@ -184,6 +181,7 @@ def demo() -> None:
                     ],
                 )
             )
+        ornek_dogrulamalarini_tamamla(db)
         db.commit()
     print(
         "Altı kurgusal profil oluşturuldu; örnek hesaplarla giriş kapalıdır."

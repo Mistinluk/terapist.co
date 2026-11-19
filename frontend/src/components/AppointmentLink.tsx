@@ -49,6 +49,11 @@ export function PrivateAppointmentLink({ link }: { link: LinkData }) {
         Üyelik gerekmez. Bu bağlantıyı bilen kişi randevunuzu görebilir, iptal
         edebilir veya tarihini değiştirebilir. Güvenli saklayın.
       </p>
+      <p>
+        Bu ekranı kapatmadan bağlantıyı kopyalayın. Daha sonra randevunuza
+        yalnız bu bağlantıyla ulaşabilirsiniz. Bağlantıyı kaybederseniz
+        uzmanınızdan yenisini isteyin.
+      </p>
       <small>
         Geçerlilik: {tarih(link.takip_son_kullanim)} · Türkiye saati
       </small>
@@ -57,14 +62,8 @@ export function PrivateAppointmentLink({ link }: { link: LinkData }) {
   );
 }
 
-/** Eski randevular için hasta tarayıcısı veya ilgili uzman yeni link verebilir. */
-export function AppointmentLinkButton({
-  bookingId,
-  therapist = false,
-}: {
-  bookingId: string;
-  therapist?: boolean;
-}) {
+/** Yalnız randevunun uzmanı kaybolan bağlantıyı yenileyebilir. */
+export function AppointmentLinkButton({ bookingId }: { bookingId: string }) {
   const [link, setLink] = useState<LinkData | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -73,10 +72,10 @@ export function AppointmentLinkButton({
     setError("");
     try {
       setLink(
-        await api<LinkData>(
-          `/${therapist ? "uzman" : "danisan"}/randevular/${bookingId}/baglanti`,
-          { method: "POST", body: "{}" },
-        ),
+        await api<LinkData>(`/uzman/randevular/${bookingId}/baglanti`, {
+          method: "POST",
+          body: "{}",
+        }),
       );
     } catch (cause) {
       setError((cause as Error).message);

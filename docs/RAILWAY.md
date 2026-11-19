@@ -33,6 +33,12 @@ Boş, kurgusal önizleme veritabanı için `SEED_DEMO=1` ilk dağıtımda 1006 p
 ekler. Bu hesaplarla giriş kapalıdır. Üretimde bu değişken kullanılmaz.
 Kullanıcı kayıtları ve test hesapları sonradan ayrı yönetilir.
 
+Sonraki dağıtımlarda aynı komut, eski demo üreticisinin eksik bıraktığı
+`TerapistDogrulama` kayıtlarını tamamlar. Yalnız örnek e-posta VE kurgusal
+biyografisi eşleşen, yayındaki ve doğrulama kaydı olmayan profiller seçilir.
+Mevcut `pending/rejected` kararları, gerçek başvurular, parolalar ve randevular
+değişmez. Bu işlem yalnız önizlemede `SEED_DEMO=1` ile çalışır.
+
 ## Web ayarları
 
 - `PORT=8080`.

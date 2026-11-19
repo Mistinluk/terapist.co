@@ -3,7 +3,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { api, tarih } from "../lib/api";
 import { appointmentToken, PrivateAppointment } from "../lib/appointments";
 import { useApi } from "../lib/useApi";
-import { PatientAppointmentCard } from "./PatientAppointments";
+import { PatientAppointmentCard } from "../components/PatientAppointmentCard";
 import { PrivateAppointmentLink } from "../components/AppointmentLink";
 import { Status } from "../components/Status";
 

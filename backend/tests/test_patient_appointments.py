@@ -1,26 +1,28 @@
-"""Üyesiz takip: çerez sahipliği, iptal ve sayfadan bağımsız sayım."""
+"""Özel bağlantı erişimi, kaldırılan danışan listesi ve yönetici yetkisi.
+
+Eski tarayıcı çerezleri de dahil hiçbir anonim oturum liste/istatistik
+alamaz. Tek randevu anahtarı yalnız o kaydı açar; toplamlar yönetimdedir.
+"""
 
 import time
 
+import pytest
+
 from app.models import Randevu
-from app.randevu_takip import CEREZ, OMUR
-from app.security import fernet
+from app.security import fernet, ozet
 from tests.conftest import login
-from tests.test_appointments import payload
+from tests.test_appointment_links import private, reserve
 
 
-def test_talep_iki_panelde_ve_yonetimde_gorunur(env):
-    """Aynı kayıt danışanda, uzmanda ve yönetim toplamında görünmelidir."""
-    client, _, ids, _ = env
-    response = client.post("/api/randevular", json=payload(client, ids[0]))
-    assert response.status_code == 201
-    assert "httponly" in response.headers["set-cookie"].lower()
-    assert "samesite=strict" in response.headers["set-cookie"].lower()
-    booking_id = response.json()["randevu_id"]
-    rows = client.get("/api/danisan/randevular").json()
-    assert [r["id"] for r in rows] == [booking_id]
-    assert rows[0]["durum"] == "bekliyor"
-    assert "telefon" not in rows[0] and "danisan_oturum_ozeti" not in rows[0]
+def test_talep_yalniz_ozel_baglantida_ve_yetkili_panellerde_gorunur(env):
+    """Yeni çerez oluşturulmaz; özel link ve uzman aynı kaydı gösterir."""
+    client, factory, ids, _ = env
+    result, token = reserve(client, ids[0])
+    booking_id = result["randevu_id"]
+    assert "terapist_danisan" not in client.cookies
+    with factory() as db:
+        assert db.get(Randevu, booking_id).danisan_oturum_ozeti is None
+    assert private(client, result, token).json()["durum"] == "bekliyor"
     login(client)
     assert booking_id in [
         r["id"] for r in client.get("/api/uzman/randevular").json()
@@ -31,10 +33,7 @@ def test_talep_iki_panelde_ve_yonetimde_gorunur(env):
         ).status_code
         == 204
     )
-    assert (
-        client.get("/api/danisan/randevular").json()[0]["durum"] == "onaylandi"
-    )
-    assert client.get("/api/danisan/randevu-ozeti").json()["onaylandi"] == 1
+    assert private(client, result, token).json()["durum"] == "onaylandi"
     login(client, 1)
     assert booking_id not in [
         r["id"] for r in client.get("/api/uzman/randevular").json()
@@ -43,48 +42,50 @@ def test_talep_iki_panelde_ve_yonetimde_gorunur(env):
     assert client.get("/api/yonetim/randevular").json()["ozet"]["toplam"] == 2
 
 
-def test_baska_tarayici_veya_kimlik_bilmek_erisim_vermez(env):
-    """Çerezsiz, başka ve süresi geçmiş oturum kaydı göremez/iptal edemez."""
-    client, _, ids, _ = env
-    booking_id = client.post(
-        "/api/randevular", json=payload(client, ids[0])
-    ).json()["randevu_id"]
-    cookie = client.cookies.get(CEREZ)
-    cookie_record = next(c for c in client.cookies.jar if c.name == CEREZ)
-    raw = fernet.decrypt(cookie.encode())
-    for candidate in (
-        "",
-        "bozuk",
-        fernet.encrypt(b"danisan:" + b"a" * 43).decode(),
-        fernet.encrypt_at_time(raw, int(time.time()) - OMUR - 5).decode(),
-    ):
+def test_eski_cerez_liste_istatistik_veya_anahtarsiz_islem_acamaz(env):
+    """Önceki sürümün geçerli çerezi bile yeni yetki sınırını aşamaz."""
+    client, factory, ids, _ = env
+    result, token = reserve(client, ids[0])
+    booking_id = result["randevu_id"]
+    old_token = "a" * 43
+    with factory.begin() as db:
+        db.get(Randevu, booking_id).danisan_oturum_ozeti = ozet(old_token)
+    cookie = fernet.encrypt(f"danisan:{old_token}".encode()).decode()
+    for candidate in ("", cookie):
         client.cookies.clear()
         if candidate:
-            client.cookies.set(CEREZ, candidate)
-        assert client.get("/api/danisan/randevular").json() == []
+            client.cookies.set("terapist_danisan", candidate)
+        for path in ("/randevular", "/randevu-ozeti"):
+            assert client.get("/api/danisan" + path).status_code == 404
+        for action in ("iptal", "baglanti"):
+            assert (
+                client.post(
+                    f"/api/danisan/randevular/{booking_id}/{action}", json={}
+                ).status_code
+                == 404
+            )
         assert (
             client.post(
-                f"/api/danisan/randevular/{booking_id}/iptal", json={}
+                f"/api/danisan/randevu/{booking_id}/goruntule", json={}
             ).status_code
-            == 404
+            == 422
         )
-    client.cookies.clear()
-    # Tarayıcı gibi özgün domain/path ile sakla; çıkış bunları siler.
-    client.cookies.jar.set_cookie(cookie_record)
-    assert (
-        client.post(
-            f"/api/danisan/randevular/{booking_id}/iptal", json={}
-        ).status_code
-        == 204
-    )
-    assert client.get("/api/danisan/randevu-ozeti").json()["iptal"] == 1
-    assert (
-        client.delete(
-            "/api/danisan/oturum", headers={"Content-Type": "application/json"}
-        ).status_code
-        == 204
-    )
-    assert client.get("/api/danisan/randevular").json() == []
+        assert private(client, result, "x" * 43).status_code == 404
+        assert private(client, result, token).status_code == 200
+
+
+@pytest.mark.parametrize(
+    "path", ["/ozet", "/analitik", "/randevular", "/trafik-analitigi"]
+)
+def test_genel_istatistikler_yalniz_yoneticiye_aciktir(env, path):
+    """Anonim 401, uzman 403 alır; yönetici genel sonuçları okuyabilir."""
+    client, _, _, _ = env
+    route = "/api/yonetim" + path
+    assert client.get(route).status_code == 401
+    login(client)
+    assert client.get(route).status_code == 403
+    login(client, 2)
+    assert client.get(route).status_code == 200
 
 
 def test_tamamlanma_zamani_ve_tum_sayfalarin_istatistigi(env):

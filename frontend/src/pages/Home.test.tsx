@@ -16,6 +16,8 @@ describe("Home ana sayfa kullanım amaçları ve terapist SSS", () => {
     );
 
     expect(appHtml).not.toContain("header-claim");
+    expect(appHtml).not.toContain('href="/randevularim"');
+    expect(appHtml).not.toContain("DANIŞAN ALANI");
     expect(appHtml).not.toContain("#alanini-sahiplen");
     expect(appHtml).toContain("Psikolog");
     expect(appHtml).toContain("lt-hero-role-rotator");

@@ -313,6 +313,7 @@ def robots():
         "Disallow: /panel\n"
         "Disallow: /yonetim\n"
         "Disallow: /admin\n"
+        "Disallow: /randevularim\n"
         "Disallow: /davet/\n"
         "Disallow: /r/\n"
         f"Sitemap: {_base_url()}/sitemap.xml\n"

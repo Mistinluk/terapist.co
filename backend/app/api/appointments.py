@@ -4,7 +4,7 @@ import time
 from datetime import UTC, datetime
 from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Query, Request, Response
+from fastapi import APIRouter, HTTPException, Query, Request
 from sqlalchemy import func, select, update
 from sqlalchemy.exc import IntegrityError
 
@@ -19,10 +19,8 @@ from app.models import (
 )
 from app.randevu_takip import (
     baglanti_uret,
-    oturum_yaz,
     sayimlar,
     tamamlanma_dogrula,
-    yeni_veya_mevcut_anahtar,
 )
 from app.randevu_takvim import kuyruga_ekle
 from app.schemas import (
@@ -39,7 +37,6 @@ from app.security import (
     denetle,
     hiz_siniri,
     istemci,
-    ozet,
     sifrele,
 )
 from app.services import ISTANBUL, musait_saatler, profil_bul
@@ -48,7 +45,7 @@ router = APIRouter(tags=["Randevular"])
 
 
 @router.post("/randevular", status_code=201)
-def talep(body: RandevuGirdi, request: Request, response: Response, db: Db):
+def talep(body: RandevuGirdi, request: Request, db: Db):
     hiz_siniri.kontrol("randevu:" + istemci(request), 5, 3600)
     settings = get_settings()
     if body.aydinlatma_surumu != settings.aydinlatma_surumu:
@@ -61,13 +58,11 @@ def talep(body: RandevuGirdi, request: Request, response: Response, db: Db):
     if slot not in musait_saatler(db, profile, takvim_tazeligi=60):
         db.commit()
         raise HTTPException(409, "Bu saat uygun değil. Başka bir saat seçin.")
-    token = yeni_veya_mevcut_anahtar(request)
     booking = Randevu(
         uzman_id=profile.id,
         baslangic=int(body.baslangic.timestamp()),
         bitis=int(body.baslangic.timestamp())
         + (profile.seans_suresi_dakika or 60) * 60,
-        danisan_oturum_ozeti=ozet(token),
         danisan_sifreli=sifrele({"ad": body.ad, "telefon": body.telefon}),
         olusturma=int(time.time()),
         aydinlatma_surumu=body.aydinlatma_surumu,
@@ -113,7 +108,6 @@ def talep(body: RandevuGirdi, request: Request, response: Response, db: Db):
         raise HTTPException(
             409, "Bu saat doldu. Başka bir saat seçin."
         ) from None
-    oturum_yaz(response, token)
     return {
         "mesaj": "Randevu talebiniz alındı. Uzman onayı bekleniyor.",
         "randevu_id": booking.id,

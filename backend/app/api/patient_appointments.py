@@ -1,10 +1,13 @@
-"""Çerez veya tek randevuya özel bağlantıyla üyesiz randevu yönetimi."""
+"""Yalnız tek randevuya özel bağlantıyla üyesiz randevu yönetimi.
+
+Danışan listesi, genel istatistik ve çerezle erişim uç noktaları yoktur.
+Her işlem, süresi geçmemiş özel bağlantı anahtarını doğrular.
+"""
 
 import time
 from datetime import UTC, datetime
-from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Query, Request, Response
+from fastapi import APIRouter, HTTPException, Request
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -12,72 +15,19 @@ from sqlalchemy.orm import Session
 from app.api.notifications import bildirim_ekle
 from app.models import Randevu, Uzman
 from app.randevu_takip import (
-    CEREZ,
     baglanti_dogrula,
-    baglanti_uret,
-    danisan_kosulu,
     degistirilebilir_dogrula,
-    sayimlar,
 )
 from app.randevu_takvim import kuyruga_ekle
 from app.schemas import (
-    DanisanRandevuCikti,
     OzelRandevuCikti,
-    RandevuBaglantiCikti,
     RandevuBaglantiGirdi,
-    RandevuOzeti,
     RandevuTarihGirdi,
 )
 from app.security import Db, denetle, hiz_siniri, istemci
 from app.services import ISTANBUL, musait_saatler, profil_bul
 
 router = APIRouter(prefix="/danisan", tags=["Danışan randevuları"])
-
-
-@router.get("/randevular", response_model=list[DanisanRandevuCikti])
-def liste(
-    request: Request,
-    db: Db,
-    sayfa: Annotated[int, Query(ge=1)] = 1,
-):
-    """Yalnız çerezin sahibi olan danışanın taleplerini gösterir."""
-    rows = db.execute(
-        select(Randevu, Uzman.ad)
-        .join(Uzman)
-        .where(danisan_kosulu(request))
-        .order_by(Randevu.baslangic.desc(), Randevu.id)
-        .offset((sayfa - 1) * 50)
-        .limit(50)
-    )
-    return [
-        DanisanRandevuCikti(
-            id=b.id,
-            uzman_adi=ad,
-            uzman_id=b.uzman_id,
-            durum=b.durum,
-            baslangic=datetime.fromtimestamp(b.baslangic, UTC),
-            bitis=datetime.fromtimestamp(b.bitis or b.baslangic + 3600, UTC),
-        )
-        for b, ad in rows
-    ]
-
-
-@router.get("/randevu-ozeti", response_model=RandevuOzeti)
-def ozet(request: Request, db: Db):
-    return sayimlar(db, danisan_kosulu(request))
-
-
-@router.post("/randevular/{randevu_id}/iptal", status_code=204)
-def iptal(randevu_id: str, request: Request, db: Db):
-    """Danışan yalnız kendi gelecekteki aktif talebini iptal edebilir."""
-    booking = db.scalar(
-        select(Randevu)
-        .where(Randevu.id == randevu_id, danisan_kosulu(request))
-        .with_for_update()
-    )
-    if not booking:
-        raise HTTPException(404, "Randevu bulunamadı.")
-    iptal_et(db, booking)
 
 
 def uzmana_bildir(
@@ -98,7 +48,7 @@ def uzmana_bildir(
 
 
 def iptal_et(db: Session, booking: Randevu) -> None:
-    """Çerez ve özel bağlantı aynı iptal/Google/bildirim işlemini kullanır."""
+    """Doğrulanmış özel bağlantının iptal/Google/bildirim işlemini uygular."""
     degistirilebilir_dogrula(booking)
     booking.durum = "iptal"
     kuyruga_ekle(db, booking)
@@ -110,32 +60,6 @@ def iptal_et(db: Session, booking: Randevu) -> None:
     )
     denetle(db, "randevu.danisan_iptal", kaynak_id=booking.id)
     db.commit()
-
-
-@router.delete("/oturum", status_code=204)
-def cikis(response: Response):
-    """Paylaşılan cihazda erişimi kapatır; randevuları iptal etmez."""
-    response.delete_cookie(CEREZ, path="/api")
-
-
-@router.post(
-    "/randevular/{randevu_id}/baglanti",
-    response_model=RandevuBaglantiCikti,
-)
-def baglanti_yenile(randevu_id: str, request: Request, db: Db):
-    """Rezervasyonu yapan tarayıcı link üretebilir; eski link iptal olur."""
-    hiz_siniri.kontrol("takip-uret:" + istemci(request), 30, 3600)
-    booking = db.scalar(
-        select(Randevu)
-        .where(Randevu.id == randevu_id, danisan_kosulu(request))
-        .with_for_update()
-    )
-    if not booking:
-        raise HTTPException(404, "Randevu bulunamadı.")
-    result = baglanti_uret(booking)
-    denetle(db, "randevu.baglanti_yenile", kaynak_id=booking.id)
-    db.commit()
-    return result
 
 
 def ozel_bul(

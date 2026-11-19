@@ -1,21 +1,18 @@
-"""Üyesiz danışan oturumu, durum kuralları ve randevu istatistikleri."""
+"""Tek randevuluk özel bağlantı, durum kuralları ve yetkili istatistikler."""
 
 import hmac
 import secrets
 import time
 from datetime import UTC, datetime
 
-from cryptography.fernet import InvalidToken
-from fastapi import HTTPException, Request, Response
+from fastapi import HTTPException
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.config import get_settings
 from app.models import Randevu
 from app.schemas import RandevuBaglantiCikti
-from app.security import fernet, ozet
+from app.security import ozet
 
-CEREZ = "terapist_danisan"
 OMUR = 90 * 86400
 DURUMLAR = ("bekliyor", "onaylandi", "tamamlandi", "iptal", "reddedildi")
 
@@ -59,43 +56,6 @@ def degistirilebilir_dogrula(booking: Randevu) -> None:
         booking.baslangic <= int(time.time())
     ):
         raise HTTPException(409, "Bu randevu artık değiştirilemez.")
-
-
-def oturum_anahtari(request: Request) -> str | None:
-    """HttpOnly çerezi doğrular; URL, ad veya telefon erişim anahtarı olmaz."""
-    cookie = request.cookies.get(CEREZ, "")
-    if not cookie or len(cookie) > 512:
-        return None
-    try:
-        raw = fernet.decrypt(cookie.encode(), ttl=OMUR).decode()
-    except (InvalidToken, ValueError, UnicodeError):
-        return None
-    if not raw.startswith("danisan:") or len(raw) != 51:
-        return None
-    return raw[8:]
-
-
-def oturum_yaz(response: Response, token: str) -> None:
-    """Randevu kalıcılaştıktan sonra 90 günlük tarayıcı erişimini verir."""
-    response.set_cookie(
-        CEREZ,
-        fernet.encrypt(f"danisan:{token}".encode()).decode(),
-        max_age=OMUR,
-        httponly=True,
-        samesite="strict",
-        path="/api",
-        secure=get_settings().guvenli_yayin,
-    )
-
-
-def yeni_veya_mevcut_anahtar(request: Request) -> str:
-    return oturum_anahtari(request) or secrets.token_urlsafe(32)
-
-
-def danisan_kosulu(request: Request):
-    """Çerezsiz veya bozuk çerezli istemci hiçbir satıra erişemez."""
-    token = oturum_anahtari(request)
-    return Randevu.danisan_oturum_ozeti == (ozet(token) if token else "")
 
 
 def sayimlar(db: Session, kosul) -> dict[str, int]:

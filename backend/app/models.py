@@ -329,6 +329,7 @@ class Randevu(Base):
     danisan_sifreli: Mapped[str] = mapped_column(Text)
     # Süre profil sonradan değişse de randevu oluşturulduğu gibi kalır.
     bitis: Mapped[int | None]
+    # Eski çerez akışından kalan sütun; artık yazılmaz veya yetki vermez.
     danisan_oturum_ozeti: Mapped[str | None] = mapped_column(
         String(64), index=True
     )

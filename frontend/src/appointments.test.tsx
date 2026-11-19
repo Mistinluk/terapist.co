@@ -9,7 +9,8 @@ import {
   PatientAppointment,
 } from "./lib/appointments";
 import { PrivateAppointmentLink } from "./components/AppointmentLink";
-import { PatientAppointmentCard } from "./pages/PatientAppointments";
+import { PatientAppointmentCard } from "./components/PatientAppointmentCard";
+import { AppointmentDetails } from "./pages/AppointmentDetails";
 
 const booking: PatientAppointment = {
   id: "private-id",
@@ -36,15 +37,12 @@ it("Google bağlantısına yalnız başlık ve doğru UTC zamanlarını koyar", 
 it("bekleyen talebi onaylı göstermeden güvenli takvim bağlantısı sunar", () => {
   const html = renderToStaticMarkup(
     <MemoryRouter>
-      <PatientAppointmentCard
-        booking={{ ...booking, durum: "bekliyor" }}
-        onCancel={() => {}}
-      />
+      <PatientAppointmentCard booking={{ ...booking, durum: "bekliyor" }} />
     </MemoryRouter>,
   );
   expect(html).toContain("Onay bekliyor");
   expect(html).toContain("noopener noreferrer");
-  expect(html).toContain("Randevuyu iptal et");
+  expect(html).not.toContain("Toplam");
 });
 
 it("yalnız eksiksiz fragment anahtarını kabul eder", () => {
@@ -83,15 +81,24 @@ it("özel bağlantıda erişim uyarısı ve süreyi gösterir", () => {
 it("iptal edilmiş kartta iptal ve Google kopyası eylemleri bulunmaz", () => {
   const html = renderToStaticMarkup(
     <MemoryRouter>
-      <PatientAppointmentCard
-        booking={{ ...booking, durum: "iptal" }}
-        onCancel={() => {}}
-      />
+      <PatientAppointmentCard booking={{ ...booking, durum: "iptal" }} />
     </MemoryRouter>,
   );
   expect(html).toContain("İptal edildi");
   expect(html).not.toContain("Randevuyu iptal et");
   expect(html).not.toContain("calendar.google.com");
+});
+
+it("anahtarsız özel sayfada randevu veya istatistik göstermez", () => {
+  const html = renderToStaticMarkup(
+    <MemoryRouter initialEntries={["/randevularim/private-id"]}>
+      <AppointmentDetails />
+    </MemoryRouter>,
+  );
+  expect(html).toContain("Bağlantı eksik veya geçersiz");
+  expect(html).not.toContain("appointment-card");
+  expect(html).not.toContain("appointment-stats");
+  expect(html).not.toContain("Tarihi değiştir");
 });
 
 it("API toplamlarını tamamlanmış ve iptal edilmiş kayıtlarla gösterir", () => {

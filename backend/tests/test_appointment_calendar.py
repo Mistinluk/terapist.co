@@ -3,6 +3,7 @@
 import json
 from concurrent.futures import ThreadPoolExecutor
 from threading import Event
+from urllib.parse import urlsplit
 
 import pytest
 from sqlalchemy import select
@@ -28,6 +29,7 @@ def test_talep_onay_iptal_google_ile_tutarli(env, google):
     result = client.post("/api/randevular", json=body)
     assert result.status_code == 201
     booking_id = result.json()["randevu_id"]
+    token = urlsplit(result.json()["takip_yolu"]).fragment.split("=", 1)[1]
     assert bir_is_calistir(factory)
     with factory() as db:
         job = db.get(RandevuTakvimIsi, booking_id)
@@ -49,7 +51,7 @@ def test_talep_onay_iptal_google_ile_tutarli(env, google):
     assert google.events[event_id]["status"] == "confirmed"
     assert (
         client.post(
-            f"/api/danisan/randevular/{booking_id}/iptal", json={}
+            f"/api/danisan/randevu/{booking_id}/iptal", json={"anahtar": token}
         ).status_code
         == 204
     )

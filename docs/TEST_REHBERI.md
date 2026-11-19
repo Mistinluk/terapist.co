@@ -68,7 +68,8 @@ Eşzamanlı iki tarih değişiminin aynı saati alamaması PostgreSQL'de sınan�
 | --- | --- |
 | `test_security.py` | Kimliksiz erişim, roller, CSRF/Origin, oturum, TOTP tekrarı, hız sınırı, veri sızıntısı |
 | `test_appointments.py` | Üyesiz talep, zaman doğrulama, DB benzersizliği, iptal sonrası saatin açılması; dolan saate eski kaydı yeniden açarken 409 ve işlem geri alma |
-| `test_patient_appointments.py` | İki panelde aynı randevu, çerez sahipliği/süresi, danışan iptali, tamamlanma ve toplamlar |
+| `test_patient_appointments.py` | Özel bağlantı/panel görünürlüğü, eski çerezle erişimin kapanması, yönetici istatistik yetkisi ve tamamlanma |
+| `test_ornek_profiller.py` | Kurgusal profil kısa adresleri, eksik yayın kaydı onarımı, gerçek başvuru ve inceleme kararlarının korunması |
 | `test_appointment_calendar.py` | Google talep/onay/iptali, yanıt kaybı, kalıcı tekrar deneme ve mükerrer kayıt önleme |
 | `test_integration.py` | Başvuru → MFA → yönetici onayı, Türkçe arama, PostgreSQL yarış koşulu, ortak Redis kotası |
 | `test_local_origin.py` | Yerel adres istisnası, üretim kaynak sınırı, DB kopukluğunda hazırlık yanıtı |

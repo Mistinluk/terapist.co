@@ -1,8 +1,8 @@
-"""Migration ve açıkça seçilmiş boş önizleme DB'si için örnek kurulum.
+"""Migration, boş önizleme kurulumu ve eksik demo yayın kayıtlarının onarımı.
 
 Railway pre-deploy aşamasında bir kez çalışır; HTTP worker'larında çalışmaz.
-SEED_DEMO=1 yalnız ORTAM=onizleme ile kabul edilir. Var olan uzmanlar veya
-üretim verileri değiştirilmez. Kurgusal hesapların girişi kapalıdır.
+SEED_DEMO=1 yalnız ORTAM=onizleme ile kabul edilir. Gerçek profiller ve mevcut
+inceleme kararları değiştirilmez. Kurgusal hesapların girişi kapalıdır.
 """
 
 import os
@@ -22,11 +22,14 @@ def main() -> None:
     from app.db import SessionLocal
     from app.eslestirme_verisi import UretimAyarlari, veri_ekle
     from app.models import Uzman
+    from app.ornek_profiller import ornek_dogrulamalarini_tamamla
 
     if get_settings().ortam != "onizleme":
         raise RuntimeError("SEED_DEMO yalnızca önizlemede kullanılabilir.")
-    with SessionLocal() as db:
+    with SessionLocal.begin() as db:
         if db.scalar(select(Uzman.id).limit(1)):
+            repaired = ornek_dogrulamalarini_tamamla(db)
+            print(f"Eksik kurgusal profil yayın kaydı tamamlandı: {repaired}.")
             print("Mevcut profiller korunuyor; örnek kurulum atlandı.")
             return
     demo()

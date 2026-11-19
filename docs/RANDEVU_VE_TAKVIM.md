@@ -17,7 +17,7 @@
    uzman onayına gider; aynı kayıt ve görüşme süresi korunur. İptal/değişiklik
    uzman paneline ve istatistiklere de yansır; uzmana site içi bildirim gider.
 
-### Özel bağlantı ve tarayıcı listesi
+### Yalnız özel bağlantıyla danışan erişimi
 
 Özel bağlantı `/randevularim/<kimlik>#anahtar=<rastgele-anahtar>` biçimindedir.
 **Bağlantıyı bilen kişi o randevuyu yönetebilir.** Her randevunun ayrı, 256 bit
@@ -33,15 +33,15 @@ Google etkinliğine, bildirimlere veya denetim kaydına konmaz. Özel sayfalar
 analitikten dışlanır; Nginx `no-store`, `noindex, nofollow` ve `no-referrer`
 başlıkları gönderir. Üretimde HTTPS zorunludur.
 
-Üst menüdeki **Randevularım** aynı tarayıcıda oluşturulan randevuları listeler.
-Bu liste için HttpOnly, SameSite=Strict, 90 günlük çerez kullanılır; üretimde
-Secure niteliği vardır. Bu çerezin anahtarı JavaScript'e verilmez. Çerez
-silinse bile saklanan özel bağlantılar başka cihazda çalışmaya devam eder.
-**Bu cihazdaki erişimi kapat**, yalnız liste çerezini siler; randevuları veya
-özel bağlantıları iptal etmez. Paylaşılan cihazda özel bağlantılı sekmeyi de
+Herkese açık **Danışan Alanı/Randevularım** menüsü ve tarayıcı listesi yoktur.
+Eski `/randevularim` adresi ana sayfaya yönlenir; yalnız kimlik ve geçerli
+anahtar içeren özel sayfa randevuyu açar. Danışana liste veya istatistik API'si
+sunulmaz. Eski `terapist_danisan` çerezi artık erişim sağlamaz ve yeni
+rezervasyonda bu çerez oluşturulmaz. Eski DB sütunu geçiş uyumluluğu için
+durur, fakat okunmaz/yazılmaz. Paylaşılan cihazda özel bağlantılı sekmeyi
 kapatın ve bağlantıyı tarayıcı geçmişinde bırakmayın.
 
-Bağlantı kaybolursa aynı tarayıcıdaki listeden veya uzmanın randevu panelinden
+Bağlantı kaybolursa yalnız ilgili uzmanın randevu panelinden
 **Özel bağlantı oluştur / yenile** kullanılabilir. Yeni bağlantı 90 gün geçerli
 olur ve önceki bağlantıyı hemen geçersiz kılar. Uzman bağlantıyı danışanla
 güvenli bir kanaldan paylaşabilir. Başka uzmanlar bağlantı üretemez. Otomatik
@@ -65,8 +65,9 @@ son durumu göstermeye devam eder.
 | Reddedildi | Uzman/yönetici tarafından reddedilen talepler |
 
 Bunlar mevcut durum sayılarıdır; aynı randevu iki kategoride sayılmaz.
-Danışan yalnız kendi tarayıcısının, uzman yalnız kendi randevularının,
-yönetici bütün sistemin toplamlarını görür. Yönetimdeki 7/30 günlük talep
+Danışan yalnız özel bağlantısındaki tek randevuyu görür; istatistik görmez.
+Uzman kendi randevularının, yalnız yönetici bütün sistemin toplamlarını görür.
+Yönetimdeki 7/30 günlük talep
 sayıları oluşturulma zamanına göredir. Onay oranında tamamlanmış görüşmeler
 de onaylanmış sayılır. İstatistikler kişisel ziyaretçi analitiğinden bağımsız,
 doğrudan randevu tablosundan hesaplanır.
@@ -146,8 +147,8 @@ iptalde kaldırın; güncel durum için özel randevu sayfasını kullanın.
 
 ## Doğrulama ve sınırlar
 
-`test_patient_appointments.py` iki tarafın görünürlüğünü, yetki ayrımını,
-çerez süresini, iptali ve sayfalardan bağımsız istatistikleri sınar.
+`test_patient_appointments.py` özel bağlantı/panel görünürlüğünü, eski çerezle
+liste/istatistik alınamadığını ve genel toplamların yönetici yetkisini sınar.
 `test_appointment_links.py` çerezsiz özel erişimi, anahtar yenileme/süresini,
 yetki ayrımını, atomik tarih değişimini, eşzamanlı saat çakışmasını, yeniden
 onay ve yanıt süresi hesabını, aynı Google etkinliğinin taşınmasını sınar.

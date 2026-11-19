@@ -1952,7 +1952,7 @@ export function Dashboard() {
                                 : "Google aktarımı bekliyor"}
                           </small>
                         )}
-                        <AppointmentLinkButton bookingId={b.id} therapist />
+                        <AppointmentLinkButton bookingId={b.id} />
                         <div className="actions">
                           {b.durum === "onaylandi" &&
                             b.bitis &&

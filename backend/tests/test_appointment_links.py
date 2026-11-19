@@ -48,7 +48,7 @@ def test_link_baska_cihazda_tek_kayit_acar_ve_iptal_eder(env):
     result, token = reserve(client, ids[0])
     assert len(token) == 43 and "?" not in result["takip_yolu"]
     client.cookies.clear()
-    assert client.get("/api/danisan/randevular").json() == []
+    assert client.get("/api/danisan/randevular").status_code == 404
     response = private(client, result, token)
     assert response.status_code == 200
     assert set(response.json()) == {
@@ -123,14 +123,11 @@ def test_anahtar_gereklidir_suresi_dolunca_tum_islemler_kapanir(env):
 
 
 def test_yenileme_yalniz_sahibine_acik_ve_eski_linki_kapatir(env):
-    """Tarayıcı/uzman yeni link verebilir; diğer uzman veya anonim veremez."""
+    """Yalnız ilgili uzman link yeniler; diğer uzman ve danışan yenileyemez."""
     client, _, ids, _ = env
     result, token = reserve(client, ids[0])
     route = f"/randevular/{result['randevu_id']}/baglanti"
-    issued = client.post("/api/danisan" + route, json={})
-    assert issued.status_code == 200
-    assert private(client, result, token).status_code == 404
-    token = urlsplit(issued.json()["takip_yolu"]).fragment.split("=", 1)[1]
+    assert client.post("/api/danisan" + route, json={}).status_code == 404
     client.cookies.clear()
     assert private(client, result, token).status_code == 200
     assert client.post("/api/danisan" + route, json={}).status_code == 404
@@ -174,8 +171,7 @@ def test_tarih_degisiminde_kimlik_sure_ve_sayim_korunur(env):
         datetime.fromisoformat(s) for s in slots
     ]
     assert (
-        client.get("/api/danisan/randevular").json()[0]["baslangic"]
-        == row["baslangic"]
+        private(client, result, token).json()["baslangic"] == row["baslangic"]
     )
     with factory() as db:
         stored = db.get(Randevu, row["id"])
