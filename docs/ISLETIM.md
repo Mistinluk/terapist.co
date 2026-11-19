@@ -74,6 +74,35 @@ parolaları, MFA sırlarını veya danışan adlarını gözlem araçlarına gö
 
 ## Saklama, erişim ve imha
 
+### Yönetici panelinde kalıcı silme
+
+`Yönetim → Uzmanlar → Kalıcı sil`, profil ve giriş hesabını fiziksel olarak
+kaldırır. Önizleme silme engellerini gösterir. Yönetici hedef kullanıcı adını
+aynen yazar ve **Kalıcı silmeyi onayla** düğmesine basar. İşlem geri alınamaz.
+Arşivli, geçmişsiz profillere **Arşivli** filtresinden de ulaşılabilir.
+
+- Randevu geçmişinin tamamı korunur: bekleyen, onaylanan, tamamlanan, iptal
+  edilen veya reddedilen tek bir randevu bile silmeyi engeller.
+- Bekleme listesi, yazışma ve moderasyon geçmişi bulunan hesaplar için de
+  arşiv kullanılır. Google Takvim bağlantısı varsa önce bağlantı kesilmelidir.
+- Yönetici hesapları bu uç noktayla silinemez. Yetki ve CSRF denetimi yalnız
+  arayüzde değil, sunucuda da uygulanır.
+- Geçmişsiz hesabın profil kaynakları, rozetleri, davet/mesleki bağlantıları,
+  profil ölçümleri ve oturumları temizlenir. Başka uzmanların randevuları ve
+  profilleri korunur. Diğer uzmanın verdiği davet iptal durumuna alınır.
+- Denetim kayıtları silinmez; silen yönetici ve rastgele profil kimliği
+  `uzman.kalici_sil` olayıyla kaydedilir. Parola, MFA veya danışan verisi yazılmaz.
+- Önizlemeden sonra randevu alınırsa silme tekrar denetlenerek reddedilir.
+  Profil satır kilidi, FK kontrolleri ve tek işlem sınırı kısmi silmeyi önler.
+  Paylaşılmayan yerel profil görselleri commit sonrası temizlenir; dosya sistemi
+  hatası içeriksiz uyarı üretir ve işletici tarafından ayrıca temizlenmelidir.
+
+API: `GET /api/yonetim/uzmanlar/{id}/kalici-sil` önizlemedir;
+`DELETE` aynı adrese `{"kullanici_adi":"...","kalici_sil":true}` gönderir.
+Mevcut `DELETE /api/yonetim/uzmanlar/{id}` arşivleme davranışını korur.
+
+### Arşiv ve saklama
+
 Bir uzmanı arşivlemek danışan kayıtlarını silmez. Aktif randevu varsa arşivleme
 engellenir. İmha süresi otomatik seçilmedi; sağlık hizmeti, mesleki yükümlülük ve
 somut hukuki dayanağa göre kurum belirlemelidir. İlgili kişi erişim/düzeltme/silme

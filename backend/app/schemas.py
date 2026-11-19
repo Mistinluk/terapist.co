@@ -606,6 +606,22 @@ class OnayGirdi(Sema):
     onayli: bool
 
 
+class UzmanKaliciSilGirdi(Sema):
+    """Hedef kullanıcı adı ve açık onay olmadan kalıcı silme yapılmaz."""
+
+    kullanici_adi: str = Field(min_length=1, max_length=80)
+    kalici_sil: Literal[True]
+
+
+class UzmanSilmeOzeti(Sema):
+    """Yalnız yöneticinin görebileceği, klinik veri içermeyen önizleme."""
+
+    uzman_id: str
+    kullanici_adi: str
+    silinebilir: bool
+    engeller: list[str]
+
+
 class TavsiyeOlusturGirdi(Sema):
     uzmanlik: KisaMetin
     uzman_id: str = Field(min_length=1, max_length=36)

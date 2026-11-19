@@ -67,6 +67,7 @@ Eşzamanlı iki tarih değişiminin aynı saati alamaması PostgreSQL'de sınan�
 | Dosya | Korunan davranış |
 | --- | --- |
 | `test_security.py` | Kimliksiz erişim, roller, CSRF/Origin, oturum, TOTP tekrarı, hız sınırı, veri sızıntısı |
+| `test_therapist_deletion.py` | Yönetici yetkisi, hedef/onay doğrulaması, her durumdaki randevunun korunması, sonradan gelen randevu, ilişkili kayıt temizliği, FK hatasında tam geri alma ve arşiv filtresi; PostgreSQL'de de çalışır |
 | `test_appointments.py` | Üyesiz talep, zaman doğrulama, DB benzersizliği, iptal sonrası saatin açılması; dolan saate eski kaydı yeniden açarken 409 ve işlem geri alma |
 | `test_patient_appointments.py` | Özel bağlantı/panel görünürlüğü, eski çerezle erişimin kapanması, yönetici istatistik yetkisi ve tamamlanma |
 | `test_ornek_profiller.py` | Kurgusal profil kısa adresleri, eksik yayın kaydı onarımı, gerçek başvuru ve inceleme kararlarının korunması |

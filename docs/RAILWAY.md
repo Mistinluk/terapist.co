@@ -39,6 +39,21 @@ biyografisi eşleşen, yayındaki ve doğrulama kaydı olmayan profiller seçili
 Mevcut `pending/rejected` kararları, gerçek başvurular, parolalar ve randevular
 değişmez. Bu işlem yalnız önizlemede `SEED_DEMO=1` ile çalışır.
 
+## Yönetici hesabı
+
+`api` servisinin Console ekranında, `/app` dizininden çalıştırın:
+
+```bash
+/app/.venv/bin/python -m app.cli yonetici --email adres@example.com
+```
+
+Parola iki kez etkileşimli sorulur; en az 14 karakterdir. Ardından gösterilen
+gizli anahtarı Google Authenticator'a zaman tabanlı hesap olarak ekleyin.
+Parola ve MFA anahtarı Git'e veya dağıtım günlüklerine yazılmamalıdır.
+Giriş `/giris`, yönetim paneli `/yonetim` adresindedir. Mevcut hesabın
+kurtarılması için `yonetici` yerine `kurtar` kullanılır. Console'un sistem
+Python'u paketleri görmeyebilir; bu nedenle tam `.venv` yolu kullanılır.
+
 ## Web ayarları
 
 - `PORT=8080`.

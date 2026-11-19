@@ -35,6 +35,7 @@ import { AdminInvitations } from "../components/AdminInvitations";
 import { AdminTherapistInspector } from "../components/AdminTherapistInspector";
 import { AdminTrafficAnalytics } from "../components/AdminTrafficAnalytics";
 import { NotificationsAndMessages } from "../components/NotificationsAndMessages";
+import { DeleteTherapist } from "../components/DeleteTherapist";
 
 type Audit = {
   id: string;
@@ -204,10 +205,11 @@ export function Admin() {
 
   const [page, setPage] = useState(1);
   const [approvalFilter, setApprovalFilter] = useState<
-    "tumu" | "bekleyen" | "yayinda"
+    "tumu" | "bekleyen" | "yayinda" | "arsivli"
   >("tumu");
   const [searchTerm, setSearchTerm] = useState("");
   const [editing, setEditing] = useState<Profil>();
+  const [deleting, setDeleting] = useState<Profil>();
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState("");
 
@@ -229,6 +231,7 @@ export function Admin() {
   function navigateToTab(nextTab: AdminAnalitikSekme) {
     setPage(1);
     setEditing(undefined);
+    setDeleting(undefined);
     setMessage("");
     setSearchParams(nextTab === "analitik" ? {} : { sekme: nextTab });
   }
@@ -437,6 +440,7 @@ export function Admin() {
                       ["tumu", "Tümü"],
                       ["bekleyen", "İnceleme bekliyor"],
                       ["yayinda", "Yayında"],
+                      ["arsivli", "Arşivli"],
                     ] as const
                   ).map(([key, label]) => (
                     <button
@@ -466,6 +470,22 @@ export function Admin() {
                 </label>
               </div>
 
+              {deleting && (
+                <DeleteTherapist
+                  key={deleting.id}
+                  profile={deleting}
+                  onClose={() => setDeleting(undefined)}
+                  onDeleted={() => {
+                    setMessage(
+                      `${deleting.ad} ve giriş hesabı kalıcı olarak silindi.`,
+                    );
+                    setEditing(undefined);
+                    setDeleting(undefined);
+                    refreshCore();
+                  }}
+                />
+              )}
+
               <Status
                 loading={profiles.loading}
                 error={profiles.error}
@@ -493,7 +513,11 @@ export function Admin() {
                       <span
                         className={`status-badge ${p.onayli ? "onaylandi" : "bekliyor"}`}
                       >
-                        {p.onayli ? "Yayında" : "İnceleme bekliyor"}
+                        {p.arsivli
+                          ? "Arşivli"
+                          : p.onayli
+                            ? "Yayında"
+                            : "İnceleme bekliyor"}
                       </span>
                       {p.kurucu_no !== null && (
                         <span className="status-badge founder">
@@ -505,7 +529,7 @@ export function Admin() {
                       <button
                         className="button"
                         type="button"
-                        disabled={busy === p.id}
+                        disabled={busy === p.id || p.arsivli || !!deleting}
                         onClick={() => updateTherapist(p)}
                       >
                         {p.onayli ? "Yayından kaldır" : "Onayla"}
@@ -513,6 +537,7 @@ export function Admin() {
                       <button
                         className="button secondary"
                         type="button"
+                        disabled={p.arsivli || !!deleting}
                         onClick={() => setEditing(p)}
                       >
                         İncele / düzenle
@@ -520,10 +545,18 @@ export function Admin() {
                       <button
                         className="button danger"
                         type="button"
-                        disabled={busy === p.id}
+                        disabled={busy === p.id || p.arsivli || !!deleting}
                         onClick={() => updateTherapist(p, true)}
                       >
                         Arşivle
+                      </button>
+                      <button
+                        className="button danger"
+                        type="button"
+                        disabled={!!busy || !!deleting}
+                        onClick={() => setDeleting(p)}
+                      >
+                        Kalıcı sil
                       </button>
                     </div>
                   </article>

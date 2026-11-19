@@ -69,7 +69,8 @@ class Uzman(Base):
 
     kullanici_id üzerindeki unique kısıtı bire bir eşlemeyi sağlar.
     ucret tam TL, deneyim_yili tam yıldır; adres yayımlanan iş adresidir.
-    onayli/arsivli dizin görünürlüğünü belirler, silme yerine arşiv kullanılır.
+    onayli/arsivli dizin görünürlüğünü belirler. Randevu geçmişi varsa yalnız
+    arşiv kullanılır; geçmişsiz hesaplar yönetici onayıyla kalıcı silinebilir.
     Liste alanları profil etiketlerini, calisma_saatleri haftalık programı
     tutar: gun=0 Pazartesi, baslangic/bitis saatleri İstanbul saatindedir.
     """

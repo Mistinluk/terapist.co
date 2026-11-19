@@ -1,0 +1,25 @@
+.admin-dashboard .admin-delete-panel form {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-dashboard .admin-delete-panel p,
+.admin-dashboard .admin-delete-panel li {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.admin-delete-panel ul {
+  margin: 0;
+  padding-inline-start: 24px;
+}
+
+.admin-delete-panel label {
+  display: grid;
+  gap: 6px;
+}
+
+.admin-delete-panel input {
+  width: 100%;
+  max-width: 32rem;
+}

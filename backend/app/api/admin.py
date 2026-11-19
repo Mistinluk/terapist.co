@@ -48,11 +48,14 @@ from app.schemas import (
     OnayGirdi,
     ProfilCikti,
     ProfilGirdi,
+    UzmanKaliciSilGirdi,
+    UzmanSilmeOzeti,
     YonetimRandevuBildirimGirdi,
     YonetimRandevuDurumGirdi,
     YonetimTemaYetkisiGirdi,
 )
 from app.security import Db, Yonetici, coz, denetle
+from app.uzman_silme import kalici_sil, silme_engelleri
 
 router = APIRouter(prefix="/yonetim", tags=["Yönetim"])
 
@@ -62,10 +65,10 @@ def uzmanlar(
     user: Yonetici,
     db: Db,
     sayfa: Annotated[int, Query(ge=1)] = 1,
-    onay: Literal["tumu", "bekleyen", "yayinda"] = "tumu",
+    onay: Literal["tumu", "bekleyen", "yayinda", "arsivli"] = "tumu",
     arama: Annotated[str, Query(max_length=120)] = "",
 ):
-    query = select(Uzman).where(Uzman.arsivli.is_(False))
+    query = select(Uzman).where(Uzman.arsivli.is_(onay == "arsivli"))
     if onay == "bekleyen":
         query = query.where(Uzman.onayli.is_(False))
     elif onay == "yayinda":
@@ -235,6 +238,36 @@ def arsivle(uzman_id: str, user: Yonetici, db: Db):
     )
     denetle(db, "uzman.arsivle", user.id, uzman_id)
     db.commit()
+
+
+@router.get("/uzmanlar/{uzman_id}/kalici-sil", response_model=UzmanSilmeOzeti)
+def silme_ozeti(uzman_id: str, user: Yonetici, db: Db):
+    """Arşivli profiller dahil silme engellerini değiştirmeden gösterir."""
+    profile = db.get(Uzman, uzman_id)
+    if not profile:
+        raise HTTPException(404, "Uzman bulunamadı.")
+    account = db.get(Kullanici, profile.kullanici_id)
+    reasons = silme_engelleri(db, profile, account)
+    return UzmanSilmeOzeti(
+        uzman_id=profile.id,
+        kullanici_adi=profile.kullanici_adi,
+        silinebilir=not reasons,
+        engeller=reasons,
+    )
+
+
+@router.delete("/uzmanlar/{uzman_id}/kalici-sil", status_code=204)
+def uzmani_kalici_sil(
+    uzman_id: str, body: UzmanKaliciSilGirdi, user: Yonetici, db: Db
+):
+    """Mevcut DELETE/arşiv sözleşmesini değiştirmeyen ayrı silme işlemi."""
+    profile = db.get(Uzman, uzman_id, with_for_update=True)
+    if not profile:
+        raise HTTPException(404, "Uzman bulunamadı.")
+    if body.kullanici_adi != profile.kullanici_adi:
+        raise HTTPException(409, "Onay için kullanıcı adı eşleşmelidir.")
+    account = db.get(Kullanici, profile.kullanici_id, with_for_update=True)
+    kalici_sil(db, profile, account, user.id)
 
 
 def _sayim(db: Db, stmt) -> int:
