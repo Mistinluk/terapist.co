@@ -16107,6 +16107,11 @@ body:has(.bento-profile) {
   flex-shrink: 0;
 }
 
+.seo-comparison-section {
+  /* Grid öğesi tablonun minimum genişliğine değil, ekrana sığar. */
+  min-width: 0;
+}
+
 .seo-comparison-table-wrap {
   overflow-x: auto;
   border-radius: 26px;
@@ -16119,6 +16124,14 @@ body:has(.bento-profile) {
   width: 100%;
   border-collapse: collapse;
   min-width: 640px;
+  /* Genel yönetim tablosunun siyah çerçevesini burada kullanma. */
+  border: 0;
+  background: #ffffff;
+}
+
+.seo-comparison-table-wrap:focus-visible {
+  outline: 3px solid var(--lt-cobalt-600);
+  outline-offset: 4px;
 }
 
 .seo-comparison-table th,
@@ -16148,6 +16161,10 @@ body:has(.bento-profile) {
 .seo-comparison-table tbody th {
   font-weight: 700;
   color: var(--lt-ink-950);
+  /* Genel th stili koyu yazıyı siyah zeminde okunmaz hale getirir. */
+  background: #f8faff;
+  text-transform: none;
+  letter-spacing: normal;
   width: 26%;
 }
 

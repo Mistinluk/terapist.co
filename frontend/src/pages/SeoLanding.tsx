@@ -535,7 +535,7 @@ export function SeoDetailPage() {
       </section>
 
       <section
-        className="home-section lt-tonal-section lt-tonal-ivory"
+        className="home-section lt-tonal-section lt-tonal-ivory seo-comparison-section"
         aria-labelledby="comparison-table-title"
       >
         <div className="home-section-heading lt-section-heading">
@@ -546,8 +546,16 @@ export function SeoDetailPage() {
           <p>{page.comparisonSubtitle}</p>
         </div>
 
-        <div className="seo-comparison-table-wrap">
-          <table className="seo-comparison-table">
+        <div
+          className="seo-comparison-table-wrap"
+          role="region"
+          aria-label="Kaydırılabilir karşılaştırma tablosu"
+          tabIndex={0}
+        >
+          <table
+            className="seo-comparison-table"
+            aria-labelledby="comparison-table-title"
+          >
             <thead>
               <tr>
                 <th scope="col">Klinik kriter ve özellik</th>
