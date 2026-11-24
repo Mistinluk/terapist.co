@@ -38,31 +38,31 @@ const SECTION_TABS: {
 }[] = [
   {
     id: "kimlik",
-    label: "Kimlik & Ücret",
+    label: "Kimlik ve ücret",
     shortLabel: "Kimlik",
     icon: UserRound,
   },
   {
     id: "uzmanlik",
-    label: "Uzmanlık & Eğitim",
+    label: "Uzmanlık ve eğitim",
     shortLabel: "Uzmanlık",
     icon: Briefcase,
   },
   {
     id: "takvim",
-    label: "Takvim & Saatler",
+    label: "Takvim ve saatler",
     shortLabel: "Takvim",
     icon: Calendar,
   },
   {
     id: "baglantilar",
-    label: "Sosyal & Paylaşımlar",
+    label: "Sosyal bağlantılar",
     shortLabel: "Bağlantılar",
     icon: Share2,
   },
   {
     id: "tumu",
-    label: "Tümünü Aç",
+    label: "Tümünü aç",
     shortLabel: "Tümü",
     icon: Layers,
   },
@@ -96,25 +96,25 @@ const WIZARD_STEPS = [
   {
     id: 0,
     number: "01",
-    title: "Adres & Hesap",
+    title: "Adres ve hesap",
     subtitle: "Profil bağlantınız ve giriş bilgileriniz",
   },
   {
     id: 1,
     number: "02",
-    title: "Mesleki Kimlik",
+    title: "Mesleki kimlik",
     subtitle: "Tanıtım, fotoğraf ve görüşme ücreti",
   },
   {
     id: 2,
     number: "03",
-    title: "Uzmanlık & Eğitim",
+    title: "Uzmanlık ve eğitim",
     subtitle: "Çalışma alanlarınız, ekoller ve bağlantılar",
   },
   {
     id: 3,
     number: "04",
-    title: "Görüşme Takvimi",
+    title: "Görüşme takvimi",
     subtitle: "Haftalık uygun saatleriniz ve onay",
   },
 ];
@@ -127,6 +127,13 @@ const socialKeys = [
   "youtube",
   "website",
 ] as const;
+const socialLabels: Record<(typeof socialKeys)[number], string> = {
+  instagram: "Instagram",
+  linkedin: "LinkedIn",
+  x: "X",
+  youtube: "YouTube",
+  website: "Web sitesi",
+};
 export function readProfile(form: FormData): ProfilGirdi {
   const text = (key: string) => String(form.get(key) || "").trim();
   const list = (key: string) =>
@@ -888,7 +895,7 @@ export function ProfileForm({
           <div className="subcard-body">
             <div className="form-grid compact-triple-grid">
               {field("egitim_universite", "Üniversite", false, 150)}
-              {field("egitim_program", "Program / Bölüm", false, 150)}
+              {field("egitim_program", "Program / bölüm", false, 150)}
               {field("egitim_derece", "Akademik derece", false, 100)}
             </div>
             <div className="form-grid">
@@ -910,11 +917,7 @@ export function ProfileForm({
         <div className="form-grid compact-pair-grid">
           {socialKeys.map((key) => (
             <label className="field" key={key}>
-              {key === "website"
-                ? "Web sitesi"
-                : key === "x"
-                  ? "X"
-                  : key[0].toUpperCase() + key.slice(1)}
+              {socialLabels[key]}
               <input
                 name={`sosyal_${key}`}
                 type="url"

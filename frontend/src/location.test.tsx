@@ -15,7 +15,7 @@ const profile = {
   ad: "Haritaya Gönderilmeyen Ad",
 };
 
-describe("Google Maps profil bağlantısı", () => {
+describe("Google Haritalar profil bağlantısı", () => {
   it("Türkçe adresi tek query olarak kodlar ve sekme/referrer korumalarını korur", () => {
     const html = renderToStaticMarkup(<ProfileLocation profile={profile} />);
     const url = new URL(
@@ -37,7 +37,7 @@ describe("Google Maps profil bağlantısı", () => {
     const html = renderToStaticMarkup(
       <ProfileLocation profile={{ ...profile, adres: "  " }} />,
     );
-    expect(html).toContain("Bölgeyi Google Maps’te aç");
+    expect(html).toContain("Bölgeyi Google Haritalar’da aç");
     expect(html).toContain("harita yalnızca ilçe/şehir bölgesini gösterir");
     expect(
       renderToStaticMarkup(

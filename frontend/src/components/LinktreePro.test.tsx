@@ -244,7 +244,7 @@ describe("Linktree Pro & Mikro-Site bilesenleri", () => {
     expect(html).toContain('role="dialog"');
     expect(html).toContain('aria-modal="true"');
     expect(html).toContain("Bekleme listesine katıl");
-    expect(html).toContain("Görüşme formatı tercihi");
+    expect(html).toContain("Görüşme şekli tercihi");
     expect(html).toContain("Uygun zaman aralığı");
     expect(html).toContain("Aydınlatma metnini okudum.");
     expect(html).not.toContain("Şikayetiniz");
@@ -300,8 +300,8 @@ describe("Linktree Pro & Mikro-Site bilesenleri", () => {
 
     expect(html).toContain("<svg");
     expect(html).toContain("/selin-kaya?utm_source=qr");
-    expect(html).toContain("Masa Kartı İndir (PNG)");
-    expect(html).toContain("Vektör İndir (SVG)");
+    expect(html).toContain("Masa kartını indir (PNG)");
+    expect(html).toContain("Vektör olarak indir (SVG)");
   });
 
   it("ProfileResources sahibi modunda bağlantılar başlığı, alt aksiyon sırası, gömülü bant kaldırma ve paylaş butonunu render eder", () => {
@@ -367,14 +367,12 @@ describe("Linktree Pro & Mikro-Site bilesenleri", () => {
     expect(DESIGN_STYLES.map((item) => item.label)).toEqual([
       "Klinik Modern",
       "Editoryal Klinik",
-      "Organik Mindfulness",
-      "Yumuşak Cam Studio",
+      "Doğal sakinlik",
+      "Yumuşak cam",
     ]);
     expect(THEME_PRESETS).toHaveLength(8);
     expect(BUTTON_STYLES).toHaveLength(6);
-    expect(BUTTON_STYLES.map((item) => item.label)).toContain(
-      "Çerçeveli Kontür",
-    );
+    expect(BUTTON_STYLES.map((item) => item.label)).toContain("Çerçeveli");
     expect(BUTTON_STYLES.map((item) => item.label)).toContain("Buzlu Cam");
     expect(FONT_PAIRINGS).toHaveLength(4);
     expect(FONT_PAIRINGS.map((item) => item.label)).toContain(
@@ -411,9 +409,7 @@ describe("Linktree Pro & Mikro-Site bilesenleri", () => {
       </MemoryRouter>,
     );
     expect(customizerHtml).toContain("/selin-kaya?utm_source=qr");
-    expect(customizerHtml).toContain(
-      "Arka Plan Görseli (Unsplash / Açık Kaynak)",
-    );
+    expect(customizerHtml).toContain("Arka plan görseli");
     expect(customizerHtml).toContain('id="theme-bg-image-url"');
     expect(customizerHtml).toContain("Sakin Kıyı");
     expect(customizerHtml).toContain("microsite-preview-frame has-bg-image");
@@ -428,7 +424,7 @@ describe("Linktree Pro & Mikro-Site bilesenleri", () => {
         <Dashboard />
       </MemoryRouter>,
     );
-    expect(dashHtml).toContain("Görünüm, QR &amp; White-Label");
+    expect(dashHtml).toContain("Görünüm ve QR kodu");
     expect(dashHtml).not.toContain('style="');
   });
 
@@ -445,11 +441,11 @@ describe("Linktree Pro & Mikro-Site bilesenleri", () => {
     expect(html).toContain("Vurgulu");
     expect(html).toContain("Şifreli");
     expect(html).toContain("Spotify");
-    expect(html).toContain("%61.5 pay · %8 T.O.");
+    expect(html).toContain("%61,5 pay · %8 T.O.");
     expect(html).toContain("Bekleme listesi başvurusu");
     expect(html).toContain("Gömülü medya oynatma");
     expect(html).toContain("QR kart taraması");
-    expect(html).toContain("Şifreli link açılışı");
+    expect(html).toContain("Şifreli bağlantı açılışı");
     expect(html).toContain('<progress class="analytics-link-progress"');
     const linkSection = html.slice(
       html.indexOf("analytics-link-performance-card"),
@@ -482,7 +478,7 @@ describe("Linktree Pro & Mikro-Site bilesenleri", () => {
       </MemoryRouter>,
     );
 
-    expect(html).toContain("Tema &amp; White-Label");
+    expect(html).toContain("Tema ve marka görünürlüğü");
     expect(html).toContain("#15803d");
     expect(html).toContain("Özel tema yetkisini kaldır");
     expect(html).toContain(
@@ -520,8 +516,8 @@ describe("Linktree Pro & Mikro-Site bilesenleri", () => {
     expect(html).toContain('/brand/terapistco-icon.png"');
     expect(html).toContain("profile-corner-qr");
     expect(html).toContain("bento-avatar is-founding is-verified");
-    expect(html).toContain("Founding #0004");
-    expect(html).toContain('aria-label="Founding Therapist #0004"');
+    expect(html).toContain("Kurucu #0004");
+    expect(html).toContain('aria-label="Kurucu terapist #0004"');
     expect(html).toContain("profile-name-row has-verified");
     expect(html).toContain("Doğrulanmış Uzman");
     expect(html.indexOf("bento-identity-bar")).toBeLessThan(

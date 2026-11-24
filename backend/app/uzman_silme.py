@@ -54,13 +54,14 @@ def silme_engelleri(
     checks = [
         (
             select(Randevu.id).where(Randevu.uzman_id == profile.id),
-            "Randevu geçmişi var (iptal edilenler dahil). Arşivle kullanın.",
+            "Randevu geçmişi var (iptal edilenler dahil). "
+            "Arşivleme seçeneğini kullanın.",
         ),
         (
             select(BeklemeListesiKaydi.id).where(
                 BeklemeListesiKaydi.uzman_id == profile.id
             ),
-            "Bekleme listesi kayıtları var. Arşivle kullanın.",
+            "Bekleme listesi kayıtları var. Arşivleme seçeneğini kullanın.",
         ),
         (
             select(MesajKonusu.id).where(
@@ -69,7 +70,7 @@ def silme_engelleri(
                     MesajKonusu.katilimci_b_id == account.id,
                 )
             ),
-            "Yazışma geçmişi var. Arşivle kullanın.",
+            "Yazışma geçmişi var. Arşivleme seçeneğini kullanın.",
         ),
         (
             select(ModerasyonRaporu.id).where(
@@ -78,7 +79,7 @@ def silme_engelleri(
                     ModerasyonRaporu.hedef_uzman_id == profile.id,
                 )
             ),
-            "Moderasyon geçmişi var. Arşivle kullanın.",
+            "Moderasyon geçmişi var. Arşivleme seçeneğini kullanın.",
         ),
         (
             select(GoogleTakvimBaglantisi.id).where(
@@ -196,7 +197,7 @@ def kalici_sil(
         raise HTTPException(
             409,
             "Uzmanın ilişkili kayıtları var. Kalıcı silme uygulanmadı; "
-            "Arşivle kullanın.",
+            "arşivleme seçeneğini kullanın.",
         ) from None
     # Dosya silme DB commit'inden sonra yapılır; rollback durumunda görsel
     # kaybolmaz. Başka bir profilin kullandığı veya harici URL silinmez.

@@ -29,7 +29,7 @@ const categories = [
   { value: "hepsi", label: "Hepsi" },
   { value: "yazi", label: "Yazılar" },
   { value: "kitap", label: "Kitaplar" },
-  { value: "podcast", label: "Podcast" },
+  { value: "podcast", label: "Podcastler" },
   { value: "diger", label: "Diğer" },
 ] as const;
 
@@ -403,7 +403,7 @@ export function ProfileResources({
       {isOwner && !ordered.length && !resources.loading && (
         <p className="muted">
           BDT/Şema form bağlantıları, grup terapisi duyuruları, Spotify
-          mindfulness listeleri veya YouTube psiko-eğitim videoları ekleyin.
+          farkındalık listeleri veya YouTube psikoeğitim videoları ekleyin.
         </p>
       )}
       {editing && (
@@ -420,7 +420,7 @@ export function ProfileResources({
               required
               minLength={3}
               maxLength={120}
-              placeholder="Örn. BDT Düşünce Kaydı Formu veya Haftalık Mindfulness"
+              placeholder="Örn. BDT Düşünce Kaydı Formu veya Haftalık Farkındalık"
               defaultValue={editingResource?.baslik}
             />
           </label>
@@ -474,7 +474,7 @@ export function ProfileResources({
           </label>
 
           <fieldset className="resource-pro-fieldset">
-            <legend>Pro özellik</legend>
+            <legend>Gelişmiş özellik</legend>
 
             <input
               type="hidden"
@@ -511,7 +511,7 @@ export function ProfileResources({
                 <input
                   name="vurgu_etiketi"
                   maxLength={40}
-                  placeholder="Örn. Öncelikli, Acil Destek, Yeni Grup"
+                  placeholder="Örn. Öncelikli, Acil destek, Yeni grup"
                   defaultValue={editingResource?.vurgu_etiketi ?? ""}
                 />
               </label>
@@ -593,8 +593,8 @@ export function ProfileResources({
                     <MousePointerClick size={18} />
                   </span>
                   <span className="resource-display-option-copy">
-                    <strong>Buton şeklinde</strong>
-                    <span>Klasik bağlantı butonu olarak listelenir</span>
+                    <strong>Düğme şeklinde</strong>
+                    <span>Klasik bağlantı düğmesi olarak listelenir</span>
                   </span>
                 </button>
                 <button
@@ -651,7 +651,7 @@ export function ProfileResources({
                   <input
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
-                    placeholder="Bağlantılarda ara..."
+                    placeholder="Bağlantılarda ara…"
                   />
                 </label>
                 <label className="resource-sort">
@@ -768,7 +768,7 @@ export function ProfileResources({
                               >
                                 <span className="resource-category">
                                   <Lock size={12} aria-hidden="true" /> Şifreli
-                                  Form
+                                  form
                                 </span>
                                 <span className="resource-link-copy">
                                   <span className="resource-title-line">

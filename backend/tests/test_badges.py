@@ -109,6 +109,28 @@ def test_rozet_gorseli_yayinlanir_ve_tiklama_pasaporta_gider(env):
         assert columns == {"id", "rozet_id", "olay", "zaman"}
 
 
+def test_rozet_csp_yalniz_gomulu_logoya_izin_verir(env):
+    """SVG logosu açılırken diğer yanıtların kaynak izinleri genişlemez."""
+    client, _, _, _ = env
+    login(client)
+    badge = client.post("/api/uzman/website-badge", json={}).json()
+    badge_path = f"/badge/{badge['id']}.svg"
+
+    for response in (client.get(badge_path), client.head(badge_path)):
+        assert response.headers["content-security-policy"] == (
+            "default-src 'none'; img-src data:; frame-ancestors 'none'"
+        )
+
+    for response in (
+        client.get("/api/saglik"),
+        client.get("/badge/gecersiz.svg"),
+        client.get(f"/badge/{badge['id']}/click", follow_redirects=False),
+    ):
+        assert response.headers["content-security-policy"] == (
+            "default-src 'none'; frame-ancestors 'none'"
+        )
+
+
 def test_dogrulamasi_kalkan_rozet_yayinlanmaz_ve_tiklama_izlenmez(env):
     client, factory, ids, _ = env
     login(client)

@@ -26,7 +26,7 @@ export function InvitationAccept() {
         {invitation.data && (
           <p className="muted">
             {invitation.data.davet_eden} sizi meslektaşı olarak davet etti.
-            Hesabınız doğrulama incelemesinden sonra yayınlanır.
+            Profiliniz, doğrulama incelemesinin ardından yayımlanır.
           </p>
         )}
       </div>

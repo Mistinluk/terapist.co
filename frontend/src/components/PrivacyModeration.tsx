@@ -13,36 +13,36 @@ const visibilityOptions: Array<{
     key: "davet_edeni_goster",
     label: "Davet eden terapisti göster",
     description:
-      "Davet yoluyla oluşan ilişki türünü mesleki ağınızda yayınlar.",
+      "Davet yoluyla oluşan ilişki türünü mesleki ağınızda yayımlar.",
   },
   {
     key: "mesleki_agi_goster",
     label: "Mesleki ağı göster",
     description:
-      "Kabul edilmiş profesyonel bağlantılarınızı açık profilde yayınlar.",
+      "Kabul edilmiş profesyonel bağlantılarınızı açık profilde yayımlar.",
   },
   {
     key: "uzmanlik_iliskilerini_goster",
     label: "Alan ilişkilendirmelerini göster",
     description:
-      "Meslektaşların profilinizle ilişkilendirdiği alan sayılarını yayınlar.",
+      "Meslektaşların profilinizle ilişkilendirdiği alan sayılarını yayımlar.",
   },
   {
     key: "tavsiyeleri_goster",
     label: "Terapist önerilerini göster",
     description:
-      "Çalışmadığınız alanlar için önerdiğiniz meslektaşları yayınlar.",
+      "Çalışmadığınız alanlar için önerdiğiniz meslektaşları yayımlar.",
   },
   {
     key: "yonlendirme_agini_goster",
     label: "Yönlendirme ağını göster",
     description:
-      "Danışan bilgisi veya yönlendirme nedeni olmadan yönlendirdiğiniz terapistleri açık profilinizde yayınlar.",
+      "Danışan bilgisi veya yönlendirme nedeni olmadan yönlendirdiğiniz terapistleri açık profilinizde yayımlar.",
   },
   {
     key: "kurucu_durumunu_goster",
-    label: "Founding Therapist durumunu göster",
-    description: "Kurucu numaranızı açık profilinizde yayınlar.",
+    label: "Kurucu terapist durumunu göster",
+    description: "Kurucu numaranızı açık profilinizde yayımlar.",
   },
 ];
 

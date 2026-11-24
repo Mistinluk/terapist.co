@@ -41,10 +41,10 @@ const typeMeta: Record<
     badgeClass: "is-system",
   },
   randevu_guncelleme: {
-    label: "Randevu güncelleme",
+    label: "Randevu güncellemesi",
     badgeClass: "is-update",
   },
-  admin_notu: { label: "Mesaj / Duyuru", badgeClass: "is-note" },
+  admin_notu: { label: "Mesaj / duyuru", badgeClass: "is-note" },
 };
 
 function NotificationIcon({ tur }: { tur: SiteBildirimTuru }) {
@@ -437,7 +437,7 @@ export function NotificationsAndMessages({
             </header>
 
             {loadingHub && threadsData.konular.length === 0 ? (
-              <p className="msg-empty-hint">Konuşmalar yükleniyor...</p>
+              <p className="msg-empty-hint">Konuşmalar yükleniyor…</p>
             ) : threadsData.konular.length === 0 ? (
               <div className="msg-empty-sidebar">
                 <p>Henüz başlatılmış bir mesaj konusu yok.</p>
@@ -556,7 +556,7 @@ export function NotificationsAndMessages({
                     rows={5}
                     value={newBody}
                     onChange={(e) => setNewBody(e.target.value)}
-                    placeholder="İletmek istediğiniz mesajı detaylıca yazabilirsiniz..."
+                    placeholder="İletmek istediğiniz mesajı ayrıntılı olarak yazabilirsiniz…"
                     minLength={2}
                     maxLength={2000}
                     required
@@ -582,14 +582,14 @@ export function NotificationsAndMessages({
                   >
                     <Send size={15} aria-hidden="true" />
                     <span>
-                      {sendingNew ? "Gönderiliyor..." : "Mesajı gönder"}
+                      {sendingNew ? "Gönderiliyor…" : "Mesajı gönder"}
                     </span>
                   </button>
                 </div>
               </form>
             ) : loadingThread ? (
               <div className="msg-empty-main">
-                <p>Mesaj geçmişi yükleniyor...</p>
+                <p>Mesaj geçmişi yükleniyor…</p>
               </div>
             ) : threadDetail ? (
               <div className="msg-conversation">
@@ -602,7 +602,7 @@ export function NotificationsAndMessages({
                     </span>
                     <h3>{threadDetail.baslik}</h3>
                     <p>
-                      Kimden / Muhatap:{" "}
+                      Gönderen / alıcı:{" "}
                       <strong>{threadDetail.karsi_taraf.ad}</strong>
                       {threadDetail.karsi_taraf.unvan
                         ? ` · ${threadDetail.karsi_taraf.unvan}`
@@ -636,12 +636,12 @@ export function NotificationsAndMessages({
                   onSubmit={(e) => void handleSendReply(e)}
                 >
                   <label className="msg-form-field">
-                    <span>Cevap yazın</span>
+                    <span>Yanıt yazın</span>
                     <textarea
                       rows={3}
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}
-                      placeholder={`${threadDetail.karsi_taraf.ad} için yanıtınızı yazın...`}
+                      placeholder={`${threadDetail.karsi_taraf.ad} için yanıtınızı yazın…`}
                       minLength={1}
                       maxLength={2000}
                       required
@@ -655,7 +655,7 @@ export function NotificationsAndMessages({
                     >
                       <Send size={15} aria-hidden="true" />
                       <span>
-                        {sendingReply ? "Gönderiliyor..." : "Cevap gönder"}
+                        {sendingReply ? "Gönderiliyor…" : "Yanıt gönder"}
                       </span>
                     </button>
                   </div>
@@ -685,7 +685,7 @@ export function NotificationsAndMessages({
         <div className="msg-notifications-panel">
           <header className="msg-notifications-head">
             <div>
-              <h3>Tüm Bildirimler</h3>
+              <h3>Tüm bildirimler</h3>
               <p>
                 Sistem uyarıları, randevu hatırlatmaları ve gelen mesaj
                 bildirimlerinizin tam içerikleri.
@@ -698,7 +698,7 @@ export function NotificationsAndMessages({
                 onClick={() => void markAllNotificationsRead()}
               >
                 <CheckCheck size={15} aria-hidden="true" />
-                <span>Tümünü okundu işaretle</span>
+                <span>Tümünü okundu olarak işaretle</span>
               </button>
             )}
           </header>
@@ -708,7 +708,7 @@ export function NotificationsAndMessages({
               <Bell size={28} aria-hidden="true" />
               <h3>Henüz bildiriminiz bulunmuyor</h3>
               <p>
-                Yeni bir randevu veya mesaj geldiğinde burada detaylı olarak
+                Yeni bir randevu veya mesaj geldiğinde burada ayrıntılı olarak
                 görüntülenir.
               </p>
             </div>
@@ -769,7 +769,7 @@ export function NotificationsAndMessages({
                           <span>
                             {item.konu_id
                               ? "Mesajı aç ve yanıtla"
-                              : "Cevap yaz"}
+                              : "Yanıt yaz"}
                           </span>
                         </button>
                       )}
@@ -809,7 +809,7 @@ export function NotificationsAndMessages({
                           onClick={() => void markNotificationRead(item)}
                         >
                           <Check size={14} aria-hidden="true" />
-                          <span>Okundu işaretle</span>
+                          <span>Okundu olarak işaretle</span>
                         </button>
                       )}
                     </div>

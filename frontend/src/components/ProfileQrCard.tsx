@@ -75,7 +75,7 @@ export function ProfileQrCard({
       ctx.fillStyle = "#52637f";
       ctx.font = "500 28px system-ui, -apple-system, sans-serif";
       ctx.fillText(
-        therapistTitle || "Randevu & Profil Kartı",
+        therapistTitle || "Randevu ve profil kartı",
         canvas.width / 2,
         180,
         820,
@@ -121,7 +121,7 @@ export function ProfileQrCard({
       <div className="qr-studio-copy">
         <div className="analytics-metric-heading">
           <QrCode size={18} aria-hidden="true" />
-          <h3 id="qr-card-title">Dinamik Klinik &amp; Masa QR Kodu</h3>
+          <h3 id="qr-card-title">Klinik ve masa için QR kodu</h3>
         </div>
         <p className="muted">
           Danışanlarınızın görüşme odanızdaki veya kartvizitinizdeki QR kodu
@@ -137,14 +137,14 @@ export function ProfileQrCard({
             className="button"
             onClick={downloadDeskCardPng}
           >
-            <Download size={16} aria-hidden="true" /> Masa Kartı İndir (PNG)
+            <Download size={16} aria-hidden="true" /> Masa kartını indir (PNG)
           </button>
           <button
             type="button"
             className="button secondary"
             onClick={downloadSvg}
           >
-            <Download size={16} aria-hidden="true" /> Vektör İndir (SVG)
+            <Download size={16} aria-hidden="true" /> Vektör olarak indir (SVG)
           </button>
           <button type="button" className="button secondary" onClick={copyUrl}>
             {copied ? (
@@ -153,7 +153,7 @@ export function ProfileQrCard({
               </>
             ) : (
               <>
-                <Copy size={16} aria-hidden="true" /> QR Bağlantısını Kopyala
+                <Copy size={16} aria-hidden="true" /> QR bağlantısını kopyala
               </>
             )}
           </button>

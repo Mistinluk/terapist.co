@@ -142,14 +142,14 @@ def rozet_gorseli(badge_id: RozetKimligi, db: Db):
         'preserveAspectRatio="xMidYMid meet" '
         f'href="data:image/png;base64,{_WORDMARK_DATA}"/>'
         '<line x1="151" y1="15" x2="151" y2="57" stroke="#dbe4f8"/>'
-        '<circle cx="174" cy="27" r="10" fill="#eaf0ff"/>'
-        '<path d="M169 27l3 3 6-7" fill="none" stroke="#3459d1" '
+        '<circle cx="174" cy="33" r="10" fill="#eaf0ff"/>'
+        '<path d="M169 33l3 3 6-7" fill="none" stroke="#3459d1" '
         'stroke-width="2.5" stroke-linecap="round" '
         'stroke-linejoin="round"/>'
-        '<text x="190" y="25" fill="#17243a" '
+        '<text x="190" y="31" fill="#17243a" '
         'font-family="Arial, sans-serif" font-size="11" '
         'font-weight="700">Doğrulanmış</text>'
-        '<text x="190" y="41" fill="#526174" '
+        '<text x="190" y="47" fill="#526174" '
         'font-family="Arial, sans-serif" font-size="10">'
         "Terapist profili</text></svg>"
     )

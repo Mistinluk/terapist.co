@@ -80,8 +80,7 @@ export function Apply() {
           <h1>Mesleki profilinizi adım adım oluşturun.</h1>
           <p className="muted">
             Kendi özel adresinizi seçin, çalışma alanlarınızı işaretleyin ve
-            sağdaki canlı önizlemede profilinizin nasıl görüneceğini anında
-            takip edin.
+            canlı önizlemede profilinizin nasıl görüneceğini anında takip edin.
           </p>
         </div>
         <div className="apply-trust-pills" aria-label="Başvuru güvenceleri">
@@ -258,7 +257,7 @@ export function Apply() {
                 <span
                   className={`preview-live-pill${usernameAvailable ? " ok" : ""}`}
                 >
-                  {usernameAvailable ? "Adres Müsait" : "Canlı Önizleme"}
+                  {usernameAvailable ? "Adres müsait" : "Canlı önizleme"}
                 </span>
               </div>
 
@@ -270,12 +269,12 @@ export function Apply() {
                 />
                 <div className="apply-preview-titles">
                   <span className="preview-verified-tag">
-                    <CheckCircle2 size={12} aria-hidden="true" /> Doğrulanmış
-                    Uzman Önizlemesi
+                    <CheckCircle2 size={12} aria-hidden="true" /> Doğrulama
+                    sonrası görünüm
                   </span>
-                  <h3>{draft?.ad || "Adınız ve Soyadınız"}</h3>
+                  <h3>{draft?.ad || "Adınız ve soyadınız"}</h3>
                   <p className="preview-role">
-                    {draft?.unvan || "Mesleki Unvanınız (Örn. Klinik Psikolog)"}
+                    {draft?.unvan || "Mesleki unvanınız (ör. Klinik Psikolog)"}
                   </p>
                   <p className="preview-loc">
                     <MapPin size={13} aria-hidden="true" />
@@ -314,7 +313,7 @@ export function Apply() {
 
               <div className="apply-preview-footer">
                 <div>
-                  <small>Görüşme Ücreti</small>
+                  <small>Görüşme ücreti</small>
                   <strong className="tabular-num">
                     {draft?.ucret ? `₺${draft.ucret}` : "₺—"}
                   </strong>
@@ -333,7 +332,7 @@ export function Apply() {
 
             <div className="apply-Checklist-card">
               <div className="apply-checklist-head">
-                <strong>Profil Tamamlanma Durumu</strong>
+                <strong>Profil tamamlanma durumu</strong>
                 <span className="tabular-num">%{completionPct}</span>
               </div>
               <progress

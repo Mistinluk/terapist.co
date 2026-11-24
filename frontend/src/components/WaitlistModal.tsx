@@ -151,10 +151,10 @@ export function WaitlistModal({
             </div>
             <div className="resource-schedule-grid">
               <label className="field">
-                Görüşme formatı tercihi
+                Görüşme şekli tercihi
                 <select name="tercih_format" defaultValue="farketmez">
                   <option value="farketmez">Fark etmez</option>
-                  <option value="cevrim_ici">Çevrim içi (Online)</option>
+                  <option value="cevrim_ici">Çevrim içi</option>
                   <option value="yuz_yuze">Yüz yüze</option>
                 </select>
               </label>
@@ -181,7 +181,7 @@ export function WaitlistModal({
               metnini okudum.
             </label>
             <p className="muted small">
-              KVKK gereği bu formda tanı, şikayet veya klinik sağlık bilgisi
+              KVKK gereği bu formda tanı, şikâyet veya klinik sağlık bilgisi
               alınmaz.
             </p>
             {error && (

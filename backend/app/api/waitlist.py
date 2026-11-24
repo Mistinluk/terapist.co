@@ -68,7 +68,7 @@ def bekleme_listesine_ekle(
             tur="sistem_hatirlatma",
             baslik="Yeni bekleme listesi kaydı",
             mesaj=(
-                "Takviminizdeki boşalacak saatler için yeni bir danışan "
+                "Takviminizde boşalacak saatler için yeni bir danışan "
                 "bekleme listesine katıldı."
             ),
             hedef_yol="/panel?sekme=randevular",
@@ -77,8 +77,8 @@ def bekleme_listesine_ekle(
     db.commit()
     return {
         "mesaj": (
-            "Bekleme listesi kaydınız alındı. Uygunluk açıldığında uzman "
-            "sizinle iletişime geçecektir."
+            "Bekleme listesi kaydınız alındı. Uygun bir saat açıldığında "
+            "uzman sizinle iletişime geçecektir."
         )
     }
 

@@ -1,0 +1,86 @@
+/* Yoğun grafikler dar çalışma alanı kartlarının içinde kaydırılabilir kalır. */
+.dashboard .analytics-trend-wrap {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.dashboard .analytics-trend-bars {
+  width: max-content;
+  min-width: 100%;
+  padding-inline: 18px;
+}
+
+/* Ortalanmış QR kartlarında uzun paylaşım adresleri kartın dışına taşmaz. */
+.qr-studio-copy,
+.qr-url-preview {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Kaynak kartları hem açık profillerde hem dar düzenleme panellerinde kullanılır. */
+.resource-link-shell {
+  container: resource-link / inline-size;
+}
+
+@container resource-link (max-width: 360px) {
+  .resource-link-shell > .resource-link-button.has-share-slot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .resource-link-button .resource-category {
+    align-self: flex-start;
+    max-width: calc(100% - 40px);
+  }
+
+  .resource-link-button .resource-link-copy {
+    flex: none;
+    width: 100%;
+  }
+
+  .resource-link-button .resource-play-badge {
+    align-self: flex-start;
+  }
+
+  .resource-share-button {
+    top: 8px;
+    transform: none;
+  }
+
+  .resource-share-button:active {
+    transform: scale(0.94);
+  }
+}
+
+.dashboard .resource-pro-fieldset {
+  container: resource-options / inline-size;
+}
+
+@container resource-options (max-width: 280px) {
+  .resource-highlight-toggle {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .resource-highlight-toggle-icon {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .resource-highlight-toggle-switch {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .resource-highlight-toggle-copy {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}

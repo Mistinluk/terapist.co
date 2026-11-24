@@ -1901,6 +1901,44 @@ h1 em {
 .appointment-date strong {
   font-weight: 500;
 }
+.appointments > .appointment {
+  display: grid;
+  grid-template-columns:
+    minmax(100px, 0.85fr) minmax(0, 1.2fr) minmax(0, 1fr)
+    minmax(140px, 1.15fr);
+  align-items: start;
+  gap: 16px;
+}
+.appointments > .appointment > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.appointment-status {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+.appointment-status small {
+  color: var(--muted);
+  line-height: 1.5;
+}
+.appointments > .appointment .actions {
+  margin-left: 0;
+  justify-content: flex-end;
+}
+@media (max-width: 900px) {
+  .appointments > .appointment {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .appointments > .appointment {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .appointments > .appointment .actions {
+    justify-content: flex-start;
+  }
+}
 .actions {
   display: flex;
   gap: 8px;
@@ -4080,11 +4118,16 @@ input:not([type="checkbox"]):not([type="radio"]) {
   min-height: 50px;
   margin-bottom: 33px;
 }
+.username-field {
+  min-width: 0;
+  container-type: inline-size;
+}
 .username-field .field {
   margin-bottom: 8px;
 }
 .username-input {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   min-height: 50px;
   padding-left: 12px;
@@ -4101,10 +4144,14 @@ input:not([type="checkbox"]):not([type="radio"]) {
   border-color: #3459d1;
   box-shadow: 0 0 0 3px #3459d12b;
 }
-.username-input input:not([type="checkbox"]):not([type="radio"]) {
+.username-field
+  .username-input
+  input:not([type="checkbox"]):not([type="radio"]) {
+  min-width: 0;
   min-height: 48px;
   padding: 8px 6px;
   border: 0;
+  box-shadow: none;
   background: transparent;
   font-size: 14px;
 }
@@ -4121,6 +4168,7 @@ input:not([type="checkbox"]):not([type="radio"]) {
   margin-top: 12px;
 }
 .username-suggestions button {
+  overflow-wrap: anywhere;
   min-height: 40px;
   padding: 7px 10px;
   border: 1px solid #cdd9ef;
@@ -4231,16 +4279,23 @@ input:not([type="checkbox"]):not([type="radio"]) {
     width: 100%;
     margin: 0;
   }
-  .username-input {
-    flex-wrap: wrap;
-    padding: 8px 12px;
-  }
-  .username-input input:not([type="checkbox"]):not([type="radio"]) {
-    width: 100%;
-  }
 }
 
 /* Uzmanların tekil kısa adresindeki profil görünümü. */
+.public-profile-fallback {
+  max-width: 760px;
+  margin: 32px auto;
+  padding: 24px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.public-profile-fallback h1 {
+  font-size: clamp(26px, 5vw, 40px);
+  line-height: 1.2;
+}
+.public-profile-fallback section {
+  margin-top: 24px;
+}
 .bento-profile {
   --bp-primary: #3459d1;
   --bp-primary-dark: #2445ae;
@@ -5379,7 +5434,6 @@ input:not([type="checkbox"]):not([type="radio"]) {
   color: #315e9e;
 }
 .appointment-calendar-body {
-  min-height: 430px;
   padding: 18px;
 }
 .calendar-toolbar,
@@ -5679,7 +5733,6 @@ input:not([type="checkbox"]):not([type="radio"]) {
     padding: 16px;
   }
   .appointment-calendar-body {
-    min-height: 420px;
     padding: 14px;
   }
   .calendar-toolbar {
@@ -5773,10 +5826,8 @@ input:not([type="checkbox"]):not([type="radio"]) {
   margin-top: 18px;
 }
 
-@media (max-width: 760px) {
-  .container {
-    padding-inline: 16px;
-  }
+/* Tam menü, tablet genişliğinde de sığmadığı için erken daraltılır. */
+@media (max-width: 1180px) {
   .header-inner {
     min-height: 60px;
     padding: 6px 16px;
@@ -5822,6 +5873,9 @@ input:not([type="checkbox"]):not([type="radio"]) {
     border-bottom: 1px solid var(--line);
     background: #fff;
     box-shadow: 0 16px 28px rgba(23, 36, 58, 0.12);
+    max-height: calc(100dvh - 130px);
+    overflow-y: auto;
+    border-radius: 22px;
   }
   .header-inner nav.is-open {
     display: grid;
@@ -5859,10 +5913,45 @@ input:not([type="checkbox"]):not([type="radio"]) {
   .header-inner nav .nav-login {
     border: 0 !important;
   }
+  /* Bildirim çekmecesi, menünün daraltıldığı tüm genişliklerde akışta kalır. */
+  .site-header .nav-bell-wrap {
+    width: 100%;
+    min-width: 0;
+    display: grid;
+  }
+  .site-header .nav-bell-btn {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 10px 14px;
+  }
+  .site-header .nav-bell-label {
+    display: inline;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .site-header .nav-bell-badge {
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+  }
+  .site-header .notif-popover {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 6px;
+    box-shadow: 0 10px 24px -10px rgba(15, 23, 42, 0.12);
+  }
   .nav-logout {
     margin-top: 3px;
     border-top: 1px dashed #d9bfb3 !important;
     border-radius: 0 !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .container {
+    padding-inline: 16px;
   }
   .bento-profile {
     padding-top: 4px;
@@ -5896,7 +5985,7 @@ input:not([type="checkbox"]):not([type="radio"]) {
     font-size: clamp(26px, 7.6vw, 34px);
   }
   .link-profile .profile-name-row.has-verified h1 {
-    padding-inline: 34px;
+    padding-inline: 0;
   }
   .calendar-toolbar {
     flex-wrap: wrap;
@@ -9673,10 +9762,12 @@ input:not([type="checkbox"]):not([type="radio"]) {
   position: sticky;
   top: 24px;
   display: grid;
+  min-width: 0;
   gap: 18px;
 }
 
 .apply-preview-card {
+  min-width: 0;
   padding: 22px;
   border: 1px solid #cdd9ef;
   border-radius: 22px;
@@ -9853,6 +9944,7 @@ input:not([type="checkbox"]):not([type="radio"]) {
 }
 
 .apply-Checklist-card {
+  min-width: 0;
   padding: 20px 22px;
   border: 1px solid #dbe4f2;
   border-radius: 20px;
@@ -9892,7 +9984,7 @@ input:not([type="checkbox"]):not([type="radio"]) {
 .apply-checklist-items {
   display: grid;
   gap: 8px;
-  margin: 0;
+  margin: 14px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -9955,6 +10047,19 @@ input:not([type="checkbox"]):not([type="radio"]) {
   border-radius: 999px;
   font-size: 11.5px;
   font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Alan, panelde dar bir sütunda da bulunabilir; yalnızca ekranı ölçmeyiz. */
+@container (max-width: 390px) {
+  .username-input {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .username-badge {
+    grid-column: 1 / -1;
+    justify-self: end;
+    padding-bottom: 8px;
+  }
 }
 
 .username-pill.available {
@@ -11449,7 +11554,15 @@ input:not([type="checkbox"]):not([type="radio"]) {
 }
 
 .link-profile .profile-name-row.has-verified h1 {
-  padding-inline: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-inline: 0;
+}
+.profile-name-text {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .directory-card-name {
@@ -11468,7 +11581,8 @@ input:not([type="checkbox"]):not([type="radio"]) {
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
-  width: 0;
+  width: auto;
+  flex-shrink: 0;
   overflow: visible;
   line-height: 1;
 }
@@ -11478,7 +11592,8 @@ input:not([type="checkbox"]):not([type="radio"]) {
   flex-shrink: 0;
   width: 30px;
   height: 30px;
-  margin-left: 8px;
+  padding: 0;
+  margin-left: 0;
   border-radius: 999px;
   border: 1px solid var(--bp-accent-border, #cfdcf7);
   background: var(--bp-pill, #edf2ff);
@@ -11547,12 +11662,12 @@ input:not([type="checkbox"]):not([type="radio"]) {
 
 @media (max-width: 650px) {
   .link-profile .profile-name-row.has-verified h1 {
-    padding-inline: 34px;
+    padding-inline: 0;
   }
   .verified-inline-trigger {
     width: 28px;
     height: 28px;
-    margin-left: 6px;
+    margin-left: 0;
   }
 }
 
@@ -11770,6 +11885,7 @@ input:not([type="checkbox"]):not([type="radio"]) {
   place-items: center;
   width: 36px;
   height: 36px;
+  padding: 0;
   border-radius: 999px;
   border: 1px solid transparent;
   background: transparent;
@@ -16281,34 +16397,6 @@ body:has(.bento-profile) {
     padding: 12px 18px !important;
     text-align: center;
   }
-  .site-header .nav-bell-wrap {
-    width: 100%;
-    display: grid;
-  }
-  .site-header .nav-bell-btn {
-    width: 100%;
-    justify-content: flex-start;
-    gap: 8px;
-    padding: 10px 14px;
-  }
-  .site-header .nav-bell-label {
-    display: inline;
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .site-header .nav-bell-badge {
-    top: 50%;
-    right: 12px;
-    transform: translateY(-50%);
-  }
-  .site-header .notif-popover {
-    position: static;
-    width: 100%;
-    max-width: 100%;
-    margin-top: 6px;
-    box-shadow: 0 10px 24px -10px rgba(15, 23, 42, 0.12);
-  }
-
   /* Ana Sayfa & Tonal Kartlar */
   .home-hero.lt-hero-stage {
     padding: 26px 20px;
@@ -16618,16 +16706,14 @@ body:has(.bento-profile) {
     min-width: 0;
   }
   .username-input {
-    flex-wrap: wrap;
-    padding: 8px 10px;
-    gap: 6px;
+    padding: 0 10px;
+    column-gap: 4px;
   }
   .username-prefix {
     font-size: 13px;
   }
   .username-input input {
-    flex: 1 1 120px;
-    min-width: 110px;
+    min-width: 0;
   }
   .username-badge {
     margin-left: 0;
@@ -16653,7 +16739,7 @@ body:has(.bento-profile) {
 
   /* Küçük Telefon İnce Ayarları (320px–420px) */
   .link-profile .profile-name-row.has-verified h1 {
-    padding-inline: 28px;
+    padding-inline: 0;
     font-size: clamp(22px, 6.5vw, 28px);
   }
   .calendar-grid {
@@ -18267,6 +18353,7 @@ body:has(.bento-profile) {
   flex-direction: column;
   justify-content: space-between;
   gap: 10px;
+  min-width: 0;
   padding: 16px;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.92);
@@ -18314,6 +18401,9 @@ body:has(.bento-profile) {
 }
 
 .ft-selector-card strong {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
   font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -18324,6 +18414,8 @@ body:has(.bento-profile) {
 .ft-selector-badge {
   display: inline-flex;
   width: fit-content;
+  max-width: 100%;
+  white-space: normal;
   padding: 3px 9px;
   border-radius: 999px;
   background: #f1f5ff;

@@ -57,11 +57,11 @@ export function AdminFoundingView({
         <>
           <div className="admin-stats-columns">
             <section className="form-section founder-settings">
-              <span className="eyebrow">FOUNDING THERAPIST</span>
+              <span className="eyebrow">KURUCU TERAPİST</span>
               <h2>Kontenjan yönetimi</h2>
               <p className="muted">
                 Doğrulaması tamamlanan terapistler sırayla kalıcı kurucu
-                numarası alır. Yöneticiler kontenjan dahilinde üye ekleyip
+                numarası alır. Yöneticiler kontenjan dâhilinde üye ekleyip
                 çıkarabilir.
               </p>
               <div className="founder-stats">
@@ -84,7 +84,7 @@ export function AdminFoundingView({
               </div>
               <form onSubmit={onSaveCapacity}>
                 <label className="field">
-                  Maksimum kurucu terapist
+                  En fazla kurucu terapist sayısı
                   <input
                     key={data.program.azami_uye}
                     name="azami_uye"
@@ -107,14 +107,14 @@ export function AdminFoundingView({
 
             <section className="form-section admin-founder-add-card">
               <span className="eyebrow">ÜYE EKLEME</span>
-              <h2>Doğrulanmış terapisti programa dahil et</h2>
+              <h2>Doğrulanmış terapisti programa dâhil et</h2>
               <p className="muted">
                 Yalnız yayında ve doğrulanmış olan terapistler kurucu programına
                 manuel olarak eklenebilir.
               </p>
               {data.adaylar.length === 0 ? (
                 <p className="empty-state">
-                  Eklenebilecek yayında terapist kalmadı.
+                  Programa eklenebilecek yayındaki terapist kalmadı.
                 </p>
               ) : (
                 <form className="admin-founder-add-form" onSubmit={onAddMember}>

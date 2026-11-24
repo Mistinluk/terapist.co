@@ -180,7 +180,7 @@ export function UsernameField({
         aria-live="polite"
       >
         {!value
-          ? "Yalnızca küçük harf ve rakam kullanın (tire yok). Adınız başvuru kaydedilince kesinleşir."
+          ? "Yalnızca küçük harf ve rakam kullanın (tire yok). Profil adresiniz başvuru kaydedilince kesinleşir."
           : !validFormat
             ? "3–40 karakter kullanın; harfle başlayın, harf veya rakamla bitirin."
             : reserved

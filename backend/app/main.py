@@ -162,6 +162,11 @@ async def guvenlik(request: Request, call_next):
         if profile_document
         else "default-src 'none'; frame-ancestors 'none'"
     )
+    if badge_asset and response.status_code == 200:
+        # Rozetin gömülü logosu açılır; dış görseller ve betikler engellenir.
+        content_security_policy = (
+            "default-src 'none'; img-src data:; frame-ancestors 'none'"
+        )
     response.headers.update(
         {
             "Cache-Control": (

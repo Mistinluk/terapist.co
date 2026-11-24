@@ -23,9 +23,9 @@ import { slugifyTurkishName, UsernameField } from "../components/UsernameField";
 import { usePageMetadata } from "../lib/seoMetadata";
 
 export const FEATURES_META_TITLE =
-  "Özellikler · Psikolog & Terapist Profili, Randevu ve QR Kod | terapist.co";
+  "Özellikler · Psikolog ve terapist profili, randevu ve QR kod | terapist.co";
 export const FEATURES_META_DESCRIPTION =
-  "Psikolog ve terapistler için terapist.co özellikleri: isminize özel alan adı, tek sayfada dijital profil, kolay randevu takvimi, şifreli formlar ve QR Kodunuz.";
+  "Psikolog ve terapistler için terapist.co özellikleri: isminize özel profil adresi, tek sayfada dijital profil, kolay randevu takvimi, şifreli formlar ve QR kodunuz.";
 
 type StudioThemeId = "modern" | "editorial" | "organic" | "glass";
 
@@ -39,25 +39,25 @@ const STUDIO_THEMES: {
     id: "modern",
     label: "Klinik Modern",
     tagline: "Ferah, net ve güven veren mavi-beyaz görünüm",
-    accentLabel: "Kobalt & Beyaz",
+    accentLabel: "Kobalt ve beyaz",
   },
   {
     id: "editorial",
-    label: "Sıcak Dergi",
+    label: "Editoryal Klinik",
     tagline: "Yazılar ve özgeçmiş için göz yormayan krem tonlar",
-    accentLabel: "Krem & Mürekkep",
+    accentLabel: "Krem ve mürekkep",
   },
   {
     id: "organic",
-    label: "Doğal & Sakin",
+    label: "Doğal sakinlik",
     tagline: "Yumuşak yeşil tonlarla huzurlu bir karşılama",
-    accentLabel: "Adaçayı & Toprak",
+    accentLabel: "Adaçayı ve toprak",
   },
   {
     id: "glass",
-    label: "Yumuşak Cam",
+    label: "Yumuşak cam",
     tagline: "Modern ve aydınlık kart görünümü",
-    accentLabel: "Buz & Lavanta",
+    accentLabel: "Buz ve lavanta",
   },
 ];
 
@@ -82,28 +82,28 @@ export const DETAILED_FEATURE_SECTIONS: DetailedFeatureSection[] = [
     id: "kisisel-adres",
     number: "01",
     badge: "KİŞİSEL ADRES",
-    shortTitle: "terapist.co/adınız",
+    shortTitle: "terapist.co/adiniz",
     icon: AtSign,
     title: "İnternette sadece size ait, akılda kalıcı bir adresiniz olur",
     subtitle:
-      "Tıpkı ofisinizin kapısındaki isimlik gibi, internette de kendi adınızla yer alırsınız. Danışanlarınız adınızı yazdığında karışık linkler yerine doğrudan size ulaşır.",
+      "Tıpkı ofisinizin kapısındaki isimlik gibi, internette de kendi adınızla yer alırsınız. Danışanlarınız adınızı yazdığında karışık bağlantılar yerine doğrudan size ulaşır.",
     simpleNote:
       "Instagram, WhatsApp ve kartvizitinizde tek bir temiz adres paylaşırsınız.",
     bullets: [
       "Tire veya karışık rakamlar olmadan kendi adınız",
       "İsminizin yanında güven veren Onaylı Uzman rozeti",
-      "Sosyal medya ve kartvizit için tek kalıcı link",
+      "Sosyal medya ve kartvizit için tek kalıcı bağlantı",
     ],
     relatedLink: {
       to: "/rehber/klinik-psikolog-dijital-kimlik",
-      label: "Dijital Kimlik Rehberini İncele",
+      label: "Dijital kimlik rehberini incele",
     },
   },
   {
     id: "link-in-bio",
     number: "02",
     badge: "DİJİTAL VİTRİN",
-    shortTitle: "Tek Sayfada Profil",
+    shortTitle: "Tek sayfada profil",
     icon: Palette,
     title:
       "Kim olduğunuzu, eğitimlerinizi ve videolarınızı tek sayfada gösterin",
@@ -114,95 +114,95 @@ export const DETAILED_FEATURE_SECTIONS: DetailedFeatureSection[] = [
     bullets: [
       "Tek tıkla değişen 4 sade görünüm ve renk seçimi",
       "Sayfadan çıkmadan açılan YouTube ve Spotify kutuları",
-      "İsterseniz Terapist.co logosunu gizleme (White-label)",
+      "Terapist.co için marka gizleme (White-Label) seçeneği",
     ],
     relatedLink: {
       to: "/cozumler/psikolog-link-in-bio",
-      label: "Psikolog Link-in-Bio Çözümü",
+      label: "Psikologlar için biyografi bağlantısı",
     },
   },
   {
     id: "randevu-takvimi",
     number: "03",
     badge: "KOLAY RANDEVU",
-    shortTitle: "Takvim & Sıra Listesi",
+    shortTitle: "Takvim ve bekleme listesi",
     icon: CalendarDays,
-    title: "'Hangi gün boşsunuz?' mesajlarına tek tek cevap vermeyin",
+    title: "“Hangi gün uygunsunuz?” mesajlarına tek tek yanıt vermeyin",
     subtitle:
-      "Hangi gün ve saatlerde çalıştığınızı seçersiniz. Danışanlarınız sadece boş saatlerinizi görür ve kolayca randevu ister. Takviminiz tamamen doluysa adını Bekleme Listesi'ne yazar.",
+      "Hangi gün ve saatlerde çalıştığınızı seçersiniz. Danışanlarınız sadece boş saatlerinizi görür ve kolayca randevu ister. Takviminiz tamamen doluysa bekleme listesine kaydolur.",
     simpleNote:
       "Google Takvim'inizdeki özel notlarınız kimseye görünmez; sadece dolu saatleriniz otomatik kapanır.",
     bullets: [
-      "Online ve yüz yüze seans saatlerini kolayca ayırma",
-      "Kişisel Google Takvim ile otomatik eşleşme",
-      "Yeriniz dolduğunda tek tıkla açılan Bekleme Listesi",
+      "Çevrim içi ve yüz yüze seans saatlerini kolayca ayırma",
+      "Kişisel Google Takvim hesabınızla otomatik eşitleme",
+      "Yeriniz dolduğunda tek tıkla açılan bekleme listesi",
     ],
     relatedLink: {
       to: "/cozumler/online-terapi-randevu-takvimi",
-      label: "Online Randevu Takvimi Detayları",
+      label: "Çevrim içi randevu takviminin ayrıntıları",
     },
   },
   {
     id: "sifreli-formlar",
     number: "04",
-    badge: "ŞİFRELİ FORM & QR",
-    shortTitle: "Şifreli Link & QR Kod",
+    badge: "ŞİFRELİ FORM VE QR",
+    shortTitle: "Şifreli bağlantı ve QR kod",
     icon: LockKeyhole,
-    title: "Formlarınızı şifreyle koruyun, QR Kodunuzla anında paylaşın",
+    title: "Formlarınızı şifreyle koruyun, QR kodunuzla anında paylaşın",
     subtitle:
-      "Seans öncesi ölçek veya ödev linklerinize küçük bir şifre koyarsınız; sadece şifreyi verdiğiniz danışanınız açabilir. Odanızdaki QR Kodunuzu telefonla okutan danışanınız saniyeler içinde sayfanıza ulaşır.",
+      "Seans öncesi ölçek veya ödev bağlantılarınız için şifre belirlersiniz; sadece şifreyi verdiğiniz danışanınız açabilir. Odanızdaki QR kodunuzu telefonla okutan danışanınız saniyeler içinde sayfanıza ulaşır.",
     simpleNote:
-      "Kağıt-kalem veya uzun link kopyalama zahmeti olmadan güvenli paylaşım yaparsınız.",
+      "Kâğıt kalem kullanma veya uzun bağlantıları kopyalama zahmeti olmadan güvenli paylaşım yaparsınız.",
     bullets: [
-      "Sadece şifreyi verdiğiniz kişinin açabildiği özel linkler",
+      "Sadece şifreyi verdiğiniz kişinin açabildiği özel bağlantılar",
       "Grup çalışmaları için başlangıç ve bitiş tarihli kayıt",
-      "Odanız ve kartvizitiniz için basıma hazır QR Kodunuz",
+      "Odanız ve kartvizitiniz için basıma hazır QR kodunuz",
     ],
     relatedLink: {
       to: "/cozumler/sifreli-bdt-sema-formlari",
-      label: "Şifreli Formlar Nasıl Çalışır?",
+      label: "Şifreli formlar nasıl çalışır?",
     },
   },
   {
     id: "analitik",
     number: "05",
     badge: "ZİYARETÇİ SAYACI",
-    shortTitle: "Kimler Baktı?",
+    shortTitle: "Ziyaretçi istatistikleri",
     icon: BarChart3,
-    title: "Sayfanıza kaç kişi baktı ve nereden geldi kolayca görün",
+    title: "Sayfanızı kaç kişinin ziyaret ettiğini ve nereden geldiğini görün",
     subtitle:
-      "Karmaşık tablolar yerine sade rakamlarla; profilinize kaç kişinin girdiğini, Instagram'dan mı yoksa Google'dan mı geldiklerini ve hangi butonlara tıkladıklarını anında görürsünüz.",
+      "Sade rakamlarla profilinize kaç kişinin girdiğini, Instagram'dan mı yoksa Google'dan mı geldiklerini ve hangi düğmelere tıkladıklarını anında görürsünüz.",
     simpleNote:
       "Danışanların özel sağlık bilgilerini asla kaydetmeyen, tamamen güvenli bir yapıdır.",
     bullets: [
       "Sayfanızı ziyaret eden kişi sayısı",
-      "Instagram, Google ve QR Kodunuzdan gelenlerin oranı",
-      "En çok tıklanan yazı, video ve randevu butonları",
+      "Instagram, Google ve QR kodunuzdan gelenlerin oranı",
+      "En çok tıklanan yazı, video ve randevu düğmeleri",
     ],
     relatedLink: {
       to: "/rehber/terapide-kvkk-ve-veri-minimasyonu",
-      label: "Gizlilik ve Güvenlik Rehberi",
+      label: "Gizlilik ve güvenlik rehberi",
     },
   },
   {
     id: "meslektas-agi",
     number: "06",
     badge: "MESLEKTAŞ AĞI",
-    shortTitle: "Uzman Dayanışması",
+    shortTitle: "Uzman dayanışması",
     icon: Share2,
     title: "Güvendiğiniz meslektaşlarınızla bağ kurun ve danışan yönlendirin",
     subtitle:
-      "Birlikte eğitim veya süpervizyon aldığınız uzmanları profilinizde gösterebilirsiniz. Çalışmadığınız bir konuda veya takviminiz doluyken danışanınızı özel bir linkle güvendiğiniz meslektaşınıza yönlendirirsiniz.",
+      "Birlikte eğitim veya süpervizyon aldığınız uzmanları profilinizde gösterebilirsiniz. Çalışmadığınız bir konuda veya takviminiz doluyken danışanınızı özel bir bağlantıyla güvendiğiniz meslektaşınıza yönlendirirsiniz.",
     simpleNote:
       "Yıldız, puan veya yorum yarışı yoktur; sadece gerçek mesleki dayanışma vardır.",
     bullets: [
       "Onaylı meslektaşlarınızla görünür uzmanlık bağı",
-      "terapist.co/r/... linkiyle kolay danışan yönlendirme",
+      "terapist.co/r/... bağlantısıyla kolay danışan yönlendirme",
       "Puanlama veya reklam rekabeti olmayan saygılı dizin",
     ],
     relatedLink: {
       to: "/cozumler/dogrulanmis-meslektas-agi",
-      label: "Meslektaş Ağı Detayları",
+      label: "Meslektaş ağının ayrıntıları",
     },
   },
 ];
@@ -242,7 +242,7 @@ export function Features() {
             {
               "@type": "ListItem",
               position: 1,
-              name: "Ana Sayfa",
+              name: "Ana sayfa",
               item: "https://terapist.co/",
             },
             {
@@ -310,7 +310,7 @@ export function Features() {
                     Doğrulanmış
                   </span>
                 </div>
-                <p>Yetişkin &amp; Çift Terapisi · İstanbul &amp; Online</p>
+                <p>Yetişkin ve çift terapisi · İstanbul ve çevrim içi</p>
                 <div className="ft-demo-role-chips">
                   <span>Psikolog</span>
                   <span>Terapist</span>
@@ -353,7 +353,7 @@ export function Features() {
                       ?.accentLabel
                   }
                 </span>
-                <span className="ft-studio-wl-tag">Tek Tıkla Görünüm</span>
+                <span className="ft-studio-wl-tag">Tek tıkla görünüm</span>
               </div>
               <strong>
                 {STUDIO_THEMES.find((t) => t.id === selectedTheme)?.label}
@@ -363,7 +363,7 @@ export function Features() {
               </p>
               <div className="ft-studio-mock-links">
                 <div className="ft-studio-mock-btn is-primary">
-                  <span>Randevu İste (Online / Yüz Yüze)</span>
+                  <span>Randevu iste (çevrim içi / yüz yüze)</span>
                   <ArrowRight size={14} aria-hidden="true" />
                 </div>
                 <div className="ft-studio-mock-btn">
@@ -371,7 +371,7 @@ export function Features() {
                   <Sparkles size={14} aria-hidden="true" />
                 </div>
                 <div className="ft-studio-mock-btn">
-                  <span>YouTube · Kaygı ile Baş Etme Videosu</span>
+                  <span>YouTube · Kaygıyla baş etme videosu</span>
                   <ExternalLink size={14} aria-hidden="true" />
                 </div>
               </div>
@@ -385,7 +385,7 @@ export function Features() {
             <div className="ft-cal-top-bar">
               <span className="ft-cal-sync-pill">
                 <CheckCircle2 size={14} aria-hidden="true" />
-                Google Takvim Bağlı
+                Google Takvim bağlı
               </span>
               <div
                 className="ft-cal-mode-toggle"
@@ -397,14 +397,14 @@ export function Features() {
                   className={`ft-cal-mode-btn${waitlistSimMode === "musait" ? " is-active" : ""}`}
                   onClick={() => setWaitlistSimMode("musait")}
                 >
-                  Boş Saatler Var
+                  Uygun saatler var
                 </button>
                 <button
                   type="button"
                   className={`ft-cal-mode-btn${waitlistSimMode === "dolu" ? " is-active" : ""}`}
                   onClick={() => setWaitlistSimMode("dolu")}
                 >
-                  Takvim Doluysa
+                  Takvim dolu
                 </button>
               </div>
             </div>
@@ -412,7 +412,7 @@ export function Features() {
             {waitlistSimMode === "musait" ? (
               <div className="ft-cal-slots-box">
                 <div className="ft-cal-day-row">
-                  <strong>Salı · Online veya Yüz Yüze</strong>
+                  <strong>Salı · Çevrim içi veya yüz yüze</strong>
                   <span>50 dk seans</span>
                 </div>
                 <div className="ft-cal-slot-pills">
@@ -429,7 +429,7 @@ export function Features() {
               <div className="ft-cal-waitlist-box">
                 <div className="ft-cal-waitlist-head">
                   <Clock size={18} aria-hidden="true" />
-                  <strong>Bekleme Listesi Açık</strong>
+                  <strong>Bekleme listesi açık</strong>
                 </div>
                 <p>
                   Boş yeriniz olmadığında danışanınız adını ve uygun gününü
@@ -437,7 +437,7 @@ export function Features() {
                 </p>
                 <div className="ft-cal-waitlist-badges">
                   <span>Hafta içi akşam</span>
-                  <span>Online görüşme</span>
+                  <span>Çevrim içi görüşme</span>
                 </div>
               </div>
             )}
@@ -454,12 +454,12 @@ export function Features() {
                     {pinUnlocked ? (
                       <>
                         <Unlock size={13} aria-hidden="true" />
-                        Form Açıldı
+                        Form açıldı
                       </>
                     ) : (
                       <>
                         <LockKeyhole size={13} aria-hidden="true" />
-                        Şifreli Form
+                        Şifreli form
                       </>
                     )}
                   </span>
@@ -468,10 +468,10 @@ export function Features() {
                     className="ft-lock-toggle-btn"
                     onClick={() => setPinUnlocked((prev) => !prev)}
                   >
-                    {pinUnlocked ? "Tekrar Kilitle" : "Şifreyi Gir (4821)"}
+                    {pinUnlocked ? "Tekrar kilitle" : "Şifreyi gir (4821)"}
                   </button>
                 </div>
-                <strong>Seans Öncesi Değerlendirme Formu</strong>
+                <strong>Seans öncesi değerlendirme formu</strong>
                 <p>
                   {pinUnlocked
                     ? "Şifre doğru! Danışanınız formu güvenle doldurabilir."
@@ -487,7 +487,7 @@ export function Features() {
 
               <div className="ft-qr-mini-card">
                 <QrCode size={38} aria-hidden="true" />
-                <strong>QR Kodunuz</strong>
+                <strong>QR kodunuz</strong>
                 <span>Kamerayla okutunca anında açılır</span>
               </div>
             </div>
@@ -500,17 +500,17 @@ export function Features() {
             <div className="ft-analytics-head">
               <div>
                 <span className="ft-analytics-eyebrow">BU AYKİ ÖZETİNİZ</span>
-                <strong>Danışanlar Sizi Nereden Buldu?</strong>
+                <strong>Ziyaretçiler sizi nereden buldu?</strong>
               </div>
               <span className="ft-analytics-kvkk-pill">
                 <ShieldCheck size={13} aria-hidden="true" />
-                Güvenli Sayaç
+                Güvenli sayaç
               </span>
             </div>
             <div className="ft-analytics-bars">
               <div className="ft-bar-row">
                 <div className="ft-bar-label">
-                  <span>Instagram Profilinizden</span>
+                  <span>Instagram profilinizden</span>
                   <strong>%48</strong>
                 </div>
                 <div className="ft-bar-track">
@@ -519,7 +519,7 @@ export function Features() {
               </div>
               <div className="ft-bar-row">
                 <div className="ft-bar-label">
-                  <span>Google Aramalarından</span>
+                  <span>Google aramalarından</span>
                   <strong>%29</strong>
                 </div>
                 <div className="ft-bar-track">
@@ -528,7 +528,7 @@ export function Features() {
               </div>
               <div className="ft-bar-row">
                 <div className="ft-bar-label">
-                  <span>Odanızdaki QR Kodunuzdan</span>
+                  <span>Odanızdaki QR koddan</span>
                   <strong>%15</strong>
                 </div>
                 <div className="ft-bar-track">
@@ -537,7 +537,7 @@ export function Features() {
               </div>
               <div className="ft-bar-row">
                 <div className="ft-bar-label">
-                  <span>Meslektaş Önerisinden</span>
+                  <span>Meslektaş önerisinden</span>
                   <strong>%8</strong>
                 </div>
                 <div className="ft-bar-track">
@@ -555,8 +555,8 @@ export function Features() {
             <div className="ft-network-nodes">
               <div className="ft-network-node is-center">
                 <UsersRound size={20} aria-hidden="true" />
-                <strong>Sizin Profiliniz</strong>
-                <span>Yetişkin Terapisi</span>
+                <strong>Sizin profiliniz</strong>
+                <span>Yetişkin terapisi</span>
               </div>
               <div className="ft-network-connector" aria-hidden="true">
                 <span className="ft-connector-pulse" />
@@ -564,14 +564,14 @@ export function Features() {
               <div className="ft-network-node is-peer">
                 <HeartHandshake size={20} aria-hidden="true" />
                 <strong>Meslektaşınız</strong>
-                <span>Çocuk &amp; Ergen</span>
+                <span>Çocuk ve ergen</span>
               </div>
             </div>
             <div className="ft-network-referral-pill">
               <code>terapist.co/r/zeynepdemir</code>
               <span>
-                Çalışmadığınız bir konuda danışanınızı tek linkle güvendiğiniz
-                meslektaşınıza yönlendirin.
+                Çalışmadığınız bir konuda danışanınızı tek bağlantıyla
+                güvendiğiniz meslektaşınıza yönlendirin.
               </span>
             </div>
           </div>
@@ -588,7 +588,7 @@ export function Features() {
         <div className="home-hero-copy lt-hero-copy">
           <div className="seo-breadcrumb-row">
             <Link to="/" className="seo-breadcrumb-link">
-              Ana Sayfa
+              Ana sayfa
             </Link>
             <span aria-hidden="true">/</span>
             <span className="eyebrow lt-eyebrow-pill">
@@ -605,7 +605,7 @@ export function Features() {
 
           <p className="lt-hero-lead">
             Ayrı ayrı web sitesi, takvim veya form programlarıyla uğraşmayın.
-            İsminize özel <strong>terapist.co/adınız</strong> adresinizde
+            İsminize özel <strong>terapist.co/adiniz</strong> adresinizde
             kendinizi tanıtın, kolayca randevu alın ve danışanlarınızla güvenle
             form paylaşın.
           </p>
@@ -632,7 +632,7 @@ export function Features() {
         >
           <div className="ft-mosaic-center-card">
             <span className="ft-mosaic-tag">MERKEZ ADRESİNİZ</span>
-            <strong>terapist.co/adınız</strong>
+            <strong>terapist.co/adiniz</strong>
             <p>Tüm mesleki dünyanız tek bir sade bağlantıda birleşir.</p>
           </div>
           <div className="ft-mosaic-mini-grid">
@@ -668,7 +668,7 @@ export function Features() {
         <div className="home-section-heading lt-section-heading lt-bento-heading-compact">
           <span className="eyebrow lt-eyebrow-pill">6 TEMEL ÖZELLİK</span>
           <h2 id="explorer-heading">
-            Soldan bir özellik seçin, sağda nasıl çalıştığını hemen deneyin.
+            Bir özellik seçin, nasıl çalıştığını deneyin.
           </h2>
           <p>
             Sayfalarca aşağı kaydırmadan tüm özellikleri tek ekranda
@@ -769,7 +769,7 @@ export function Features() {
               HEMEN BAŞLAYIN · 3 DAKİKADA KURULUM
             </span>
             <h2 id="features-closing-title">
-              İsminize özel alan adınızı seçin ve profilinizi oluşturun.
+              İsminize özel profil adresinizi seçin ve profilinizi oluşturun.
             </h2>
             <p>
               Adınızı aşağıya yazarak adresinizin boş olup olmadığını hemen
@@ -779,7 +779,7 @@ export function Features() {
 
           <form
             className="home-claim-form lt-bottom-claim-card ft-bottom-claim-form"
-            aria-label="Alan adını seç ve profil bilgilerini doldurmaya başla"
+            aria-label="Profil adresini seç ve başvuruya başla"
             onSubmit={(event) => {
               event.preventDefault();
               const slugToUse = slugifyTurkishName(bottomSlug);
@@ -805,8 +805,8 @@ export function Features() {
             <button className="button lt-pill-btn" type="submit">
               <span>
                 {bottomSlug.trim().length >= 3
-                  ? `terapist.co/${slugifyTurkishName(bottomSlug)} ile profil bilgilerini doldur`
-                  : "Alan adını seç ve profil bilgilerini doldur"}
+                  ? `terapist.co/${slugifyTurkishName(bottomSlug)} ile başvur`
+                  : "Profil adresini seç ve başvur"}
               </span>
               <ArrowRight size={18} aria-hidden="true" />
             </button>

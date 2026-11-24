@@ -11,7 +11,7 @@ const reasonLabels: Record<string, string> = {
   age_group: "Yaş grubu uyuşmuyor",
   location: "Konum / ulaşım",
   budget: "Ücret / bütçe",
-  therapy_format: "Terapi formatı",
+  therapy_format: "Görüşme şekli",
   psychiatry: "Psikiyatrik değerlendirme",
   other: "Diğer",
 };
@@ -74,11 +74,11 @@ export function AdminClientReferralsView({
             aria-label="Danışan yönlendirme özeti"
           >
             <div>
-              <span>Oluşturulan link</span>
+              <span>Oluşturulan bağlantı</span>
               <strong>{data.ozet.toplam_link}</strong>
             </div>
             <div>
-              <span>Aktif link</span>
+              <span>Aktif bağlantı</span>
               <strong>{data.ozet.aktif_link}</strong>
             </div>
             <div>
@@ -90,7 +90,7 @@ export function AdminClientReferralsView({
               <strong>{data.ozet.toplam_yonlendirilen_hedef}</strong>
             </div>
             <div>
-              <span>Link görüntülenme</span>
+              <span>Bağlantı görüntülenmesi</span>
               <strong>{data.ozet.toplam_goruntulenme}</strong>
             </div>
             <div>
@@ -131,7 +131,7 @@ export function AdminClientReferralsView({
               <div>
                 <span className="eyebrow">UZMAN BAZLI DAĞILIM</span>
                 <h3 id="admin-referral-creators-heading">
-                  Kim kaç link oluşturdu, kimlere yönlendirdi?
+                  Uzmanların oluşturduğu bağlantılar ve yönlendirmeler
                 </h3>
               </div>
               <strong>{creators.length} uzman</strong>
@@ -166,7 +166,7 @@ export function AdminClientReferralsView({
                       </div>
                       <div className="admin-referral-metrics">
                         <span>
-                          <strong>{item.link_sayisi}</strong> link (
+                          <strong>{item.link_sayisi}</strong> bağlantı (
                           {item.aktif_link_sayisi} aktif)
                         </span>
                         <span>
@@ -203,7 +203,7 @@ export function AdminClientReferralsView({
                             )}
                             <strong>×{target.sayi}</strong>
                             {target.tiklama_sayisi > 0 && (
-                              <small>({target.tiklama_sayisi} tık)</small>
+                              <small>({target.tiklama_sayisi} tıklama)</small>
                             )}
                           </span>
                         ))}
@@ -237,10 +237,10 @@ export function AdminClientReferralsView({
                 <table>
                   <thead>
                     <tr>
-                      <th>Hedef Uzman</th>
-                      <th>Alınan Yönlendirme</th>
-                      <th>Profil Tıklaması</th>
-                      <th>Yönlendiren Uzmanlar</th>
+                      <th>Hedef uzman</th>
+                      <th>Alınan yönlendirme</th>
+                      <th>Profil tıklaması</th>
+                      <th>Yönlendiren uzmanlar</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -282,13 +282,13 @@ export function AdminClientReferralsView({
               <div>
                 <span className="eyebrow">BAĞLANTI DÖKÜMÜ</span>
                 <h3 id="admin-referral-links-heading">
-                  Oluşturulan yönlendirme linkleri
+                  Oluşturulan yönlendirme bağlantıları
                 </h3>
               </div>
-              <strong>{links.length} link</strong>
+              <strong>{links.length} bağlantı</strong>
             </div>
             {links.length === 0 ? (
-              <p className="muted">Listelenecek yönlendirme linki yok.</p>
+              <p className="muted">Listelenecek yönlendirme bağlantısı yok.</p>
             ) : (
               <div className="table-wrap">
                 <table>
@@ -297,8 +297,8 @@ export function AdminClientReferralsView({
                       <th>Tarih</th>
                       <th>Yönlendiren</th>
                       <th>Neden</th>
-                      <th>Önerilen Terapistler</th>
-                      <th>Görüntülenme / Tık</th>
+                      <th>Önerilen terapistler</th>
+                      <th>Görüntülenme / tıklama</th>
                       <th>Durum</th>
                     </tr>
                   </thead>
@@ -321,7 +321,9 @@ export function AdminClientReferralsView({
                               >
                                 {target.ad}
                                 {target.tiklama_sayisi > 0 && (
-                                  <small>({target.tiklama_sayisi} tık)</small>
+                                  <small>
+                                    ({target.tiklama_sayisi} tıklama)
+                                  </small>
                                 )}
                               </span>
                             ))}
@@ -329,7 +331,7 @@ export function AdminClientReferralsView({
                         </td>
                         <td>
                           {link.goruntulenme_sayisi} gör. /{" "}
-                          {link.profil_tiklamasi} tık
+                          {link.profil_tiklamasi} tıklama
                         </td>
                         <td>
                           <span

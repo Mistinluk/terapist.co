@@ -155,7 +155,7 @@ function AppointmentDetailsContent({ id, hash }: { id: string; hash: string }) {
                   <p>
                     Yeni saat uzman onayına gönderilir. Mevcut saatiniz,
                     değişiklik başarıyla tamamlanana kadar korunur. Tüm saatler
-                    Türkiye saatidir.
+                    Türkiye saatine göredir.
                   </p>
                   <Status
                     loading={slots.loading}

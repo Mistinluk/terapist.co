@@ -21,14 +21,14 @@
 
 - [Terapist.co vs Linktr.ee](https://terapist.co/karsilastirma/terapistco-vs-linktree): Genel bağlantı listesi araçları ile diploma doğrulamalı, şifreli formlu ve randevu takvimli terapist altyapısının farkları.
 - [Terapist.co vs Klasik Web Sitesi](https://terapist.co/karsilastirma/terapistco-vs-klasik-web-sitesi): Kurulum süresi, bakım maliyeti, KVKK veri minimizasyonu ve yapısal SEO açısından karşılaştırma.
-- [Terapist.co vs Online Terapi Pazaryerleri](https://terapist.co/karsilastirma/terapistco-vs-pazaryerleri): Seans komisyonu kesmeyen, yıldız puanlaması dayatmayan ve kişisel alan adını koruyan bağımsız profil modeli.
+- [Terapist.co vs Çevrim İçi Terapi Pazaryerleri](https://terapist.co/karsilastirma/terapistco-vs-pazaryerleri): Seans komisyonu kesmeyen, yıldız puanlaması dayatmayan ve kişisel alan adını koruyan bağımsız profil modeli.
 - [Terapist.co vs Calendly](https://terapist.co/karsilastirma/terapistco-vs-calendly): Genel toplantı takvimi yerine klinik ön görüşme, bekleme listesi ve uzman profiliyle bütünleşik randevu yönetimi.
 - [Terapist.co vs Standart Bio Araçları](https://terapist.co/karsilastirma/terapistco-vs-standart-bio-araclari): Beacons ve Bento gibi genel bio araçlarına kıyasla klinik güvenlik, TOTP doğrulama ve meslektaş yönlendirme özellikleri.
 
 ## Uzman Rehberleri
 
-- [Klinik Psikologlar İçin Dijital Kimlik ve SEO](https://terapist.co/rehber/klinik-psikolog-dijital-kimlik): Uzmanların Google ve yapay zeka aramalarında kendi isimleri ve çalışma alanlarıyla doğru indekslenmesi için rehber.
-- [BDT ve Şema Terapistleri İçin Profil Kurulumu](https://terapist.co/rehber/bdt-ve-sema-terapistleri-icin): Bilişsel Davranışçı Terapi ve Şema Terapi çalışan uzmanlar için şifreli form ve profil düzeni önerileri.
+- [Klinik Psikologlar İçin Dijital Kimlik ve SEO](https://terapist.co/rehber/klinik-psikolog-dijital-kimlik): Uzmanların Google ve yapay zekâ aramalarında kendi isimleri ve çalışma alanlarıyla doğru indekslenmesi için rehber.
+- [BDT ve Şema Terapistleri İçin Profil Kurulumu](https://terapist.co/rehber/bdt-ve-sema-terapistleri-icin): Bilişsel Davranışçı Terapi ve Şema Terapi yaklaşımlarıyla çalışan uzmanlar için şifreli form ve profil düzeni önerileri.
 - [Çift, Aile ve EMDR Terapistleri İçin Rehber](https://terapist.co/rehber/cift-ve-emdr-terapistleri-icin): Çift, aile ve EMDR uygulamalarında randevu biçimi, çalışma alanı ve yönlendirme kurgusu.
 - [Terapide KVKK ve Veri Minimizasyonu](https://terapist.co/rehber/terapide-kvkk-ve-veri-minimasyonu): Sağlık verisi toplamadan ön görüşme talebi alma, oturum güvenliği ve iki aşamalı doğrulama (TOTP) ilkeleri.
 

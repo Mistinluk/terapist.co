@@ -294,7 +294,7 @@ def open_resource(resource_id: str, request: Request, db: Db):
         raise HTTPException(404, "Kaynak bulunamadı.")
     now = int(time.time())
     if _zaman_durumu(row, now) != "aktif":
-        raise HTTPException(404, "Bu kaynağın yayın süresi aktif değil.")
+        raise HTTPException(404, "Bu kaynak şu anda yayında değil.")
     if row.sifre_ozeti:
         raise HTTPException(403, "Bu bağlantı erişim kodu ile korunmaktadır.")
     # İstemci kimliği saklanmaz; yalnız toplu tıklama sayısı artar.
@@ -322,7 +322,7 @@ def unlock_resource(
         raise HTTPException(404, "Kaynak bulunamadı.")
     now = int(time.time())
     if _zaman_durumu(row, now) != "aktif":
-        raise HTTPException(404, "Bu kaynağın yayın süresi aktif değil.")
+        raise HTTPException(404, "Bu kaynak şu anda yayında değil.")
     if row.sifre_ozeti and not parolalar.verify(body.kod, row.sifre_ozeti):
         raise HTTPException(403, "Erişim kodu hatalı.")
     db.execute(

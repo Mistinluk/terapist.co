@@ -53,35 +53,35 @@ export function SeoHubPage({
     "/karsilastirma": {
       label: "Karşılaştırmalar",
       title:
-        "Terapist.co Karşılaştırmalar · Linktree, Web Sitesi, Calendly ve Pazaryerleri",
+        "Terapist.co Karşılaştırmalar · Linktree, Web Sitesi, Calendly ve Pazar yerleri",
       description:
-        "Terapist.co vs Linktr.ee, Klasik Web Sitesi, Calendly ve Pazaryerleri karşılaştırmaları; ruh sağlığı uzmanları için maliyet, KVKK ve randevu analizi.",
+        "Terapist.co vs Linktr.ee, Klasik Web Sitesi, Calendly ve Pazar yerleri karşılaştırmaları; ruh sağlığı uzmanları için maliyet, KVKK ve randevu analizi.",
       eyebrow: "KARŞILAŞTIRMA MERKEZİ",
       h1Lead: "Size özel klinik altyapıyı",
       h1Accent: "tüm alternatiflerle karşılaştırın!",
-      lead: "Linktr.ee, klasik web siteleri, genel takvim araçları ve komisyonlu pazaryerleri yerine neden ruh sağlığı uzmanları için tasarlanmış tekil bir vitrin seçmelisiniz?",
+      lead: "Linktr.ee, klasik web siteleri, genel takvim araçları ve komisyonlu pazar yerleri yerine neden ruh sağlığı uzmanları için tasarlanmış kişisel bir vitrin seçmelisiniz?",
     },
     "/cozumler": {
-      label: "Klinik Çözümler",
+      label: "Klinik çözümler",
       title:
-        "Terapist.co Klinik Çözümler · Link in Bio, Randevu Takvimi, Şifreli Formlar",
+        "Terapist.co Klinik çözümler · Link in Bio, Randevu Takvimi, Şifreli Formlar",
       description:
-        "Psikologlar için Link in Bio, online terapi randevu takvimi, şifreli BDT/Şema formları, klinik QR masa kartı ve doğrulanmış meslektaş ağı.",
+        "Psikologlar için Link in Bio, çevrim içi terapi randevu takvimi, şifreli BDT/Şema formları, klinik QR masa kartı ve doğrulanmış meslektaş ağı.",
       eyebrow: "KLİNİK ÇÖZÜMLER",
       h1Lead: "Klinik pratiğiniz için tek çatı:",
-      h1Accent: "randevu, şifreli form ve QR kimlik!",
-      lead: "Psikologlar için Link in Bio, online terapi randevu takvimi, şifreli BDT/Şema ön görüşme formları, dinamik QR masa kartı ve doğrulanmış meslektaş ağı.",
+      h1Accent: "randevu, şifreli form ve QR kart!",
+      lead: "Psikologlar için Link in Bio, çevrim içi terapi randevu takvimi, şifreli BDT/Şema ön görüşme formları, dinamik QR masa kartı ve doğrulanmış meslektaş ağı.",
     },
     "/rehber": {
-      label: "Uzman Rehberleri",
+      label: "Uzman rehberleri",
       title:
         "Klinik Psikologlar ve Terapistler İçin Dijital Rehberler | terapist.co",
       description:
-        "Klinik psikolog dijital kimlik, BDT/Şema ve Çift/EMDR terapistleri için pratik kurulum ve terapide KVKK veri minimizasyonu rehberleri.",
+        "Klinik psikologlar için dijital kimlik, BDT/Şema ve Çift/EMDR terapistleri için pratik kurulum ve terapide KVKK veri minimizasyonu rehberleri.",
       eyebrow: "UZMAN REHBERLERİ",
       h1Lead: "Ruh sağlığı uzmanları için",
       h1Accent: "dijital kimlik, SEO ve KVKK rehberleri!",
-      lead: "Klinik psikolog dijital kimlik kurulumu, BDT/Şema ve Çift/EMDR pratiklerine özel profil mimarisi ve terapide KVKK veri minimizasyonu ilkeleri.",
+      lead: "Klinik psikologlar için dijital kimlik kurulumu, BDT/Şema ve Çift/EMDR pratiklerine özel profil mimarisi ve terapide KVKK veri minimizasyonu ilkeleri.",
     },
   };
   const currentHub = hubCopy[hubPath] ?? hubCopy["/cozumler"];
@@ -105,7 +105,7 @@ export function SeoHubPage({
             {
               "@type": "ListItem",
               position: 1,
-              name: "Ana Sayfa",
+              name: "Ana sayfa",
               item: "https://terapist.co/",
             },
             {
@@ -186,7 +186,7 @@ export function SeoHubPage({
         <div className="seo-hero-summary-card">
           <div className="seo-hero-summary-head">
             <span className="seo-summary-badge">HIZLI BAKIŞ</span>
-            <h2>Terapist.co Neden Farklı?</h2>
+            <h2>Terapist.co neden farklı?</h2>
             <p>
               Genel amaçlı link ve takvim araçlarının aksine yalnızca ruh
               sağlığı uzmanlarının klinik ihtiyaçları için tasarlandı.
@@ -196,23 +196,21 @@ export function SeoHubPage({
             <li>
               <CheckCircle2 size={18} aria-hidden="true" />
               <div>
-                <strong>Doğrulanmış Uzman &amp; Founding Rozeti</strong>
+                <strong>Doğrulanmış uzman ve kurucu terapist rozeti</strong>
                 <span>Yönetici incelemesinden geçmiş güvenilir kimlik</span>
               </div>
             </li>
             <li>
               <CheckCircle2 size={18} aria-hidden="true" />
               <div>
-                <strong>Şifreli BDT &amp; Şema Formları (Link Lock)</strong>
-                <span>
-                  Sadece PIN şifresini bilen danışanlara özel ölçekler
-                </span>
+                <strong>Şifreli BDT ve şema formları (Link Lock)</strong>
+                <span>Sadece PIN kodunu bilen danışanlara özel ölçekler</span>
               </div>
             </li>
             <li>
               <CheckCircle2 size={18} aria-hidden="true" />
               <div>
-                <strong>Google Takvim &amp; Bekleme Listesi</strong>
+                <strong>Google Takvim ve bekleme listesi</strong>
                 <span>
                   Çakışmaları önleyen takvim ve dolu kontenjan yönetimi
                 </span>
@@ -221,7 +219,7 @@ export function SeoHubPage({
             <li>
               <CheckCircle2 size={18} aria-hidden="true" />
               <div>
-                <strong>%0 Komisyon &amp; KVKK Veri Minimasyonu</strong>
+                <strong>%0 komisyon ve KVKK veri minimizasyonu</strong>
                 <span>Tanı veya terapi notu tutmayan bağımsız mimari</span>
               </div>
             </li>
@@ -278,7 +276,7 @@ export function SeoHubPage({
             onClick={() => setActiveFilter("cozumler")}
           >
             <Layers size={15} aria-hidden="true" />
-            Klinik Çözümler ({SEO_FOOTER_GROUPS.cozumler.length})
+            Klinik çözümler ({SEO_FOOTER_GROUPS.cozumler.length})
           </button>
           <button
             type="button"
@@ -288,7 +286,7 @@ export function SeoHubPage({
             onClick={() => setActiveFilter("rehber")}
           >
             <BookOpen size={15} aria-hidden="true" />
-            Uzman Rehberleri ({SEO_FOOTER_GROUPS.rehber.length})
+            Uzman rehberleri ({SEO_FOOTER_GROUPS.rehber.length})
           </button>
         </div>
 
@@ -344,8 +342,8 @@ export function SeoDetailPage() {
 
   const categoryLabelMap: Record<SeoCategory, string> = {
     karsilastirma: "Karşılaştırmalar",
-    cozumler: "Klinik Çözümler",
-    rehber: "Uzman Rehberleri",
+    cozumler: "Klinik çözümler",
+    rehber: "Uzman rehberleri",
   };
   const pageJsonLd = page
     ? {
@@ -372,7 +370,7 @@ export function SeoDetailPage() {
               {
                 "@type": "ListItem",
                 position: 1,
-                name: "Ana Sayfa",
+                name: "Ana sayfa",
                 item: "https://terapist.co/",
               },
               {
@@ -495,7 +493,7 @@ export function SeoDetailPage() {
             <ShieldCheck size={15} aria-hidden="true" />
             <span>
               Doğrulanmış uzman rozeti · %0 seans komisyonu · KVKK veri
-              minimasyonu
+              minimizasyonu
             </span>
           </p>
         </div>
@@ -552,7 +550,7 @@ export function SeoDetailPage() {
           <table className="seo-comparison-table">
             <thead>
               <tr>
-                <th scope="col">Klinik Kriter &amp; Özellik</th>
+                <th scope="col">Klinik kriter ve özellik</th>
                 <th scope="col" className="is-terapist-col">
                   terapist.co
                 </th>
@@ -587,7 +585,7 @@ export function SeoDetailPage() {
         aria-labelledby="seo-pillars-title"
       >
         <div className="home-dark-inner">
-          <div className="home-section-heading lt-section-heading">
+          <div className="home-section-heading lt-section-heading lt-heading-on-dark">
             <span className="eyebrow lt-eyebrow-pill is-dark">
               {page.pillarsEyebrow}
             </span>
@@ -664,7 +662,7 @@ export function SeoDetailPage() {
               </span>
               <span className="eyebrow">SIKÇA SORULAN SORULAR</span>
             </div>
-            <h2 id="seo-faq-title">Merak edilen sorular ve yanıtlar.</h2>
+            <h2 id="seo-faq-title">Sık sorulan sorular ve yanıtları.</h2>
           </header>
 
           <div className="home-faq-list lt-faq-list">
@@ -738,7 +736,7 @@ export function SeoDetailPage() {
       >
         <div className="home-section-heading lt-section-heading">
           <span className="eyebrow lt-eyebrow-pill">
-            İLGİLİ KARŞILAŞTIRMA &amp; REHBERLER
+            İLGİLİ KARŞILAŞTIRMALAR VE REHBERLER
           </span>
           <h2 id="related-seo-title">Diğer uzman içeriklerini keşfedin.</h2>
           <p>

@@ -30,22 +30,22 @@ const setupSteps = [
     number: "01",
     badge: "ADIM 01 · ~30 SN",
     title: "İsminize özel adresinizi ayırın",
-    text: "Başkası almadan terapist.co/adınız uzantınızı seçin ve mesleki kimliğinizi güvenceye alın.",
+    text: "Başkası almadan terapist.co/adiniz adresinizi seçin ve mesleki kimliğinizi güvenceye alın.",
     chips: ["terapist.co/adiniz", "Kalıcı URL"],
   },
   {
     number: "02",
     badge: "ADIM 02 · ~2 DK",
-    title: "Uzmanlık ve takviminizi ekleyin",
+    title: "Uzmanlık bilgilerinizi ve takviminizi ekleyin",
     text: "Eğitimlerinizi, çalıştığınız ekolleri, şifreli formlarınızı ve görüşme saatlerinizi tanımlayın.",
-    chips: ["Google Takvim", "Şifreli Formlar"],
+    chips: ["Google Takvim", "Şifreli formlar"],
   },
   {
     number: "03",
     badge: "ADIM 03 · TEK LİNK",
-    title: "Tek linkle her yerde paylaşın",
-    text: "Doğrulama onayının ardından Instagram, LinkedIn, Google ve QR Kodunuzda tek adres kullanın.",
-    chips: ["Instagram & Google", "QR Kodunuz"],
+    title: "Tek bağlantıyla her yerde paylaşın",
+    text: "Doğrulama onayının ardından Instagram, LinkedIn ve Google profillerinizde, ayrıca QR kodunuzda aynı adresi kullanın.",
+    chips: ["Instagram ve Google", "QR kodunuz"],
   },
 ];
 
@@ -110,51 +110,51 @@ const PLATFORM_FEATURES = [
     bentoRole: "hero",
     icon: AtSign,
     badge: "KİŞİSEL ADRES",
-    title: "Size özel terapist.co/kullanıcıadı",
+    title: "Size özel terapist.co/kullaniciadi",
     summary:
       "İsminiz başkası tarafından alınmadan kalıcı mesleki adresinizi bugün ayırın.",
-    tags: ["Tire & ek yok", "Doğrulanmış Rozet", "Kurucu Halka"],
+    tags: ["Tire ve ek yok", "Doğrulanmış rozet", "Kurucu uzman halkası"],
     previewPill: "terapist.co/adiniz",
   },
   {
     id: "link-in-bio",
     bentoRole: "wide",
     icon: Palette,
-    badge: "LİNK IN BIO",
-    title: "Link-in-bio alanı oluşturma",
+    badge: "BİYOGRAFİ BAĞLANTISI",
+    title: "Biyografiniz için tek bağlantı",
     summary:
-      "4 klinik tema, gömülü Spotify/YouTube oynatıcı ve White-label desteğiyle tek vitrin.",
-    tags: ["4 Klinik Tema", "Gömülü Medya", "White-label özelliği"],
+      "4 klinik tema, gömülü Spotify/YouTube oynatıcıları ve marka gizleme desteğiyle tek bir vitrin.",
+    tags: ["4 klinik tema", "Gömülü medya", "Marka gizleme özelliği"],
   },
   {
     id: "randevu-takvimi",
     bentoRole: "tile",
     icon: CalendarDays,
     badge: "RANDEVU",
-    title: "Doğrudan randevu alabilme imkanı",
+    title: "Doğrudan randevu talebi",
     summary:
-      "Google Takvim eşitleme ve kontenjan dolduğunda devreye giren Bekleme Listesi.",
-    tags: ["Google Takvim", "Bekleme Listesi"],
+      "Google Takvim eşitlemesi ve kontenjanınız dolduğunda kullanabileceğiniz bekleme listesi.",
+    tags: ["Google Takvim", "Bekleme listesi"],
   },
   {
     id: "sifreli-formlar",
     bentoRole: "tile",
     icon: LockKeyhole,
-    badge: "ŞİFRELİ & QR",
+    badge: "ŞİFRELİ FORM VE QR",
     title: "Şifreli ölçek ve belge paylaşımı",
     summary:
-      "PIN kilitli BDT/Şema formlarını ve basıma hazır QR Kodunuzu tek yerden sunun.",
-    tags: ["PIN Korumalı Link", "QR Kodunuz"],
+      "PIN koduyla korunan BDT/Şema formlarını ve basıma hazır QR kodunuzu tek yerden sunun.",
+    tags: ["PIN korumalı bağlantı", "QR kodunuz"],
   },
   {
     id: "analitik",
     bentoRole: "tile",
     icon: BarChart3,
     badge: "ANALİTİK",
-    title: "Analitik özellikleri",
+    title: "Ziyaretçi istatistikleri",
     summary:
       "Ziyaretçi kaynaklarını ve randevu dönüşümlerini KVKK veri minimizasyonuyla izleyin.",
-    tags: ["Kaynak Kırılımı", "KVKK Uyumlu"],
+    tags: ["Trafik kaynakları", "KVKK uyumlu"],
   },
   {
     id: "meslektas-agi",
@@ -163,11 +163,11 @@ const PLATFORM_FEATURES = [
     badge: "MESLEKTAŞ AĞI",
     title: "Meslektaşlarınızla iletişim kurun",
     summary:
-      "Süpervizyon bağlarınızı görünür kılın, terapist.co/r/... ile etik danışan yönlendirin.",
+      "Süpervizyon bağlarınızı görünür kılın, terapist.co/r/... ile danışanları etik biçimde yönlendirin.",
     tags: [
-      "Onaylı Mesleki Bağ",
-      "terapist.co/r/... Yönlendirme",
-      "Puanlamasız Dizin",
+      "Onaylı mesleki bağ",
+      "terapist.co/r/... yönlendirmesi",
+      "Puanlamasız dizin",
     ],
   },
 ];
@@ -182,56 +182,56 @@ const FAQ_ITEMS: {
     question:
       "Terapist.co’nun ana kullanım amaçları nelerdir ve kimler katılabilir?",
     answer:
-      "Terapist.co; psikoloji, klinik psikoloji, psikiyatri ve psikolojik danışmanlık alanlarında eğitimini tamamlamış ruh sağlığı uzmanları için kurulmuş doğrulanmış dijital vitrin ve çalışma alanıdır. Tek bir bağlantıda mesleki profilinizi ve içeriklerinizi sunmanıza, takvim ile bekleme listenizi yönetmenize ve doğrulanmış meslektaşlarınızla yönlendirme ağı kurmanıza olanak tanır.",
+      "Terapist.co, psikoloji, klinik psikoloji, psikiyatri ve psikolojik danışmanlık alanlarında eğitimini tamamlamış ruh sağlığı uzmanları için kurulmuş doğrulanmış dijital vitrin ve çalışma alanıdır. Tek bir bağlantıda mesleki profilinizi ve içeriklerinizi sunmanıza, takvim ile bekleme listenizi yönetmenize ve doğrulanmış meslektaşlarınızla yönlendirme ağı kurmanıza olanak tanır.",
   },
   {
     id: "adres-ve-tasarim-studyo",
     question:
       "Özel profil adresimi (terapist.co/ardaekintuncay gibi) ve tasarımımı nasıl özelleştiririm?",
     answer:
-      "Ana sayfadaki kutuya adınızı yazıp kullanıcı adınızı doğrudan belirleyebilir ve 4 adımlı başvuru sihirbazıyla profilinizi oluşturabilirsiniz. Onay sonrasında Çalışma Alanım › Görünüm, QR & White-Label sekmesinden 4 tasarım tarzı (Klinik Modern, Editoryal Klinik, Organik Mindfulness, Yumuşak Cam Studio), 8 renk paleti veya özel Hex rengi, 6 buton şekli, 4 tipografi ve zemin seçebilir; yetkiniz dahilinde White-Label ile Terapist.co logosunu gizleyebilirsiniz.",
+      "Ana sayfadaki kutuya adınızı yazıp kullanıcı adınızı doğrudan belirleyebilir ve 4 adımlı başvuru sihirbazıyla profilinizi oluşturabilirsiniz. Onay sonrasında Çalışma Alanım › Görünüm ve QR kodu sekmesinden 4 tasarım tarzı (Klinik Modern, Editoryal Klinik, Doğal sakinlik, Yumuşak cam), 8 renk paleti veya özel HEX renk kodu, 6 düğme şekli, 4 yazı tipi ve arka plan seçebilir; yetkiniz dâhilinde marka gizleme (White-Label) özelliğiyle Terapist.co logosunu gizleyebilirsiniz.",
   },
   {
     id: "sifreli-link-ve-medya",
     question:
       "Değerlendirme formları, zamanlı etkinlikler ve medya içeriklerini nasıl paylaşırım?",
     answer:
-      "Bağlantılarım bölümünde linklerinizi Yazılar, Kitaplar ve Podcast gibi kategorilere ayırabilir; yalnızca parolasını paylaştığınız kişilerin açabileceği şifreli form bağlantıları (ör. BDT veya Şema Terapi ön formları) ekleyebilirsiniz. Grup terapisi kayıtları için başlangıç ve bitiş tarihi tanımlayabilir, acil iletişim butonlarını vurgulayabilir, Spotify ve YouTube bağlantılarını sayfadan çıkılmadan çalacak biçimde gömebilirsiniz.",
+      "Bağlantılarım bölümünde bağlantılarınızı Yazılar, Kitaplar ve Podcast gibi kategorilere ayırabilir; yalnızca parolasını paylaştığınız kişilerin açabileceği şifreli form bağlantıları (ör. BDT veya Şema Terapi ön formları) ekleyebilirsiniz. Grup terapisi kayıtları için başlangıç ve bitiş tarihi tanımlayabilir, acil iletişim düğmelerini vurgulayabilir, Spotify ve YouTube bağlantılarını sayfadan çıkılmadan çalacak biçimde gömebilirsiniz.",
   },
   {
     id: "takvim-google-ve-bekleme",
     question:
       "Haftalık takvimim, Google Takvim bağlantısı ve bekleme listesi nasıl işler?",
     answer:
-      "Çalışma alanınızdan haftalık müsaitlik dilimlerinizi ve çevrim içi / yüz yüze görüşme seçeneklerinizi tanımlayabilirsiniz. Google Takvim’inizi bağladığınızda sistem yalnızca meşgul/müsait zaman aralıklarını eşitleyip dolu saatlerinizi kapatır; özel etkinlik başlıklarınız asla paylaşılmaz. Takviminiz dolduğunda ise Bekleme Listesi özelliğini etkinleştirerek yeni başvuruları sıraya alabilirsiniz.",
+      "Çalışma alanınızdan haftalık müsaitlik dilimlerinizi ve çevrim içi ve yüz yüze görüşme seçeneklerinizi tanımlayabilirsiniz. Google Takvim hesabınızı bağladığınızda sistem yalnızca meşgul/müsait zaman aralıklarını eşitleyip dolu saatlerinizi kapatır; özel etkinlik başlıklarınız asla paylaşılmaz. Takviminiz dolduğunda ise Bekleme Listesi özelliğini etkinleştirerek yeni başvuruları sıraya alabilirsiniz.",
   },
   {
     id: "qr-kart-ve-web-rozeti",
     question:
-      "Dinamik QR Kodunuz ve kendi web sitem için doğrulama rozeti nasıl kullanılır?",
+      "Dinamik QR kodunuz ve kendi web sitem için doğrulama rozeti nasıl kullanılır?",
     answer:
-      "Görünüm stüdyosunda profil bağlantınıza özel (?utm_source=qr parametreli) QR kodunuz hazır olarak üretilir. Bunu görüşme odanız veya kartvizitiniz için yüksek çözünürlüklü PNG masa kartı ya da vektör SVG olarak indirebilirsiniz. Web Sitesi Rozeti sekmesindeki yerleştirme koduyla da onaylı uzman rozetinizi kişisel web sitenize kolayca ekleyebilirsiniz.",
+      "Görünüm stüdyosunda profil bağlantınıza özel QR kodunuz hazır olarak üretilir. Bunu görüşme odanız veya kartvizitiniz için yüksek çözünürlüklü PNG masa kartı ya da vektör SVG olarak indirebilirsiniz. Web Sitesi Rozeti sekmesindeki yerleştirme koduyla da onaylı uzman rozetinizi kişisel web sitenize kolayca ekleyebilirsiniz.",
   },
   {
     id: "meslektas-agi-yonlendirme",
     question:
       "Meslektaş ağı ve özel referans yönlendirmesi (terapist.co/r/...) pratiğime ne sağlar?",
     answer:
-      "Doğrulanmış meslektaşlarınızla eğitim, süpervizyon veya birlikte çalışma bağlamında profesyonel bağ kurabilir, birbirinizi profilinizde önerebilirsiniz. Takviminizin dolu olduğu veya uzmanlık alanınız dışında kalan konularda kendi çalışma alanınızdan özel yönlendirme linki (terapist.co/r/...) oluşturarak uygun meslektaşınıza etik ve ölçülebilir yönlendirme yapabilirsiniz.",
+      "Doğrulanmış meslektaşlarınızla eğitim, süpervizyon veya birlikte çalışma bağlamında profesyonel bağ kurabilir, birbirinizi profilinizde önerebilirsiniz. Takviminizin dolu olduğu veya uzmanlık alanınız dışında kalan konularda kendi çalışma alanınızdan özel yönlendirme bağlantısı (terapist.co/r/...) oluşturarak uygun meslektaşınıza etik ve ölçülebilir yönlendirme yapabilirsiniz.",
   },
   {
     id: "dogrulama-ve-kurucu-rozet",
     question:
-      "Başvuru incelemesi, Doğrulanmış Uzman rozeti ve Kurucu Uzman statüsü nasıl çalışır?",
+      "Başvuru incelemesi, Doğrulanmış Uzman rozeti ve Kurucu terapist statüsü nasıl çalışır?",
     answer:
-      "Başvurunuzu gönderdikten sonra eğitim, unvan ve mesleki bilgileriniz yönetici ekibimizce incelenir; onay verilmeden profiliniz dizinde listelenmez. Onaylanan profillerde ismin yanında Doğrulanmış Uzman rozeti yer alır; platformun ilk uzmanları arasında yer alan terapistlerde ise Kurucu Uzman (Founding Therapist) numarası profil görseli etrafındaki özel halka ile gösterilir.",
+      "Başvurunuzu gönderdikten sonra eğitim, unvan ve mesleki bilgileriniz yönetici ekibimizce incelenir; onay verilmeden profiliniz dizinde listelenmez. Onaylanan profillerde ismin yanında Doğrulanmış Uzman rozeti yer alır; platformun ilk uzmanları arasında yer alan terapistlerde ise Kurucu terapist numarası profil görseli etrafındaki özel halka ile gösterilir.",
   },
   {
     id: "analitik-kvkk-guvenlik",
     question:
       "Profil analitiğimden neleri izleyebilirim ve veri gizliliği nasıl korunur?",
     answer:
-      "Analitik sekmesinde profilinizin toplam ve tekil ziyaretçi sayılarını, Instagram, Google, QR veya referans linki gibi trafik kaynaklarını ve bağlantı tıklama dönüşümlerini günlük trendlerle görebilirsiniz. Terapist.co klinik vaka tutma veya seans notu aracı değildir; randevu ve bekleme listesi formlarında tanı ya da klinik öykü istenmez, iletişim verileri şifreli saklanır ve hesabınız iki aşamalı doğrulama (MFA/TOTP) ile korunur.",
+      "Analitik sekmesinde profilinizin toplam ve tekil ziyaretçi sayılarını, Instagram, Google, QR veya yönlendirme bağlantısı gibi trafik kaynaklarını ve bağlantı tıklama dönüşümlerini günlük trendlerle görebilirsiniz. Terapist.co klinik vaka kaydı tutma veya seans notu aracı değildir; randevu ve bekleme listesi formlarında tanı ya da klinik öykü istenmez, iletişim verileri şifreli saklanır ve hesabınız iki aşamalı doğrulama (MFA/TOTP) ile korunur.",
   },
 ];
 
@@ -553,15 +553,16 @@ export function Home() {
               <span key={activeRole} className="lt-hero-role-word">
                 {activeRole}
               </span>
-            </button>
+            </button>{" "}
+            olarak
             <br />
-            özel <em>alan adınızı şimdi sahiplenin!</em>
+            size özel <em>profil adresinizi şimdi sahiplenin!</em>
           </h1>
           <p className="lt-hero-lead">
-            İsminize özel <strong>terapist.co/adınız</strong> adresinizi başkası
+            İsminize özel <strong>terapist.co/adiniz</strong> adresinizi başkası
             almadan ayırın. Doğrulanmış uzman profilinizi, Google Takvim uyumlu
             randevu ve bekleme listenizi, şifreli değerlendirme formlarınızı ve
-            QR Kodunuzu tek bağlantıda birleştirin.
+            QR kodunuzu tek bağlantıda birleştirin.
           </p>
 
           <form
@@ -586,7 +587,7 @@ export function Home() {
                 onChange={(e) => setHeroInput(e.target.value)}
                 placeholder={activePlaceholder}
                 maxLength={45}
-                aria-label="Adınızı yazarak terapist.co alan adınızı deneyin"
+                aria-label="Adınızı yazarak terapist.co profil adresinizi deneyin"
               />
             </label>
             <button type="submit" className="lt-claim-cta-pill">
@@ -618,7 +619,7 @@ export function Home() {
         <div className="home-section-heading lt-section-heading lt-bento-heading-compact">
           <span className="eyebrow lt-eyebrow-pill">ANA ÖZELLİKLER</span>
           <h2 id="features-title">
-            Neden kendi alan adınızı bugün almalısınız?
+            Neden profil adresinizi bugün almalısınız?
           </h2>
           <p>İhtiyacınız olan tüm klinik araçlar tek adreste.</p>
         </div>
@@ -669,7 +670,7 @@ export function Home() {
 
         <div className="lt-section-internal-links">
           <Link to="/ozellikler" className="lt-claim-cta-pill">
-            <span>Tüm Özellikleri İncele</span>
+            <span>Tüm özellikleri incele</span>
             <ArrowRight size={18} aria-hidden="true" />
           </Link>
         </div>
@@ -719,7 +720,7 @@ export function Home() {
             className="lt-claim-cta-pill lt-scroll-hero-cta"
             onClick={scrollToHeroClaim}
           >
-            <span>Alan adını al!</span>
+            <span>Profil adresini al</span>
             <ArrowUp size={18} aria-hidden="true" />
           </button>
         </div>
@@ -736,10 +737,9 @@ export function Home() {
             </span>
             <h2 id="benefits-title">Danışanlarınız sizi tanısın.</h2>
             <p>
-              Websiteleri güzeldir fakat onları incelemek ciddi bir zaman ister.
-              Danışanlarınızın bu kadar zamanı olmayabilir ve o kısa zaman
-              aralığında ilgilerini bir aksiyona dönüştürmek isteyebilirsiniz.
-              Biz bunu sağlarız.
+              Danışanlarınızın sizi tanımasını kolaylaştırın. Mesleki
+              bilgilerinizi, kaynaklarınızı ve uygun görüşme saatlerinizi tek
+              sayfada sunarak randevu talebine giden yolu kısaltın.
             </p>
           </div>
           <div className="home-step-grid lt-dark-cards-grid">
@@ -763,9 +763,9 @@ export function Home() {
               <CalendarDays size={25} aria-hidden="true" />
               <h3>Uygunluğunuzu belirtin</h3>
               <p>
-                Görüşme şeklinizi, uygun olan saatlerinizi, takvim
-                müsaitliklerinizi Google Takvim bağlantısı ile otomatik
-                güncelleyin.
+                Görüşme şeklinizi ve uygun saatlerinizi belirtin. Google Takvim
+                bağlantısıyla dolu saatlerinizin otomatik güncellenmesini
+                sağlayın.
               </p>
               <Link
                 to="/cozumler/online-terapi-randevu-takvimi"
@@ -779,8 +779,8 @@ export function Home() {
               <ShieldCheck size={25} aria-hidden="true" />
               <h3>Onaylı profilinizi paylaşın</h3>
               <p>
-                Profiliniz onaylandıktan sonra sosyal medya hesaplarınıza
-                ekleyebilir ve ziyaretçilerinizi dönüştürmeye başlayabilirsiniz.
+                Onaylanan profil adresinizi sosyal medya hesaplarınıza ekleyin;
+                ziyaretçileriniz sizi tanısın ve randevu talep edebilsin.
               </p>
               <Link
                 to="/cozumler/psikolog-link-in-bio"
@@ -820,8 +820,8 @@ export function Home() {
             <UsersRound size={25} aria-hidden="true" />
             <h3>Mesleki bağlantı</h3>
             <p>
-              Birlikte çalışma, eğitim veya süpervizyon ilişki bağlamlarını
-              karşılıklı onayla görünür kılın.
+              Birlikte çalışma, eğitim veya süpervizyon bağlarınızı karşılıklı
+              onayla görünür kılın.
             </p>
             <span className="lt-feature-foot-pill">
               <span>Ağ yapısını incele</span>
@@ -856,13 +856,11 @@ export function Home() {
             <div className="home-faq-badge-row">
               <span className="eyebrow">SIKÇA SORULAN SORULAR</span>
             </div>
-            <h2 id="faq-title">
-              Aklınıza takılanları burada cevaplayabilirsiniz
-            </h2>
+            <h2 id="faq-title">Aklınıza takılan soruların yanıtları burada</h2>
             <p>
-              Başvuru doğrulamasından mikro-site özelleştirmeye, akıllı
+              Başvuru doğrulamasından mikro site özelleştirmeye, akıllı
               takvimden şifreli formlara ve meslektaş yönlendirmelerine kadar
-              tüm uzman sorularını tek akışta derledik.
+              uzmanların sık sorduğu soruları bir araya getirdik.
             </p>
           </header>
 

@@ -21,8 +21,10 @@ describe("Home ana sayfa kullanım amaçları ve terapist SSS", () => {
     expect(appHtml).not.toContain("#alanini-sahiplen");
     expect(appHtml).toContain("Psikolog");
     expect(appHtml).toContain("lt-hero-role-rotator");
-    expect(appHtml).toContain("özel <em>alan adınızı şimdi sahiplenin!</em>");
-    expect(appHtml).toContain("terapist.co/adınız");
+    expect(appHtml).toContain(
+      "size özel <em>profil adresinizi şimdi sahiplenin!</em>",
+    );
+    expect(appHtml).toContain("terapist.co/adiniz");
     expect(appHtml).toContain('href="/ozellikler"');
     expect(appHtml).toContain("lt-hero-claim-form");
     expect(appHtml).toContain("lt-particle-sphere-canvas");
@@ -53,9 +55,7 @@ describe("Home ana sayfa kullanım amaçları ve terapist SSS", () => {
     expect(featuresHtml).toContain('id="sifreli-formlar"');
     expect(featuresHtml).toContain('id="analitik"');
     expect(featuresHtml).toContain('id="meslektas-agi"');
-    expect(featuresHtml).toContain(
-      "Alan adını seç ve profil bilgilerini doldur",
-    );
+    expect(featuresHtml).toContain("Profil adresini seç ve başvur");
     expect(featuresHtml).not.toContain('style="');
   });
 
@@ -82,14 +82,14 @@ describe("Home ana sayfa kullanım amaçları ve terapist SSS", () => {
     );
 
     expect(html).toContain("ANA ÖZELLİKLER");
-    expect(html).toContain("Tüm Özellikleri İncele");
-    expect(html).toContain("Link-in-bio alanı oluşturma");
-    expect(html).toContain("Size özel terapist.co/kullanıcıadı");
-    expect(html).toContain("Doğrudan randevu alabilme imkanı");
+    expect(html).toContain("Tüm özellikleri incele");
+    expect(html).toContain("Biyografiniz için tek bağlantı");
+    expect(html).toContain("Size özel terapist.co/kullaniciadi");
+    expect(html).toContain("Doğrudan randevu talebi");
     expect(html).toContain("Şifreli ölçek ve belge paylaşımı");
-    expect(html).toContain("Analitik özellikleri");
+    expect(html).toContain("Ziyaretçi istatistikleri");
     expect(html).toContain("Meslektaşlarınızla iletişim kurun");
-    expect(html).toContain("White-label özelliği");
+    expect(html).toContain("Marka gizleme özelliği");
     expect(html).toContain('href="/ozellikler#kisisel-adres"');
     expect(html).toContain('href="/ozellikler#link-in-bio"');
     expect(html).not.toContain('style="');
@@ -103,13 +103,13 @@ describe("Home ana sayfa kullanım amaçları ve terapist SSS", () => {
     );
 
     expect(html).toContain("home-faq-shell");
-    expect(html).toContain("Aklınıza takılanları burada cevaplayabilirsiniz");
+    expect(html).toContain("Aklınıza takılan soruların yanıtları burada");
     expect(html).toContain("mailto:ekin@terapist.co");
     expect(html).not.toContain("Terapistler İçin");
     expect(html).not.toContain("Danışanlar &amp; Randevu");
     expect(html).not.toContain('role="tablist"');
     expect(html).toContain("Terapist.co’nun ana kullanım amaçları nelerdir");
-    expect(html).toContain("Görünüm, QR &amp; White-Label");
+    expect(html).toContain("Görünüm ve QR kodu");
     expect(html).toContain("Uzman başvurusu başlat");
   });
 

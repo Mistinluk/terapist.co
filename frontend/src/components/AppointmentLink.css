@@ -5,6 +5,33 @@
   gap: 0.8rem;
   min-width: 0;
 }
+.private-appointment {
+  max-width: 760px;
+  margin-inline: auto;
+  line-height: 1.6;
+}
+.private-appointment h1,
+.private-appointment h2 {
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.private-appointment .appointment-card {
+  padding: 24px;
+  margin-block: 20px;
+  border: 1px solid var(--line, #dbe4f2);
+  border-radius: 20px;
+  background: #fff;
+}
+.private-appointment .appointment-card h2 {
+  margin: 0 0 16px;
+}
+.private-appointment .appointment-card .status-badge {
+  display: table;
+}
+.private-appointment .actions {
+  margin-left: 0;
+  align-items: center;
+}
 .private-appointment-link {
   padding: 1rem;
   border: 1px solid var(--line, #374151);

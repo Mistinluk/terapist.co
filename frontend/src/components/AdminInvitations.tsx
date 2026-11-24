@@ -91,7 +91,7 @@ export function AdminInvitationsView({
               <span className="sr-only">Davetlerde ara</span>
               <input
                 type="search"
-                placeholder="Davet eden veya davet edilen ada/e-postaya göre ara…"
+                placeholder="Davet edenin veya davet edilenin adı ya da e-postasıyla ara…"
                 value={search}
                 onChange={(event) => onSearchChange(event.target.value)}
               />
@@ -118,12 +118,12 @@ export function AdminInvitationsView({
                 <table>
                   <thead>
                     <tr>
-                      <th>Davet Eden Uzman</th>
+                      <th>Davet eden uzman</th>
                       <th>Gönderilen</th>
-                      <th>Kabul Edilen</th>
+                      <th>Kabul edilen</th>
                       <th>Bekleyen</th>
-                      <th>Kota / Kalan Hak</th>
-                      <th>Platforma Kazandırdıkları</th>
+                      <th>Kota / kalan hak</th>
+                      <th>Platforma kazandırılan uzmanlar</th>
                     </tr>
                   </thead>
                   <tbody>

@@ -201,7 +201,8 @@ def _profile_html(profile: Uzman) -> str:
 <meta name="twitter:image" content="{image_url}">
 <script type="application/ld+json">{json_ld}</script>{assets}</head><body>
 <div id="root" data-profile="{initial_profile}">
-<main itemscope itemtype="https://schema.org/Person">
+<main class="public-profile-fallback" itemscope
+itemtype="https://schema.org/Person">
 <h1 itemprop="name">{name}</h1><p itemprop="jobTitle">{title}</p>
 <p itemprop="workLocation">{location}</p><p itemprop="description">{bio}</p>
 <section><h2>Terapi yaklaşımları</h2><p>{approaches}</p></section>
@@ -209,7 +210,7 @@ def _profile_html(profile: Uzman) -> str:
 <section><h2>Çalıştığı danışan grupları</h2><p>{audiences}</p></section>
 <section><h2>Eğitim</h2><ul>{education}</ul></section>
 <p>Randevu talebi göndermek ve güncel uygun saatleri görmek için
-JavaScript'i açın.</p>
+tarayıcınızda JavaScript'i etkinleştirin.</p>
 </main></div></body></html>"""
 
 
@@ -219,7 +220,9 @@ def legacy_profile(username: str, db: Db):
     profile = _verified_profile(db, username)
     if not profile:
         return HTMLResponse(
-            '<!doctype html><html lang="tr"><head><meta name="robots" '
+            '<!doctype html><html lang="tr"><head><meta charset="UTF-8">'
+            '<meta name="viewport" content="width=device-width, '
+            'initial-scale=1"><meta name="robots" '
             'content="noindex"><title>Profil bulunamadı · terapist.co</title>'
             "</head><body><h1>Profil bulunamadı</h1></body></html>",
             status_code=404,
@@ -241,7 +244,9 @@ def legacy_profile_id(profile_id: str, db: Db):
     )
     if not profile:
         return HTMLResponse(
-            '<!doctype html><html lang="tr"><head><meta name="robots" '
+            '<!doctype html><html lang="tr"><head><meta charset="UTF-8">'
+            '<meta name="viewport" content="width=device-width, '
+            'initial-scale=1"><meta name="robots" '
             'content="noindex"><title>Profil bulunamadı · terapist.co</title>'
             "</head><body><h1>Profil bulunamadı</h1></body></html>",
             status_code=404,
@@ -327,7 +332,9 @@ def short_profile(username: str, db: Db):
     profile = _verified_profile(db, username)
     if not profile:
         return HTMLResponse(
-            '<!doctype html><html lang="tr"><head><meta name="robots" '
+            '<!doctype html><html lang="tr"><head><meta charset="UTF-8">'
+            '<meta name="viewport" content="width=device-width, '
+            'initial-scale=1"><meta name="robots" '
             'content="noindex"><title>Profil bulunamadı · terapist.co</title>'
             "</head><body><h1>Profil bulunamadı</h1></body></html>",
             status_code=404,

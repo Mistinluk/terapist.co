@@ -20,6 +20,13 @@ import { useApi } from "../lib/useApi";
 import { Status } from "./Status";
 import { AnalyticsBarList, DailyTrendChart } from "./AnalyticsBarList";
 
+const resourceCategoryLabels: Record<string, string> = {
+  yazi: "Yazı",
+  kitap: "Kitap",
+  podcast: "Podcast",
+  diger: "Diğer",
+};
+
 export function TherapistTrafficAnalytics({
   onEditProfile,
   onOpenBadge,
@@ -125,7 +132,7 @@ export function TherapistTrafficAnalyticsView({
         <div className="analytics-metric analytics-metric-static">
           <div className="analytics-metric-heading">
             <Eye size={19} aria-hidden="true" />
-            <h3>Profil Ziyaretçileri</h3>
+            <h3>Profil ziyaretçileri</h3>
           </div>
           <strong className="tabular-num">{data.ozet.tekil_ziyaretci}</strong>
           <p>tekil ziyaretçi (son {data.gun} gün)</p>
@@ -135,12 +142,12 @@ export function TherapistTrafficAnalyticsView({
         <div className="analytics-metric analytics-metric-static">
           <div className="analytics-metric-heading">
             <CalendarDays size={19} aria-hidden="true" />
-            <h3>Randevu İlgisi</h3>
+            <h3>Randevu ilgisi</h3>
           </div>
           <strong className="tabular-num">{data.ozet.randevu_talebi}</strong>
           <p>randevu talebi oluşturuldu</p>
           <span>
-            %{data.ozet.donusum_orani_yuzde} dönüşüm ·{" "}
+            %{data.ozet.donusum_orani_yuzde.toLocaleString("tr-TR")} dönüşüm ·{" "}
             {data.ozet.randevu_cekmece_acilisi} saat seçimi
           </span>
         </div>
@@ -148,7 +155,7 @@ export function TherapistTrafficAnalyticsView({
         <div className="analytics-metric analytics-metric-static">
           <div className="analytics-metric-heading">
             <Share2 size={19} aria-hidden="true" />
-            <h3>Başlıca Ziyaret Kaynağı</h3>
+            <h3>Başlıca ziyaret kaynağı</h3>
           </div>
           <strong>{data.ozet.en_yuksek_kaynak || "Henüz veri yok"}</strong>
           <p>ziyaretçilerin sizi en çok bulduğu yer</p>
@@ -275,20 +282,20 @@ export function TherapistTrafficAnalyticsView({
               </div>
               <div className="admin-stat-values">
                 <strong>{data.profil_etkilesimleri.qr_ziyaret ?? 0}</strong>
-                <small>masa kartı & paylaşım</small>
+                <small>masa kartı ve paylaşım</small>
               </div>
             </div>
 
             <div className="admin-stat-item">
               <div className="admin-stat-label">
                 <KeyRound size={16} aria-hidden="true" />
-                <span>Şifreli link açılışı</span>
+                <span>Şifreli bağlantı açılışı</span>
               </div>
               <div className="admin-stat-values">
                 <strong>
                   {data.profil_etkilesimleri.kilitli_link_acilisi ?? 0}
                 </strong>
-                <small>doğru PIN ile erişim</small>
+                <small>erişim koduyla açılış</small>
               </div>
             </div>
           </div>
@@ -302,7 +309,7 @@ export function TherapistTrafficAnalyticsView({
               <div className="admin-pill-row">
                 {data.ziyaretci_konumlari.map((loc) => (
                   <span className="analytics-location-chip" key={loc.konum}>
-                    {loc.konum} · %{loc.pay_yuzde}
+                    {loc.konum} · %{loc.pay_yuzde.toLocaleString("tr-TR")}
                   </span>
                 ))}
               </div>
@@ -318,7 +325,7 @@ export function TherapistTrafficAnalyticsView({
         >
           <div className="admin-card-header">
             <div>
-              <span className="eyebrow">LİNK BAZLI DÖNÜŞÜM</span>
+              <span className="eyebrow">BAĞLANTI BAZLI DÖNÜŞÜM</span>
               <h3 id="link-performance-title">
                 Bağlantı tıklama ve dönüşüm oranları
               </h3>
@@ -334,7 +341,9 @@ export function TherapistTrafficAnalyticsView({
                   <div className="analytics-link-title-row">
                     <strong>{row.baslik}</strong>
                     <div className="analytics-link-pills">
-                      <span className="analytics-link-cat">{row.kategori}</span>
+                      <span className="analytics-link-cat">
+                        {resourceCategoryLabels[row.kategori] ?? "Diğer"}
+                      </span>
                       {row.vurgulu && (
                         <span className="analytics-link-flag is-highlight">
                           Vurgulu
@@ -363,13 +372,14 @@ export function TherapistTrafficAnalyticsView({
                     className="analytics-link-progress"
                     value={Math.max(0, Math.min(100, row.tiklama_payi_yuzde))}
                     max={100}
-                    aria-label={`${row.baslik} tıklama payı yüzde ${row.tiklama_payi_yuzde}`}
+                    aria-label={`${row.baslik} tıklama payı yüzde ${row.tiklama_payi_yuzde.toLocaleString("tr-TR")}`}
                   />
                 </div>
                 <div className="analytics-link-metrics tabular-num">
-                  <strong>{row.tiklama_sayisi} tık</strong>
+                  <strong>{row.tiklama_sayisi} tıklama</strong>
                   <span>
-                    %{row.tiklama_payi_yuzde} pay · %{row.to_orani_yuzde} T.O.
+                    %{row.tiklama_payi_yuzde.toLocaleString("tr-TR")} pay · %
+                    {row.to_orani_yuzde.toLocaleString("tr-TR")} T.O.
                   </span>
                 </div>
               </div>
@@ -389,7 +399,7 @@ export function TherapistTrafficAnalyticsView({
         </div>
         <div className="actions">
           <button className="button" type="button" onClick={onEditProfile}>
-            Profil & saatleri düzenle{" "}
+            Profili ve saatleri düzenle{" "}
             <ArrowRight size={16} aria-hidden="true" />
           </button>
           <button

@@ -425,9 +425,9 @@ describe("Admin dashboard subviews", () => {
 
   it("Admin sayfası Dashboard kenar çubuğu hiyerarşisini tüm sekmelerle render eder", () => {
     for (const [path, expectedHeading] of [
-      ["/yonetim", "Genel bakış &amp; Analitik"],
+      ["/yonetim", "Genel bakış ve analitik"],
       ["/yonetim?sekme=randevular", "Genel randevular"],
-      ["/yonetim?sekme=uzmanlar", "Uzmanlar &amp; Profiller"],
+      ["/yonetim?sekme=uzmanlar", "Uzmanlar ve profiller"],
       ["/yonetim?sekme=kurucu", "Kurucu programı"],
       ["/yonetim?sekme=yonlendirmeler", "Danışan yönlendirmeleri"],
       ["/yonetim?sekme=referanslar", "Davet ve referanslar"],

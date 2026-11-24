@@ -77,7 +77,7 @@ export function AnalyticsOverview({
         >
           <div className="analytics-metric-heading">
             <UsersRound size={19} aria-hidden="true" />
-            <h3>Mesleki Ağ</h3>
+            <h3>Mesleki ağ</h3>
           </div>
           <strong>{data.baglantilar.toplam}</strong>
           <p>profesyonel bağlantı</p>
@@ -141,7 +141,7 @@ export function AnalyticsOverview({
         >
           <div className="analytics-metric-heading">
             <MousePointerClick size={19} aria-hidden="true" />
-            <h3>Profil Geçişleri</h3>
+            <h3>Profil geçişleri</h3>
           </div>
           <strong>{data.yonlendirmeler.profil_tiklamalari}</strong>
           <p>yönlendirmeden profil tıklaması</p>
@@ -185,7 +185,7 @@ export function AnalyticsOverview({
             edin
           </span>
           <span className="analytics-action">
-            Takvimini ekle <ArrowRight size={15} aria-hidden="true" />
+            Takviminizi ekleyin <ArrowRight size={15} aria-hidden="true" />
           </span>
         </button>
       </section>

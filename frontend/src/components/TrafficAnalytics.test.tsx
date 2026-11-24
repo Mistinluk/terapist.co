@@ -170,7 +170,7 @@ describe("Analytics visualizations & dashboard navigation", () => {
     expect(html).toContain("194 profil görüntülenmesi");
     expect(html).toContain("Google");
     expect(html).toContain("Instagram");
-    expect(html).toContain("İstanbul · %66.2");
+    expect(html).toContain("İstanbul · %66,2");
     expect(html).toContain("En güçlü kaynağınız: Google");
   });
 
@@ -227,14 +227,14 @@ describe("Analytics visualizations & dashboard navigation", () => {
     expect(html).toContain('role="img"');
   });
 
-  it("Admin sol menüsü Google Analytics & Trafik sekmesini sunar", () => {
+  it("Admin sol menüsü Google Analytics ve trafik sekmesini sunar", () => {
     const html = renderToStaticMarkup(
       <MemoryRouter initialEntries={["/yonetim?sekme=trafik"]}>
         <Admin />
       </MemoryRouter>,
     );
 
-    expect(html).toContain("Google Analytics &amp; Trafik");
+    expect(html).toContain("Google Analytics ve trafik");
   });
 
   it("Terapist sol menüsü sadeleştirilmiş Profil istatistikleri sekmesini sunar", () => {

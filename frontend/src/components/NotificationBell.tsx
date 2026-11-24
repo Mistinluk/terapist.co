@@ -170,6 +170,7 @@ export function NotificationBell({
                 <button
                   type="button"
                   className="text-button notif-mark-all"
+                  aria-label="Tüm bildirimleri okundu olarak işaretle"
                   onClick={() => void markAllRead()}
                 >
                   <CheckCheck size={14} aria-hidden="true" />
@@ -189,7 +190,7 @@ export function NotificationBell({
 
           <div className="notif-list-scroll">
             {loading && recentItems.length === 0 ? (
-              <p className="notif-empty">Bildirimler kontrol ediliyor...</p>
+              <p className="notif-empty">Bildirimler kontrol ediliyor…</p>
             ) : recentItems.length === 0 ? (
               <p className="notif-empty">Henüz bildiriminiz bulunmuyor.</p>
             ) : (
@@ -241,7 +242,7 @@ export function NotificationBell({
               className="button notif-hub-link-btn"
               onClick={goToMessagesTab}
             >
-              <span>Bildirimler ve Mesajlar</span>
+              <span>Bildirimler ve mesajlar</span>
               <ArrowRight size={15} aria-hidden="true" />
             </button>
           </footer>

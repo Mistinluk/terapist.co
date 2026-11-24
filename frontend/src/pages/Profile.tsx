@@ -425,7 +425,7 @@ export function ProfileHeroIdentity({
               className="profile-corner-qr"
               onClick={onOpenQr}
               aria-label="QR kodu ve masa kartını aç"
-              title="QR Kart ve Paylaşım"
+              title="QR kart ve paylaşım"
             >
               <QrCode size={18} aria-hidden="true" />
             </button>
@@ -449,11 +449,11 @@ export function ProfileHeroIdentity({
             {isFounding && (
               <span
                 className="founding-ring-badge"
-                aria-label={`Founding Therapist #${foundingCode}`}
-                title={`Founding Therapist #${foundingCode}`}
+                aria-label={`Kurucu terapist #${foundingCode}`}
+                title={`Kurucu terapist #${foundingCode}`}
               >
                 <Award size={12} aria-hidden="true" />
-                <span>Founding #{foundingCode}</span>
+                <span>Kurucu #{foundingCode}</span>
               </span>
             )}
           </div>
@@ -504,7 +504,7 @@ export function ProfileHeroIdentity({
               <button
                 type="button"
                 className="verified-inline-trigger"
-                aria-label="Doğrulanmış klinik psikolog bilgisi"
+                aria-label="Uzmanın doğrulama bilgisi"
                 aria-expanded={verifiedOpen}
                 onClick={() => setVerifiedOpen((open) => !open)}
               >
@@ -541,7 +541,7 @@ export function ProfileHeroIdentity({
           type="button"
           className="endorsed-by-pill"
           onClick={onOpenEndorsed}
-          aria-label={`${endorsedBy.toplam} Meslektaşı öneriyor, listeyi aç`}
+          aria-label={`${endorsedBy.toplam} meslektaşı öneriyor, listeyi aç`}
         >
           <span className="endorsed-avatar-stack" aria-hidden="true">
             {endorsedBy.oneriler.slice(0, 4).map((peer) => (
@@ -551,13 +551,13 @@ export function ProfileHeroIdentity({
             ))}
           </span>
           <span className="endorsed-by-copy">
-            <strong>{endorsedBy.toplam} Meslektaşı öneriyor</strong>
+            <strong>{endorsedBy.toplam} meslektaşı öneriyor</strong>
           </span>
         </button>
       )}
       <div className="link-profile-actions">
         <a className="button" href="#randevu">
-          Randevu Al <ArrowRight size={17} aria-hidden="true" />
+          Randevu al <ArrowRight size={17} aria-hidden="true" />
         </a>
         <a className="button secondary" href="#baglantilar">
           Bağlantılarım
@@ -570,7 +570,7 @@ export function ProfileHeroIdentity({
             aria-label="QR kodu ve masa kartını aç"
           >
             <QrCode size={17} aria-hidden="true" />
-            <span>QR Kart</span>
+            <span>QR kart</span>
           </button>
         )}
       </div>
@@ -580,7 +580,7 @@ export function ProfileHeroIdentity({
             <Pencil size={16} aria-hidden="true" /> Profilimi düzenle
           </Link>
           <Link className="link-profile-edit" to="/panel?sekme=gorunum">
-            <Palette size={16} aria-hidden="true" /> Görünüm &amp; Tema
+            <Palette size={16} aria-hidden="true" /> Görünüm ve tema
           </Link>
         </div>
       )}
@@ -1030,7 +1030,7 @@ export function Profile() {
                     <X size={18} aria-hidden="true" />
                   </button>
                   <h2 id="qr-modal-title" className="sr-only">
-                    {p.ad} QR kodu ve randevu kartı
+                    {p.ad} · QR kodu ve randevu kartı
                   </h2>
                   <ProfileQrCard
                     username={p.kullanici_adi}
@@ -1071,7 +1071,7 @@ export function Profile() {
                     </button>
                     <span className="eyebrow">MESLEKTAŞ GÜVEN AĞI</span>
                     <h2 id="endorsed-modal-title">
-                      Kendini öneren meslektaşları ({endorsedBy.data.toplam})
+                      Kendisini öneren meslektaşları ({endorsedBy.data.toplam})
                     </h2>
                     <p className="muted small">
                       Meslektaş önerileri yalnızca klinik uzmanlık ağındaki
@@ -1410,7 +1410,7 @@ export function Profile() {
               aria-labelledby="booking-title"
             >
               <span className="eyebrow">RANDEVU</span>
-              <h2 id="booking-title">Randevu Al</h2>
+              <h2 id="booking-title">Randevu al</h2>
               <div className="booking-price">
                 {para(p.ucret)}
                 <span> / görüşme · {p.seans_suresi_dakika} dakika</span>
@@ -1428,7 +1428,7 @@ export function Profile() {
                 <p className="notice">
                   {p.onayli
                     ? "Danışanlar burada uygun saatleri seçerek size randevu talebi gönderebilir."
-                    : "Profiliniz yayınlandıktan sonra danışanlar burada uygun saatlerden randevu talebi gönderebilir."}
+                    : "Profiliniz yayımlandıktan sonra danışanlar burada uygun saatlerden randevu talebi gönderebilir."}
                 </p>
               ) : success ? (
                 <div className="notice" role="status">
@@ -1479,7 +1479,7 @@ export function Profile() {
                 tabIndex={bookingInView ? -1 : undefined}
               >
                 <CalendarDays size={17} aria-hidden="true" />
-                <span>Randevu Al</span>
+                <span>Randevu al</span>
               </a>
             )}
           </div>

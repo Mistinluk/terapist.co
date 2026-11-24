@@ -40,10 +40,10 @@ export function Privacy() {
             verileri hiçbir analitik sisteme gönderilmez.
           </p>
           <p className="muted">
-            Google Maps bağlantıları yeni sekmede açılır. Bağlantıya
+            Google Haritalar bağlantıları yeni sekmede açılır. Bağlantıya
             tıkladığınızda uzmanın yayımladığı iş adresi veya ilçe/şehir bilgisi
-            Google Maps’te aranır. Randevu formundaki bilgiler ve eşleştirme
-            tercihleriniz bu bağlantıya eklenmez.
+            Google Haritalar’da aranır. Randevu formundaki bilgiler ve
+            eşleştirme tercihleriniz bu bağlantıya eklenmez.
           </p>
         </article>
       )}

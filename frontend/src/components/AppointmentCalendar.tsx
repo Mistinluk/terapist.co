@@ -294,7 +294,7 @@ export function AppointmentCalendar({
             )}
             {slots.length > 0 && (
               <>
-                <p className="calendar-help">Mavi işaretli bir gün seçin.</p>
+                <p className="calendar-help">İşaretli bir gün seçin.</p>
                 {waitlistOpen && onOpenWaitlist && (
                   <button
                     type="button"

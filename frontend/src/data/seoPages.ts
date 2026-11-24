@@ -86,17 +86,17 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         label: "Mesleki Diploma Doğrulaması",
         terapistValue: "Yerleşik Uzman Rozeti",
-        competitorValue: "Yok (Herkes hesap açabilir)",
+        competitorValue: "Yok (herkes hesap açabilir)",
       },
       {
-        label: "Şifreli BDT & Şema Formları",
+        label: "Şifreli BDT ve Şema Formları",
         terapistValue: "Danışana özel PIN korumalı",
         competitorValue: "Klinik form kilidi yok",
       },
       {
-        label: "Randevu & Google Takvim",
-        terapistValue: "Tam entegre + Bekleme listesi",
-        competitorValue: "Üçüncü parti araç gerekir",
+        label: "Randevu ve Google Takvim",
+        terapistValue: "Takvimle bütünleşik bekleme listesi",
+        competitorValue: "Üçüncü taraf araç gerekir",
       },
       {
         label: "Etik Meslektaş Yönlendirme",
@@ -119,7 +119,7 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Uzmanlık ve Diploma Doğrulaması",
         terapistCo:
-          "Yönetici onaylı 'Doğrulanmış Uzman' ve Founding Therapist rozeti",
+          "Yönetici onaylı 'Doğrulanmış Uzman' ve Kurucu terapist rozeti",
         competitor:
           "Mesleki doğrulama yok; sahte veya yetkisiz profiller ayırt edilemez",
         terapistHighlight: true,
@@ -133,7 +133,7 @@ export const SEO_PAGES: SeoPageData[] = [
         terapistHighlight: true,
       },
       {
-        feature: "Online Randevu & Google Takvim",
+        feature: "Çevrim içi Randevu ve Google Takvim",
         terapistCo:
           "Haftalık saatler, çakışma önleyici Google Takvim ve bekleme listesi",
         competitor:
@@ -141,7 +141,7 @@ export const SEO_PAGES: SeoPageData[] = [
         terapistHighlight: true,
       },
       {
-        feature: "Klinik Veri Minimasyonu (KVKK)",
+        feature: "Klinik Veri Minimizasyonu (KVKK)",
         terapistCo:
           "Tanı ve terapi notu toplamayan, Türkiye KVKK odaklı mimari",
         competitor:
@@ -151,12 +151,12 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Meslektaş Ağı ve Etik Yönlendirme",
         terapistCo:
-          "Karşılıklı onaylı meslektaş bağları ve terapist.co/r/... yönlendirme linki",
+          "Karşılıklı onaylı meslektaş bağları ve terapist.co/r/... yönlendirme bağlantısı",
         competitor: "Mesleki referans veya süpervizyon ağı özelliği bulunmuyor",
         terapistHighlight: true,
       },
       {
-        feature: "Görüşme Odası Masa QR Kartı",
+        feature: "Görüşme odası için QR masa kartı",
         terapistCo:
           "Baskıya hazır PNG/SVG klinik masa kartı ve canlı web doğrulama rozeti",
         competitor: "Yalnızca standart QR kod görseli",
@@ -171,9 +171,9 @@ export const SEO_PAGES: SeoPageData[] = [
       },
     ],
     pillarsEyebrow: "NEDEN TERAPİST.CO?",
-    pillarsTitle: "Genel link listesi yerine klinik mikro-site.",
+    pillarsTitle: "Genel bağlantı listesi yerine klinik mikro site.",
     pillarsSubtitle:
-      "Danışanlarınız Instagram veya Google üzerinden profilinize tıkladığında sıradan bir buton listesi değil, güven veren bir uzman sayfası görür.",
+      "Danışanlarınız Instagram veya Google üzerinden profilinize tıkladığında sıradan bir düğme listesi değil, güven veren bir uzman sayfası görür.",
     pillars: [
       {
         badge: "KLİNİK GÜVEN",
@@ -183,7 +183,7 @@ export const SEO_PAGES: SeoPageData[] = [
       },
       {
         badge: "HEPSİ BİR ARADA",
-        title: "Link ağacı + Takvim + Formlar + QR Kart tek panelde",
+        title: "Bağlantılar, takvim, formlar ve QR kart tek panelde",
         description:
           "Linktr.ee kullanırken ayrıca takvim aracı, form aracı ve QR oluşturucu yönetmek yerine tüm klinik dijital araçlarınızı tek çalışma alanından yönetin.",
       },
@@ -201,11 +201,11 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         number: "01",
         title: "İsminize özel terapist.co adresinizi alın",
-        text: "Hero alanındaki kutudan terapist.co/adinizsoyadiniz adresinizi seçin ve uzman başvurunuzu tamamlayın.",
+        text: "Sayfanın başındaki kutudan terapist.co/adinizsoyadiniz adresinizi seçin ve uzman başvurunuzu tamamlayın.",
       },
       {
         number: "02",
-        title: "Linklerinizi, formlarınızı ve takviminizi ekleyin",
+        title: "Bağlantılarınızı, formlarınızı ve takviminizi ekleyin",
         text: "Daha önce paylaştığınız kaynakları, YouTube/Spotify içeriklerinizi, şifreli BDT/Şema formlarınızı ve uygun saatlerinizi aktarın.",
       },
       {
@@ -219,24 +219,24 @@ export const SEO_PAGES: SeoPageData[] = [
         question:
           "Linktr.ee'deki tüm bağlantılarımı Terapist.co'da da paylaşabilir miyim?",
         answer:
-          "Evet. Terapist.co üzerinde sınırsız dış bağlantı ekleyebilir, bunlara ek olarak şifreli danışan formları (Link Lock), süresi dolunca gizlenen grup terapisi/atölye linkleri, gömülü Spotify/YouTube oynatıcıları ve vurgulanan kriz/randevu butonları tanımlayabilirsiniz.",
+          "Evet. Terapist.co üzerinde sınırsız dış bağlantı ekleyebilir, bunlara ek olarak şifreli danışan formları (Link Lock), süresi dolunca gizlenen grup terapisi/atölye bağlantıları, gömülü Spotify/YouTube oynatıcıları ve vurgulanan kriz/randevu düğmeleri tanımlayabilirsiniz.",
       },
       {
         question:
           "Danışanlarım Terapist.co profilimden doğrudan randevu talep edebilir mi?",
         answer:
-          "Evet. Linktr.ee'nin aksine Terapist.co'da yerleşik haftalık randevu takvimi ve Google Takvim eşitlemesi bulunur. Takviminiz doluysa tek tıkla Bekleme Listesi modalını aktif edebilirsiniz.",
+          "Evet. Linktr.ee'nin aksine Terapist.co'da yerleşik haftalık randevu takvimi ve Google Takvim eşitlemesi bulunur. Takviminiz doluysa tek tıkla bekleme listesi formunu etkinleştirebilirsiniz.",
       },
       {
         question:
           "Profil görünümümü kendi klinik renklerime göre özelleştirebilir miyim?",
         answer:
-          "Evet. Klinik Klasik, Modern Bento, Sıcak Minimal ve Yumuşak Cam olmak üzere 4 tasarım tarzı, 8 renk paleti, 6 buton yapısı, tipografi eşleşmeleri ve White-Label moduyla profilinizi tamamen kişiselleştirebilirsiniz.",
+          "Evet. Klinik Modern, Editoryal Klinik, Doğal sakinlik ve Yumuşak cam olmak üzere 4 tasarım tarzı, 8 renk paleti, 6 düğme yapısı, tipografi eşleşmeleri ve marka gizleme (White-Label) özelliğiyle profilinizi tamamen kişiselleştirebilirsiniz.",
       },
       {
         question: "Terapist.co randevulardan komisyon alır mı?",
         answer:
-          "Hayır. Terapist.co bir komisyon pazaryeri değildir; görüşme ücretiniz ve danışan ilişkiniz tamamen sizin kontrolünüzdedir.",
+          "Hayır. Terapist.co bir komisyon pazar yeri değildir; görüşme ücretiniz ve danışan ilişkiniz tamamen sizin kontrolünüzdedir.",
       },
     ],
   },
@@ -252,8 +252,8 @@ export const SEO_PAGES: SeoPageData[] = [
     metaTitle:
       "Terapist.co vs Klasik Psikolog Web Sitesi | Hız, Maliyet ve SEO Karşılaştırması",
     metaDescription:
-      "Kişisel psikolog web sitesi yaptırmak mı yoksa Terapist.co mikro-sitesi mi? Hosting, SSL, randevu takvimi, şifreli formlar ve SEO avantajlarını karşılaştırın.",
-    lead: "Ajanslara yüksek bütçeler ödeyip aylarca WordPress kurulumu, SSL sertifikası, eklenti güncellemeleri ve mobil uyum sorunlarıyla uğraşmak yerine; klinik psikologlar için hazır tasarlanmış, hızlı ve doğrulanmış mikro-sitenizi dakikalar içinde yayına alın.",
+      "Kişisel psikolog web sitesi yaptırmak mı yoksa Terapist.co mikro sitesi mi? Barındırma, SSL, randevu takvimi, şifreli formlar ve SEO avantajlarını karşılaştırın.",
+    lead: "Ajanslara yüksek bütçeler ödeyip aylarca WordPress kurulumu, SSL sertifikası, eklenti güncellemeleri ve mobil uyum sorunlarıyla uğraşmak yerine; klinik psikologlar için hazır tasarlanmış, hızlı ve doğrulanmış mikro sitenizi dakikalar içinde yayına alın.",
     competitorName: "Klasik Web Sitesi",
     terapistTagline:
       "Dakikalar içinde hazır, sıfır teknik bakım gerektiren klinik profil",
@@ -266,14 +266,14 @@ export const SEO_PAGES: SeoPageData[] = [
         competitorValue: "3 – 8 Hafta Ajans Süreci",
       },
       {
-        label: "Teknik Bakım & Güvenlik",
+        label: "Teknik Bakım ve Güvenlik",
         terapistValue: "Tamamen Otomatik",
-        competitorValue: "Hosting, SSL ve Eklenti Yükü",
+        competitorValue: "Barındırma, SSL ve Eklenti Yükü",
       },
       {
-        label: "Şifreli Form & Takvim",
+        label: "Şifreli Form ve Takvim",
         terapistValue: "Yerleşik ve Hazır",
-        competitorValue: "Ek Yazılım & Entegrasyon Gerekir",
+        competitorValue: "Ek Yazılım ve Entegrasyon Gerekir",
       },
       {
         label: "Doğrulanmış Uzman Rozeti",
@@ -282,7 +282,7 @@ export const SEO_PAGES: SeoPageData[] = [
       },
     ],
     comparisonTitle:
-      "Terapist.co Mikro-Site vs Klasik WordPress / Ajans Sitesi",
+      "Terapist.co mikro sitesi vs klasik WordPress / ajans sitesi",
     comparisonSubtitle:
       "Bireysel çalışan veya kliniğini büyüten uzmanlar için zaman, maliyet ve dönüşüm odaklı karşılaştırma.",
     comparisonRows: [
@@ -293,7 +293,7 @@ export const SEO_PAGES: SeoPageData[] = [
         terapistHighlight: true,
       },
       {
-        feature: "Mobil Deneyim & Hız",
+        feature: "Mobil Deneyim ve Hız",
         terapistCo:
           "Instagram ve WhatsApp içi tarayıcılarda anında açılan ultra hafif arayüz",
         competitor:
@@ -327,11 +327,11 @@ export const SEO_PAGES: SeoPageData[] = [
         terapistCo:
           "Hem kişisel adresiniz hem de Terapist.co keşfet dizininde organik görünürlük",
         competitor:
-          "Sıfırdan domain otoritesi kazanmak için uzun süreli SEO bütçesi gerekir",
+          "Sıfırdan alan adı otoritesi kazanmak için uzun süreli SEO bütçesi gerekir",
         terapistHighlight: true,
       },
     ],
-    pillarsEyebrow: "NEDEN MİKRO-SİTE?",
+    pillarsEyebrow: "NEDEN MİKRO SİTE?",
     pillarsTitle: "Teknik detaylarla değil, danışanlarınızla ilgilenin.",
     pillarsSubtitle:
       "Klasik bir web sitesinin getirdiği sunucu, güvenlik ve güncelleme yükünü tamamen ortadan kaldırıyoruz.",
@@ -352,7 +352,7 @@ export const SEO_PAGES: SeoPageData[] = [
         badge: "HİBRİT KULLANIM",
         title: "İster tek başına siteniz, ister mevcut sitenizin randevu üssü",
         description:
-          "Halihazırda bir blog veya kurumsal siteniz varsa Terapist.co'yu sosyal medya karşılama sayfanız, randevu motorunuz ve canlı doğrulama rozetiniz olarak kullanabilirsiniz.",
+          "Hâlihazırda bir blog veya kurumsal siteniz varsa Terapist.co'yu sosyal medya karşılama sayfanız, randevu motorunuz ve canlı doğrulama rozetiniz olarak kullanabilirsiniz.",
       },
     ],
     stepsTitle: "Ajans beklemeden kendi dijital kliniğinizi kurun.",
@@ -367,31 +367,31 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         number: "02",
         title: "4 hazır klinik temadan tarzınızı seçin",
-        text: "Klinik Klasik, Modern Bento, Sıcak Minimal veya Yumuşak Cam temalarından birini ve renk paletinizi belirleyin.",
+        text: "Klinik Modern, Editoryal Klinik, Doğal sakinlik veya Yumuşak cam temalarından birini ve renk paletinizi belirleyin.",
       },
       {
         number: "03",
         title: "Takviminizi ve şifreli formlarınızı açın",
-        text: "Çalışma saatlerinizi girin, Google Takviminizi bağlayın ve masa QR kartınızı indirerek kliniğinizde kullanmaya başlayın.",
+        text: "Çalışma saatlerinizi girin, Google Takvim hesabınızı bağlayın ve QR masa kartınızı indirerek kliniğinizde kullanmaya başlayın.",
       },
     ],
     faqs: [
       {
         question: "Zaten bir web sitem varsa Terapist.co bana ne kazandırır?",
         answer:
-          "Mevcut web sitenize canlı 'Doğrulanmış Terapist' rozeti ekleyebilir, Instagram/LinkedIn trafiğinizi çok daha hızlı dönüşüm sağlayan terapist.co/adiniz mikro-sitenize yönlendirebilir ve şifreli BDT/Şema form kilidi ile meslektaş yönlendirme ağından yararlanabilirsiniz.",
+          "Mevcut web sitenize canlı 'Doğrulanmış Terapist' rozeti ekleyebilir, Instagram/LinkedIn trafiğinizi çok daha hızlı dönüşüm sağlayan terapist.co/adiniz mikro sitenize yönlendirebilir ve şifreli BDT/Şema form kilidi ile meslektaş yönlendirme ağından yararlanabilirsiniz.",
       },
       {
         question:
           "Arama motorlarında (Google) ismim arandığında profilim çıkar mı?",
         answer:
-          "Evet. Doğrulanmış tüm uzman profilleri Schema.org/Person yapısal verisi, dinamik meta etiketleri ve otomatik sitemap.xml kaydıyla Google'da isminiz ve uzmanlık alanlarınızla hızla indekslenir.",
+          "Evet. Doğrulanmış tüm uzman profilleri Schema.org/Person yapılandırılmış verisi, dinamik meta etiketleri ve otomatik sitemap.xml kaydıyla Google'da isminiz ve uzmanlık alanlarınızla hızla indekslenir.",
       },
       {
         question:
           "Profilimdeki bilgileri istediğim zaman değiştirebilir miyim?",
         answer:
-          "Evet. Yazılımcıya veya ajansa ihtiyaç duymadan çalışma alanınızdan ücretinizi, saatlerinizi, biyografinizi, temalarınızı ve linklerinizi saniyeler içinde güncelleyebilirsiniz.",
+          "Evet. Yazılımcıya veya ajansa ihtiyaç duymadan çalışma alanınızdan ücretinizi, saatlerinizi, biyografinizi, temalarınızı ve bağlantılarınızı saniyeler içinde güncelleyebilirsiniz.",
       },
     ],
   },
@@ -400,15 +400,15 @@ export const SEO_PAGES: SeoPageData[] = [
     path: "/karsilastirma/terapistco-vs-pazaryerleri",
     category: "karsilastirma",
     categoryLabel: "Karşılaştırma",
-    footerLabel: "Terapist.co vs Randevu Pazaryerleri",
-    eyebrow: "KARŞILAŞTIRMA · TERAPİST.CO VS PAZARYERLERİ",
-    titleDark: "Terapist.co vs Pazaryerleri:",
+    footerLabel: "Terapist.co vs randevu pazar yerleri",
+    eyebrow: "KARŞILAŞTIRMA · TERAPİST.CO VS PAZAR YERLERİ",
+    titleDark: "Terapist.co vs pazar yerleri:",
     titleAccent: "komisyonsuz ve bağımsız mesleki kimlik.",
-    metaTitle: "Terapist.co vs Pazaryerleri | Komisyonsuz Psikolog Platformu",
+    metaTitle: "Terapist.co vs pazar yerleri | Komisyonsuz Psikolog Platformu",
     metaDescription:
-      "Yüksek seans komisyonları ve yıldızlı puanlama dayatan online terapi pazaryerleri yerine, Terapist.co ile %0 komisyonlu bağımsız klinik profilinizi oluşturun.",
-    lead: "Online terapi pazaryerleri her seanstan yüksek komisyon keser, profilinizin altında rakip uzmanları önerir ve terapi sürecini yıldızlı müşteri yorumlarıyla ticari bir yarışa sokar. Terapist.co ise bağımsızlığınızı koruyan, %0 komisyonlu kişisel dijital adresinizdir.",
-    competitorName: "Terapi Pazaryerleri",
+      "Yüksek seans komisyonları ve yıldızlı puanlama dayatan çevrim içi terapi pazar yerleri yerine, Terapist.co ile %0 komisyonlu bağımsız klinik profilinizi oluşturun.",
+    lead: "Çevrim içi terapi pazar yerleri her seanstan yüksek komisyon keser, profilinizin altında rakip uzmanları önerir ve terapi sürecini yıldızlı müşteri yorumlarıyla ticari bir yarışa sokar. Terapist.co ise bağımsızlığınızı koruyan, %0 komisyonlu kişisel dijital adresinizdir.",
+    competitorName: "Terapi pazar yerleri",
     terapistTagline:
       "%0 seans komisyonu, etik tanıtım ve tamamen size ait dijital adres",
     competitorTagline:
@@ -420,7 +420,7 @@ export const SEO_PAGES: SeoPageData[] = [
         competitorValue: "%25 – %45 Kesinti",
       },
       {
-        label: "Klinik Etik & Tanıtım",
+        label: "Klinik Etik ve Tanıtım",
         terapistValue: "Yıldız/Puanlama Yok",
         competitorValue: "Ticari yıldız ve yorum baskısı",
       },
@@ -435,9 +435,9 @@ export const SEO_PAGES: SeoPageData[] = [
         competitorValue: "Otomatik alternatif uzman reklamları",
       },
     ],
-    comparisonTitle: "Bağımsız Uzman Profili vs Komisyonlu Pazaryerleri",
+    comparisonTitle: "Bağımsız Uzman Profili vs komisyonlu pazar yerleri",
     comparisonSubtitle:
-      "Mesleki özerklik, gelir kontrolü ve klinik etik açısından Terapist.co'nun pazaryeri platformlarından farkı.",
+      "Mesleki özerklik, gelir kontrolü ve klinik etik açısından Terapist.co'nun pazar yeri platformlarından farkı.",
     comparisonRows: [
       {
         feature: "Gelir ve Ücret Politikası",
@@ -458,7 +458,7 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Marka ve Alan Adı Sahipliği",
         terapistCo:
-          "White-Label desteği ve terapist.co/adiniz ile kendi klinik kimliğiniz",
+          "marka gizleme (White-Label) desteği ve terapist.co/adiniz ile kendi klinik kimliğiniz",
         competitor:
           "Platformun kendi markası ön plandadır; uzmanlar liste elemanı gibidir",
         terapistHighlight: true,
@@ -474,7 +474,7 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Klinik Veri Gizliliği",
         terapistCo:
-          "Görüşme odası veya terapi notu tutulmaz; veri minimasyonu esastır",
+          "Görüşme odası veya terapi notu tutulmaz; veri minimizasyonu esastır",
         competitor:
           "Tüm mesajlaşma ve seans trafiği merkezi platform sunucularından geçer",
         terapistHighlight: true,
@@ -539,7 +539,7 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         question: "Profilimde başka uzmanların reklamı çıkar mı?",
         answer:
-          "Hayır. Profiliniz tamamen size aittir. Yalnızca siz isterseniz, kendi seçtiğiniz ve karşılıklı onaylaştığınız meslektaşlarınızı profilinizde gösterebilirsiniz.",
+          "Hayır. Profiliniz tamamen size aittir. Yalnızca siz isterseniz, kendi seçtiğiniz ve karşılıklı olarak onayladığınız meslektaşlarınızı profilinizde gösterebilirsiniz.",
       },
     ],
   },
@@ -553,30 +553,30 @@ export const SEO_PAGES: SeoPageData[] = [
     titleDark: "Terapist.co vs Calendly:",
     titleAccent: "satış toplantısı değil, klinik randevu deneyimi.",
     metaTitle:
-      "Terapist.co vs Calendly | Psikologlar İçin Online Randevu ve Takvim Sistemi",
+      "Terapist.co vs Calendly | Psikologlar İçin Çevrim içi Randevu ve Takvim Sistemi",
     metaDescription:
       "Genel toplantı araçları (Calendly vb.) yerine psikologlar için geliştirilmiş Terapist.co akıllı takvim, Google Takvim eşitlemesi, bekleme listesi ve KVKK aydınlatma akışı.",
     lead: "Calendly gibi araçlar kurumsal satış ve iş toplantıları için tasarlanmıştır. Bir danışanın ilk terapi randevusu talep ederken ihtiyaç duyduğu uzmanlık bağlamı, KVKK aydınlatma onayı, tanı/not istemeyen güvenli form yapısı ve takvim doluyken devreye giren Bekleme Listesi yalnızca Terapist.co'da bir aradadır.",
     competitorName: "Calendly / Genel Takvimler",
     terapistTagline:
-      "Psikoterapi sürecine uygun, KVKK onaylı randevu ve bekleme listesi",
+      "Psikoterapi sürecine uygun, KVKK aydınlatmalı randevu ve bekleme listesi",
     competitorTagline:
       "Genel iş ve satış toplantıları için tasarlanmış takvim bağlantısı",
     heroMetrics: [
       {
         label: "Klinik Profil + Takvim",
         terapistValue: "Tek Sayfada Birleşik",
-        competitorValue: "Yalnızca soğuk takvim ekranı",
+        competitorValue: "Yalnızca takvim ekranı",
       },
       {
         label: "Takvim Doluyken Bekleme Listesi",
-        terapistValue: "Yerleşik Bekleme Listesi Modalı",
-        competitorValue: "Ziyaretçi boş slot göremeyip çıkar",
+        terapistValue: "Yerleşik Bekleme listesi formu",
+        competitorValue: "Ziyaretçi uygun saat göremeyip çıkar",
       },
       {
-        label: "KVKK & Veri Minimasyonu",
+        label: "KVKK ve Veri Minimizasyonu",
         terapistValue: "Sürümlü Aydınlatma + Tanı İstemeyen Form",
-        competitorValue: "Serbest metin kutusu (Hassas veri riski)",
+        competitorValue: "Serbest metin kutusu (hassas veri riski)",
       },
       {
         label: "Google Takvim Gizliliği",
@@ -599,9 +599,9 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Google Takvim Çakışma Kontrolü",
         terapistCo:
-          "Kişisel Google Takviminizdeki dolu saatleri detay sızdırmadan otomatik kapatır",
+          "Kişisel Google Takvim’inizdeki dolu saatleri etkinlik ayrıntılarını paylaşmadan otomatik kapatır",
         competitor:
-          "Mevcuttur ancak Türkçe klinik arayüz ve mikro-site bütünlüğü yoktur",
+          "Mevcuttur ancak Türkçe klinik arayüz ve mikro site bütünlüğü yoktur",
         terapistHighlight: true,
       },
       {
@@ -623,7 +623,7 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Şifreli Değerlendirme Formları",
         terapistCo:
-          "Randevu öncesi veya sonrası şifreli BDT/Şema form linkleri aynı profilde sunulur",
+          "Randevu öncesi veya sonrası şifreli BDT/Şema form bağlantıları aynı profilde sunulur",
         competitor: "Form ve kaynak paylaşımı özelliği yoktur",
         terapistHighlight: true,
       },
@@ -637,16 +637,16 @@ export const SEO_PAGES: SeoPageData[] = [
         badge: "GOOGLE TAKVİM EŞİTLEME",
         title: "Özel etkinliklerinizin adını paylaşmadan çakışmaları önleyin",
         description:
-          "Google Takviminizdeki kişisel veya diğer klinik etkinliklerinizin başlık ve açıklamaları dışarıya asla yansımaz; yalnızca o saat dilimi meşgul olarak işaretlenir.",
+          "Google Takvim’inizdeki kişisel veya diğer klinik etkinliklerinizin başlık ve açıklamaları dışarıya asla yansımaz; yalnızca o saat dilimi meşgul olarak işaretlenir.",
       },
       {
         badge: "BEKLEME LİSTESİ",
         title: "Takviminiz doluyken bile danışan taleplerini kaçırmayın",
         description:
-          "Yeni danışan kontenjanınız dolduğunda Bekleme Listesi modunu açın; danışanlar tercih ettikleri zaman dilimini bıraksın, yer açıldığında çalışma alanınızdan davet edin.",
+          "Yeni danışan kontenjanınız dolduğunda bekleme listesi özelliğini açın; danışanlar tercih ettikleri zaman dilimini bıraksın, yer açıldığında çalışma alanınızdan davet edin.",
       },
       {
-        badge: "VERİ MİNİMASYONU",
+        badge: "VERİ MİNİMİZASYONU",
         title: "Tanı veya terapi öyküsü istemeyen güvenli ilk temas",
         description:
           "Randevu talep formu yalnızca iletişim ve görüşme şekli bilgisini alır; danışandan açık metin olarak hassas sağlık verisi girmesini istemez.",
@@ -654,12 +654,12 @@ export const SEO_PAGES: SeoPageData[] = [
     ],
     stepsTitle: "Takviminizi 3 adımda profilinizle birleştirin.",
     stepsSubtitle:
-      "Ayrı bir takvim linki paylaşmak yerine tek adreste her şeyi sunun.",
+      "Ayrı bir takvim bağlantısı paylaşmak yerine tek adreste her şeyi sunun.",
     steps: [
       {
         number: "01",
         title: "Haftalık çalışma saatlerinizi belirleyin",
-        text: "Panelinizdeki haftalık takvim editöründen çevrim içi ve yüz yüze uygun olduğunuz saatleri seçin.",
+        text: "Panelinizdeki haftalık takvim düzenleyicisinden çevrim içi ve yüz yüze uygun olduğunuz saatleri seçin.",
       },
       {
         number: "02",
@@ -689,7 +689,7 @@ export const SEO_PAGES: SeoPageData[] = [
         question:
           "Yeni danışan almıyorsam takvimi kapatıp bekleme listesi açabilir miyim?",
         answer:
-          "Evet. Panelinizden bekleme listesini aktif ettiğinizde ziyaretçiler doğrudan hızlı bekleme listesi modalı üzerinden sıraya girebilir.",
+          "Evet. Panelinizden bekleme listesini etkinleştirdiğinizde ziyaretçiler doğrudan hızlı bekleme listesi formu üzerinden sıraya girebilir.",
       },
     ],
   },
@@ -699,23 +699,23 @@ export const SEO_PAGES: SeoPageData[] = [
     category: "karsilastirma",
     categoryLabel: "Karşılaştırma",
     footerLabel: "Terapist.co vs Standart Bio Araçları",
-    eyebrow: "KARŞILAŞTIRMA · TERAPİST.CO VS BEACONS & BENTO",
+    eyebrow: "KARŞILAŞTIRMA · TERAPİST.CO VS BEACONS VE BENTO",
     titleDark: "Terapist.co vs Standart Bio Araçları:",
     titleAccent: "fenomen şablonları değil, klinik tasarım sistemi.",
     metaTitle:
-      "Terapist.co vs Beacons, Bento & Standart Bio Araçları | Terapist Profili",
+      "Terapist.co vs Beacons, Bento ve Standart Bio Araçları | Terapist Profili",
     metaDescription:
       "Beacons, Bento.me ve Campsite gibi içerik üreticisi araçları yerine psikologlar için geliştirilmiş Terapist.co: 4 klinik tema, şifreli formlar ve QR masa kartı.",
-    lead: "Beacons, Bento.me veya Stan Store gibi araçlar ürün satışı, sponsorluk ve influencer kitleri için üretilmiştir. Terapist.co ise dingin tipografi, klinik güven veren 4 özel tasarım tarzı, şifreli değerlendirme formları ve meslektaş ağıyla yalnızca ruh sağlığı uzmanları için inşa edilmiştir.",
+    lead: "Beacons, Bento.me veya Stan Store gibi araçlar ürün satışı, sponsorluk ve içerik üreticisi paketleri için üretilmiştir. Terapist.co ise dingin tipografi, klinik güven veren 4 özel tasarım tarzı, şifreli değerlendirme formları ve meslektaş ağıyla yalnızca ruh sağlığı uzmanları için inşa edilmiştir.",
     competitorName: "Beacons / Bento / Genel Bio",
     terapistTagline:
       "Psikoterapi estetiğine uygun 4 özel tasarım tarzı ve klinik modüller",
     competitorTagline:
-      "Influencer satışı, bahşiş kutusu ve sponsorluk odaklı şablonlar",
+      "İçerik üreticisi satışı, bahşiş kutusu ve sponsorluk odaklı şablonlar",
     heroMetrics: [
       {
         label: "Tasarım Dili",
-        terapistValue: "4 Klinik & Dingin Tema",
+        terapistValue: "4 Klinik ve Dingin Tema",
         competitorValue: "E-ticaret ve fenomen şablonları",
       },
       {
@@ -725,44 +725,45 @@ export const SEO_PAGES: SeoPageData[] = [
       },
       {
         label: "Klinik Kaynak Modülleri",
-        terapistValue: "Şifreli Link, Süreli Etkinlik, Medya",
+        terapistValue: "Şifreli bağlantı, Süreli Etkinlik, Medya",
         competitorValue: "Dijital ürün satışı odaklı",
       },
       {
-        label: "White-Label & Masa QR",
+        label: "Marka gizleme ve QR masa kartı",
         terapistValue: "Yerleşik PNG/SVG Masa Kartı",
         competitorValue: "Klinik masa kartı çıktısı yok",
       },
     ],
-    comparisonTitle: "Terapist.co vs Influencer Odaklı Bio Araçları",
+    comparisonTitle:
+      "Terapist.co vs İçerik Üreticilerine Yönelik Biyografi Araçları",
     comparisonSubtitle:
       "Estetik bütünlük, Türkçe klinik terminoloji ve danışan yönlendirme modüllerinin karşılaştırması.",
     comparisonRows: [
       {
         feature: "Tasarım ve Tipografi",
         terapistCo:
-          "Klinik Klasik, Modern Bento, Sıcak Minimal ve Yumuşak Cam ile güven veren dingin görünüm",
+          "Klinik Modern, Editoryal Klinik, Doğal sakinlik ve Yumuşak cam ile güven veren dingin görünüm",
         competitor:
-          "Yüksek kontrastlı satış butonları ve karmaşık widget blokları",
+          "Yüksek kontrastlı satış düğmeleri ve karmaşık eklenti blokları",
         terapistHighlight: true,
       },
       {
-        feature: "Şifreli ve Zamanlanmış Linkler",
+        feature: "Şifreli ve Zamanlanmış Bağlantılar",
         terapistCo:
-          "Danışanlara özel PIN kilitli ölçekler ve bitiş tarihinde otomatik gizlenen grup terapisi linkleri",
+          "Danışanlara özel PIN kilitli ölçekler ve bitiş tarihinde otomatik gizlenen grup terapisi bağlantıları",
         competitor: "Genel bülten veya ödeme duvarı odaklı kilitler",
         terapistHighlight: true,
       },
       {
-        feature: "Gömülü Psiko-Eğitim Medyası",
+        feature: "Gömülü Psikoeğitim Medyası",
         terapistCo:
-          "Sayfadan çıkmadan çalışan Spotify (Mindfulness) ve YouTube (Psiko-eğitim) oynatıcıları",
+          "Sayfadan çıkmadan çalışan Spotify (bilinçli farkındalık) ve YouTube (Psikoeğitim) oynatıcıları",
         competitor:
           "Genel medya gömme var ancak klinik kategori ve şifreleme desteği yok",
         terapistHighlight: true,
       },
       {
-        feature: "Klinik Analitik (Trafik & Dönüşüm)",
+        feature: "Klinik Analitik (Trafik ve Dönüşüm)",
         terapistCo:
           "Profil görüntüleme, kaynak/form tıklama ve randevu dönüşüm hunisi",
         competitor: "Satış ve gelir takibi odaklı karmaşık grafikler",
@@ -778,22 +779,22 @@ export const SEO_PAGES: SeoPageData[] = [
         badge: "4 TASARIM TARZI",
         title: "Kliniğinizin atmosferini dijital ekranlara taşıyın",
         description:
-          "8 renk paleti, 6 buton stili, 4 tipografi eşleşmesi ve 4 arka plan dokusuyla profilinizi kendi görsel kimliğinize uyarlayın.",
+          "8 renk paleti, 6 düğme stili, 4 tipografi eşleşmesi ve 4 arka plan dokusuyla profilinizi kendi görsel kimliğinize uyarlayın.",
       },
       {
         badge: "GÖMÜLÜ MEDYA",
         title: "Spotify ve YouTube içeriklerinizi sayfa içinde dinletin",
         description:
-          "Hazırladığınız nefes egzersizlerini veya psiko-eğitim videolarını danışanlarınız sayfadan ayrılmadan profilinizde deneyimlesin.",
+          "Hazırladığınız nefes egzersizlerini veya psikoeğitim videolarını danışanlarınız sayfadan ayrılmadan profilinizde deneyimlesin.",
       },
       {
-        badge: "WHITE-LABEL",
-        title: "Kendi klinik markanızı tam bağımsız vitrine dönüştürün",
+        badge: "MARKA GİZLEME",
+        title: "Kendi klinik markanızı bağımsız bir vitrine dönüştürün",
         description:
-          "White-Label moduyla platform logosunu gizleyerek yalnızca kendi uzman adınızın ve renklerinizin konuştuğu bir mikro-site kullanın.",
+          "marka gizleme (White-Label) özelliğiyle platform logosunu gizleyerek yalnızca kendi uzman adınızın ve renklerinizin konuştuğu bir mikro site kullanın.",
       },
     ],
-    stepsTitle: "Klinik mikro-sitenizi hemen özelleştirin.",
+    stepsTitle: "Klinik mikro sitenizi hemen özelleştirin.",
     stepsSubtitle:
       "Dakikalar içinde kendi renk ve tipografi dilinizi oluşturun.",
     steps: [
@@ -804,25 +805,25 @@ export const SEO_PAGES: SeoPageData[] = [
       },
       {
         number: "02",
-        title: "Görünüm & Tema sekmesinden tarzınızı seçin",
-        text: "Canlı önizleme eşliğinde renk paletinizi, buton köşelerini ve yazı tipinizi belirleyin.",
+        title: "Görünüm ve QR kodu sekmesinden tarzınızı seçin",
+        text: "Canlı önizleme eşliğinde renk paletinizi, düğme köşelerini ve yazı tipinizi belirleyin.",
       },
       {
         number: "03",
         title: "Medya ve şifreli kaynaklarınızı ekleyin",
-        text: "Danışanlarınız için kilitli formları, ses kayıtlarını ve randevu saatlerinizi yayınlayın.",
+        text: "Danışanlarınız için kilitli formları, ses kayıtlarını ve randevu saatlerinizi yayımlayın.",
       },
     ],
     faqs: [
       {
         question: "Bento.me veya Beacons'tan farkı nedir?",
         answer:
-          "Bento ve Beacons genel içerik üreticileri için İngilizce ağırlıklı araçlardır. Terapist.co ise Türkiye'deki klinik psikologlar için Türkçe arayüzle, diploma doğrulaması, şifreli BDT/Şema form kilidi, Google Takvimli randevu ve meslektaş ağıyla geliştirilmiştir.",
+          "Bento ve Beacons genel içerik üreticileri için İngilizce ağırlıklı araçlardır. Terapist.co ise Türkiye'deki klinik psikologlar için Türkçe arayüzle, diploma doğrulaması, şifreli BDT/Şema form kilidi, Google Takvim bağlantılı randevu ve meslektaş ağıyla geliştirilmiştir.",
       },
       {
         question: "Gömülü Spotify ve YouTube videoları sayfayı yavaşlatır mı?",
         answer:
-          "Hayır. Gömülü medya bileşenleri yalnızca danışan ilgili kaynağın önizleme butonuna tıkladığında (lazy-load) yüklenir; böylece sayfa açılış hızı her zaman maksimumda kalır.",
+          "Hayır. Gömülü medya bileşenleri yalnızca danışan ilgili kaynağın önizleme düğmesine tıkladığında (isteğe bağlı yükleme) yüklenir; böylece sayfa açılış hızı her zaman maksimumda kalır.",
       },
     ],
   },
@@ -834,7 +835,7 @@ export const SEO_PAGES: SeoPageData[] = [
     slug: "psikolog-link-in-bio",
     path: "/cozumler/psikolog-link-in-bio",
     category: "cozumler",
-    categoryLabel: "Klinik Çözümler",
+    categoryLabel: "Klinik çözümler",
     footerLabel: "Psikologlar İçin Link in Bio",
     eyebrow: "KLİNİK ÇÖZÜM · PSİKOLOGLAR İÇİN LINK IN BIO",
     titleDark: "Psikologlar için Link in Bio:",
@@ -842,30 +843,30 @@ export const SEO_PAGES: SeoPageData[] = [
     metaTitle: "Psikologlar İçin Link in Bio ve Dijital Profil | Terapist.co",
     metaDescription:
       "Instagram, LinkedIn ve kartvizitiniz için psikologlara özel Link in Bio: terapist.co/adiniz ile doğrulanmış uzman profili, randevu takvimi ve şifreli formlar.",
-    lead: "Instagram ve LinkedIn biyografinizde tek bir bağlantı hakkınız var. Bu bağlantıyı sıradan bir link listesine değil; uzmanlığınızı doğrulayan, uygun saatlerinizi gösteren ve danışanlarınıza şifreli formlar sunan terapist.co/adiniz mikro-sitenize dönüştürün.",
+    lead: "Instagram ve LinkedIn biyografinizde tek bir bağlantı hakkınız var. Bu bağlantıyı sıradan bir bağlantı listesine değil; uzmanlığınızı doğrulayan, uygun saatlerinizi gösteren ve danışanlarınıza şifreli formlar sunan terapist.co/adiniz mikro sitenize dönüştürün.",
     competitorName: "Standart Bio Linki",
     terapistTagline:
       "Doğrulanmış uzman profili, takvim, şifreli kaynaklar ve meslektaş ağı",
-    competitorTagline: "Yalnızca dış sitelere yönlendiren düz buton listesi",
+    competitorTagline: "Yalnızca dış sitelere yönlendiren düz düğme listesi",
     heroMetrics: [
       {
         label: "Özel Profil Adresi",
         terapistValue: "terapist.co/adiniz",
-        competitorValue: "Karmaşık veya genel linkler",
+        competitorValue: "Karmaşık veya genel bağlantılar",
       },
       {
         label: "Tasarım Özelleştirme",
-        terapistValue: "4 Stil · 8 Palet · White-Label",
+        terapistValue: "4 stil · 8 palet · Marka gizleme",
         competitorValue: "Kısıtlı şablonlar",
       },
       {
         label: "Akıllı Link Modülleri",
-        terapistValue: "Şifreli, Süreli ve Vurgulu Linkler",
+        terapistValue: "Şifreli, Süreli ve Vurgulu Bağlantılar",
         competitorValue: "Yalnızca düz URL",
       },
       {
         label: "Ziyaretçi Analitiği",
-        terapistValue: "Tıklama & Randevu Dönüşüm Hunisi",
+        terapistValue: "Tıklama ve Randevu Dönüşüm Hunisi",
         competitorValue: "Yüzeysel sayaç",
       },
     ],
@@ -876,34 +877,34 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Üst Profil Başlığı ve Rozetler",
         terapistCo:
-          "İsminizin yanında Doğrulanmış Uzman ikonu ve Founding Therapist çemberi",
+          "İsminizin yanında Doğrulanmış Uzman ikonu ve Kurucu terapist çemberi",
         competitor: "Herhangi bir mesleki güven rozeti bulunmaz",
         terapistHighlight: true,
       },
       {
-        feature: "Vurgulu (Pulse) ve Zamanlanmış Linkler",
+        feature: "Vurgulu (Pulse) ve Zamanlanmış Bağlantılar",
         terapistCo:
-          "Acil hatlar veya öncelikli randevu için vurgulu buton; atölyeler için otomatik kapanan süreli link",
-        competitor: "Tüm linkler aynı standart görünümde listelenir",
+          "Acil hatlar veya öncelikli randevu için vurgulu düğme; atölyeler için otomatik kapanan süreli link",
+        competitor: "Tüm bağlantılar aynı standart görünümde listelenir",
         terapistHighlight: true,
       },
       {
-        feature: "Gömülü Spotify & YouTube Oynatıcı",
+        feature: "Gömülü Spotify ve YouTube Oynatıcı",
         terapistCo:
-          "Mindfulness ses kayıtları ve psiko-eğitim videoları sayfa içinde açılır",
+          "Bilinçli farkındalık ses kayıtları ve psikoeğitim videoları sayfa içinde açılır",
         competitor:
           "Ziyaretçiyi başka uygulamaya göndererek profilinizden koparır",
         terapistHighlight: true,
       },
       {
-        feature: "Entegre Randevu & Bekleme Listesi",
+        feature: "Entegre Randevu ve Bekleme Listesi",
         terapistCo:
           "Aynı sayfa içinde uygun saat seçimi veya bekleme listesi kaydı",
         competitor: "Randevu için ayrı bir platforma yönlendirme gerekir",
         terapistHighlight: true,
       },
     ],
-    pillarsEyebrow: "MİKRO-SİTE DENEYİMİ",
+    pillarsEyebrow: "MİKRO SİTE DENEYİMİ",
     pillarsTitle: "Sosyal medya trafiğinizi anlamlı bir ilk adıma dönüştürün.",
     pillarsSubtitle:
       "Hem danışanlar hem de meslektaşlarınız için açık, düzenli ve güven veren bir dijital kartvizit.",
@@ -912,13 +913,13 @@ export const SEO_PAGES: SeoPageData[] = [
         badge: "AKILLI KAYNAKLAR",
         title: "Şifreli formlar, süreli etkinlikler ve gömülü medya",
         description:
-          "Aktif danışanlarınıza şifreli ölçekler sunarken, yeni ziyaretçilerinize açık okuma listeleri ve psiko-eğitim videoları paylaşın.",
+          "Aktif danışanlarınıza şifreli ölçekler sunarken, yeni ziyaretçilerinize açık okuma listeleri ve psikoeğitim videoları paylaşın.",
       },
       {
-        badge: "WHITE-LABEL TEMA",
+        badge: "MARKA GİZLEME",
         title: "4 farklı tasarım tarzı ile kliniğinizin imzasını taşıyın",
         description:
-          "Klinik Klasik, Modern Bento, Sıcak Minimal ve Yumuşak Cam temalarıyla profilinizi kendi estetik anlayışınıza göre şekillendirin.",
+          "Klinik Modern, Editoryal Klinik, Doğal sakinlik ve Yumuşak cam temalarıyla profilinizi kendi estetik anlayışınıza göre şekillendirin.",
       },
       {
         badge: "DÖNÜŞÜM ANALİTİĞİ",
@@ -927,29 +928,29 @@ export const SEO_PAGES: SeoPageData[] = [
           "Instagram, Google veya QR karttan gelen ziyaretçilerin hangi bağlantılara tıkladığını ve randevu dönüşüm oranlarını temiz bir panelde görün.",
       },
     ],
-    stepsTitle: "Biyografi bağlantınızı bugün yükseltin.",
+    stepsTitle: "Biyografi bağlantınızı bugün yenileyin.",
     stepsSubtitle: "Üç adımda terapist.co/adiniz adresinizi yayına alın.",
     steps: [
       {
         number: "01",
-        title: "tire (-) kullanmadan net adresinizi seçin",
+        title: "Tire (-) kullanmadan net adresinizi seçin",
         text: "terapist.co/ardaekintuncay gibi akılda kalıcı, doğrudan isminizden oluşan adresinizi alın.",
       },
       {
         number: "02",
         title: "Profilinizi ve bağlantılarınızı düzenleyin",
-        text: "Ekollerinizi, çalışma alanlarınızı, sosyal medya ikonlarınızı ve akıllı linklerinizi ekleyin.",
+        text: "Ekollerinizi, çalışma alanlarınızı, sosyal medya ikonlarınızı ve akıllı bağlantılarınızı ekleyin.",
       },
       {
         number: "03",
         title: "Tüm platformlarda tek adres paylaşın",
-        text: "Instagram, LinkedIn, X, e-posta imzanız ve masa QR kartınızda aynı kalıcı adresi kullanın.",
+        text: "Instagram, LinkedIn, X, e-posta imzanız ve QR masa kartınızda aynı kalıcı adresi kullanın.",
       },
     ],
     faqs: [
       {
         question:
-          "Kullanıcı adımı tire (-) olmadan doğrudan adsoyad şeklinde alabilir miyim?",
+          "Kullanıcı adımı tire (-) olmadan doğrudan ad ve soyad şeklinde alabilir miyim?",
         answer:
           "Evet. Terapist.co üzerinde adresler terapist.co/ardaekintuncay gibi tire içermeyen, yalın ve kolay okunur biçimde oluşturulur.",
       },
@@ -964,27 +965,28 @@ export const SEO_PAGES: SeoPageData[] = [
     slug: "online-terapi-randevu-takvimi",
     path: "/cozumler/online-terapi-randevu-takvimi",
     category: "cozumler",
-    categoryLabel: "Klinik Çözümler",
-    footerLabel: "Online Terapi Randevu ve Takvim Sistemi",
-    eyebrow: "KLİNİK ÇÖZÜM · ONLINE RANDEVU VE AKILLI TAKVİM",
-    titleDark: "Psikologlar için online randevu:",
+    categoryLabel: "Klinik çözümler",
+    footerLabel: "Çevrim içi Terapi Randevu ve Takvim Sistemi",
+    eyebrow: "KLİNİK ÇÖZÜM · ÇEVRİM İÇİ RANDEVU VE AKILLI TAKVİM",
+    titleDark: "Psikologlar için çevrim içi randevu:",
     titleAccent: "Google Takvim eşitlemeli ve bekleme listeli.",
-    metaTitle: "Psikolog Randevu Sistemi & Online Terapi Takvimi | Terapist.co",
+    metaTitle:
+      "Psikolog Randevu Sistemi ve Çevrim içi Terapi Takvimi | Terapist.co",
     metaDescription:
-      "Klinik psikologlar için online ve yüz yüze randevu takvimi: Google Takvim çakışma kontrolü, dolu takvimler için bekleme listesi ve KVKK uyumlu talep formu.",
-    lead: "WhatsApp ve DM üzerinden saat sorma trafiğini sonlandırın. Haftalık çalışma saatlerinizi yayınlayın, Google Takvim eşitlemesiyle çakışmaları otomatik önleyin ve takviminiz dolduğunda ziyaretçileri Bekleme Listesine alın.",
+      "Klinik psikologlar için çevrim içi ve yüz yüze randevu takvimi: Google Takvim çakışma kontrolü, dolu takvimler için bekleme listesi ve KVKK uyumlu talep formu.",
+    lead: "WhatsApp ve DM üzerinden saat sorma trafiğini sonlandırın. Haftalık çalışma saatlerinizi yayımlayın, Google Takvim eşitlemesiyle çakışmaları otomatik önleyin ve takviminiz dolduğunda ziyaretçileri bekleme listesine alın.",
     competitorName: "Manuel DM / WhatsApp Trafiği",
     terapistTagline:
-      "Otomatik uygunluk gösterimi, Google Takvim senkronu ve bekleme listesi",
+      "Otomatik uygunluk gösterimi, Google Takvim eşitlemesi ve bekleme listesi",
     competitorTagline: "Sürekli mesajlaşma, saat çakışmaları ve kaçan talepler",
     heroMetrics: [
       {
         label: "Görüşme Biçimi Seçimi",
-        terapistValue: "Çevrim İçi & Yüz Yüze Ayrımlı",
+        terapistValue: "Çevrim İçi ve Yüz Yüze Ayrımlı",
         competitorValue: "Mesajla tek tek teyit",
       },
       {
-        label: "Google Takvim Senkronu",
+        label: "Google Takvim eşitlemesi",
         terapistValue: "Çift Yönlü Çakışma Önleme",
         competitorValue: "Manuel takvim kontrolü",
       },
@@ -1014,7 +1016,7 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Kişisel Etkinlik Gizliliği",
         terapistCo:
-          "Google Takvimdeki özel notlarınız gizlenir, sadece ilgili saat dilimi kapatılır",
+          "Google Takvim’deki özel notlarınız gizlenir, sadece ilgili saat dilimi kapatılır",
         competitor:
           "Takvim ekran görüntüsü paylaşmak veya manuel takip yapmak gerekir",
         terapistHighlight: true,
@@ -1027,7 +1029,7 @@ export const SEO_PAGES: SeoPageData[] = [
         terapistHighlight: true,
       },
       {
-        feature: "Klinik Veri Minimasyonu",
+        feature: "Klinik Veri Minimizasyonu",
         terapistCo:
           "Formda tanı veya terapi notu istenmez; KVKK aydınlatma onayı sürümlü kaydedilir",
         competitor:
@@ -1044,22 +1046,22 @@ export const SEO_PAGES: SeoPageData[] = [
         badge: "HAFTALIK EDİTÖR",
         title: "Gün ve saat aralıklarınızı saniyeler içinde güncelleyin",
         description:
-          "Hangi günler çevrim içi, hangi günler kliniğinizde yüz yüze görüşme yaptığınızı haftalık program editöründen kolayca belirleyin.",
+          "Hangi günler çevrim içi, hangi günler kliniğinizde yüz yüze görüşme yaptığınızı haftalık program düzenleyicisinden kolayca belirleyin.",
       },
       {
         badge: "ÇAKIŞMA KORUMASI",
         title: "Google Takvim ile gerçek zamanlı meşguliyet kontrolü",
         description:
-          "Süpervizyonunuz, eğitiminiz veya özel bir işiniz olduğunda Google Takviminize eklemeniz yeterli; profilinizdeki o saat otomatik kapanır.",
+          "Süpervizyonunuz, eğitiminiz veya özel bir işiniz olduğunda Google Takvim’inize kaydetmeniz yeterli; profilinizdeki o saat otomatik kapanır.",
       },
       {
         badge: "BEKLEME LİSTESİ",
         title: "Dolu takviminizi danışan kaybına dönüştürmeyin",
         description:
-          "Bekleme listesi modalı sayesinde sizinle çalışmak isteyen danışanlar iletişim bilgilerini ve uygun zaman dilimlerini güvenle bırakır.",
+          "Bekleme listesi formu sayesinde sizinle çalışmak isteyen danışanlar iletişim bilgilerini ve uygun zaman dilimlerini güvenle bırakır.",
       },
     ],
-    stepsTitle: "Online randevu takviminizi hemen devreye alın.",
+    stepsTitle: "Çevrim içi randevu takviminizi hemen devreye alın.",
     stepsSubtitle: "Üç adımda DM trafiğinden düzenli randevu akışına geçin.",
     steps: [
       {
@@ -1081,7 +1083,7 @@ export const SEO_PAGES: SeoPageData[] = [
     faqs: [
       {
         question:
-          "Hem online hem yüz yüze görüşme saatlerimi ayrı ayrı gösterebilir miyim?",
+          "Hem çevrim içi hem yüz yüze görüşme saatlerimi ayrı ayrı gösterebilir miyim?",
         answer:
           "Evet. Profilinizde çevrim içi, yüz yüze veya hibrit çalışma biçiminizi belirtebilir ve danışanın talep formunda tercihini seçmesini sağlayabilirsiniz.",
       },
@@ -1096,40 +1098,40 @@ export const SEO_PAGES: SeoPageData[] = [
     slug: "sifreli-bdt-sema-formlari",
     path: "/cozumler/sifreli-bdt-sema-formlari",
     category: "cozumler",
-    categoryLabel: "Klinik Çözümler",
-    footerLabel: "Şifreli BDT & Şema Terapi Formları",
+    categoryLabel: "Klinik çözümler",
+    footerLabel: "Şifreli BDT ve Şema Terapi Formları",
     eyebrow: "KLİNİK ÇÖZÜM · ŞİFRELİ LİNKLER (LINK LOCK)",
-    titleDark: "Şifreli BDT & Şema formları:",
+    titleDark: "Şifreli BDT ve Şema formları:",
     titleAccent: "yalnızca danışanınızın açabildiği kaynaklar.",
     metaTitle:
       "Şifreli BDT ve Şema Terapi Form Bağlantıları (Link Lock) | Terapist.co",
     metaDescription:
-      "Klinik psikologlar için şifreli link (Link Lock) modülü: BDT düşünce kayıtlarını, Şema ölçeklerini ve seans ödevlerini yalnızca PIN kodunu bilen danışanlarınızla paylaşın.",
-    lead: "BDT düşünce kayıt formlarını, Şema Modları öz-değerlendirme ölçeklerini veya seans içi çalışma kağıtlarını herkese açık paylaşmak yerine; Terapist.co'nun Şifreli Link (Link Lock) modülüyle yalnızca belirlediğiniz PIN şifresini bilen aktif danışanlarınızın erişimine açın.",
+      "Klinik psikologlar için şifreli bağlantı (Link Lock) modülü: BDT düşünce kayıtlarını, Şema ölçeklerini ve seans ödevlerini yalnızca PIN kodunu bilen danışanlarınızla paylaşın.",
+    lead: "BDT düşünce kayıt formlarını, Şema modları öz değerlendirme ölçeklerini veya seans içi çalışma kâğıtlarını herkese açık paylaşmak yerine; Terapist.co'nun şifreli bağlantı (Link Lock) modülüyle yalnızca belirlediğiniz PIN kodunu bilen aktif danışanlarınızın erişimine açın.",
     competitorName: "Açık PDF / WhatsApp Dosyası",
     terapistTagline:
       "PIN korumalı, sunucu doğrulamalı klinik kaynak ve form bağlantıları",
     competitorTagline:
-      "Kontrolsüz paylaşılan dosyalar ve kaybolan form linkleri",
+      "Kontrolsüz paylaşılan dosyalar ve kaybolan form bağlantıları",
     heroMetrics: [
       {
         label: "Erişim Kontrolü",
-        terapistValue: "Sunucu Tarafı PIN Kilidi",
+        terapistValue: "Sunucuda doğrulanan PIN kilidi",
         competitorValue: "Herkese açık URL",
       },
       {
-        label: "Süreli Etkinlik Linkleri",
+        label: "Süreli Etkinlik Bağlantılari",
         terapistValue: "Otomatik Gizlenen Tarihli Link",
         competitorValue: "Manuel silme gerekir",
       },
       {
-        label: "Klinik Kategorizasyon",
+        label: "Klinik kaynak kategorileri",
         terapistValue: "Form, Ölçek, Okuma, Egzersiz",
         competitorValue: "Düz dosya paylaşımı",
       },
       {
         label: "Gömülü Medya Desteği",
-        terapistValue: "Spotify & YouTube Sayfa İçi",
+        terapistValue: "Spotify ve YouTube Sayfa İçi",
         competitorValue: "Yalnızca dış bağlantı",
       },
     ],
@@ -1141,20 +1143,20 @@ export const SEO_PAGES: SeoPageData[] = [
         feature: "Şifreli Erişim (Link Lock)",
         terapistCo:
           "Şifre doğrulanmadan hedef form URL'si tarayıcıya gönderilmez; tam gizlilik sağlar",
-        competitor: "Linki bilen herkes forma veya ölçeğe erişebilir",
+        competitor: "Bağlantıyı bilen herkes forma veya ölçeğe erişebilir",
         terapistHighlight: true,
       },
       {
-        feature: "Zamanlanmış Linkler (Schedule Links)",
+        feature: "Zamanlanmış Bağlantılar (Scheduled Links)",
         terapistCo:
-          "Grup terapisi veya atölye başvuru linki belirlediğiniz tarihte otomatik kapanır",
+          "Grup terapisi veya atölye başvuru bağlantısı belirlediğiniz tarihte otomatik kapanır",
         competitor: "Süresi geçen formları manuel olarak kaldırmanız gerekir",
         terapistHighlight: true,
       },
       {
-        feature: "Vurgulu (Pulse) Butonlar",
+        feature: "Vurgulu (Pulse) Düğmeler",
         terapistCo:
-          "Öncelikli formlar veya acil yönlendirmeler için mikro-animasyonlu vurgu",
+          "Öncelikli formlar veya acil yönlendirmeler için hafif animasyonlu vurgu",
         competitor: "Standart metin bağlantısı",
         terapistHighlight: true,
       },
@@ -1163,32 +1165,33 @@ export const SEO_PAGES: SeoPageData[] = [
         terapistCo:
           "Danışan her zaman terapist.co/adiniz adresine girip şifresiyle formuna ulaşır",
         competitor:
-          "E-posta veya mesaj geçmişinde form linki aramak zorunda kalır",
+          "E-posta veya mesaj geçmişinde form bağlantısı aramak zorunda kalır",
         terapistHighlight: true,
       },
     ],
-    pillarsEyebrow: "KAYNAK & GİZLİLİK",
+    pillarsEyebrow: "KAYNAK VE GİZLİLİK",
     pillarsTitle: "Değerlendirme formlarınızı güvenle yönetin.",
     pillarsSubtitle:
-      "Hem açık psiko-eğitim materyallerinizi hem de kilitli klinik ölçeklerinizi aynı profilde düzenli tutun.",
+      "Hem açık psikoeğitim materyallerinizi hem de kilitli klinik ölçeklerinizi aynı profilde düzenli tutun.",
     pillars: [
       {
         badge: "LINK LOCK (ŞİFRELİ)",
         title: "Sadece şifreyi verdiğiniz danışanlar forma ulaşır",
         description:
-          "Seans sırasında veya sonrasında danışanınıza özel erişim şifresini iletin; profilinizdeki kilitli butona şifreyi girerek doğrudan formuna geçsin.",
+          "Seans sırasında veya sonrasında danışanınıza özel erişim şifresini iletin; profilinizdeki kilitli düğmeye şifreyi girerek doğrudan formuna geçsin.",
       },
       {
         badge: "ZAMANLANMIŞ LİNKLER",
-        title: "Süresi dolduğunda otomatik gizlenen grup ve atölye linkleri",
+        title:
+          "Süresi dolduğunda otomatik gizlenen grup ve atölye bağlantıları",
         description:
           "Belirli bir tarihte gerçekleşecek grup terapisi veya seminer kayıt bağlantısına bitiş tarihi verin; süre dolduğunda profilinizden kendiliğinden kalksın.",
       },
       {
-        badge: "MİNDULNESS & MEDYA",
+        badge: "BİLİNÇLİ FARKINDALIK VE MEDYA",
         title: "Sesli egzersiz ve videoları sayfadan çıkmadan oynatın",
         description:
-          "Spotify üzerindeki gevşeme egzersizlerinizi veya YouTube psiko-eğitim videolarınızı gömülü oynatıcıyla doğrudan profilinizde sunun.",
+          "Spotify üzerindeki gevşeme egzersizlerinizi veya YouTube psikoeğitim videolarınızı gömülü oynatıcıyla doğrudan profilinizde sunun.",
       },
     ],
     stepsTitle: "Şifreli formlarınızı 3 adımda profilinize ekleyin.",
@@ -1197,13 +1200,13 @@ export const SEO_PAGES: SeoPageData[] = [
     steps: [
       {
         number: "01",
-        title: "Kaynaklar & Linkler sekmesini açın",
+        title: "Kaynaklar ve Bağlantılar sekmesini açın",
         text: "Uzman panelinizde yeni bir kaynak ekleyin ve başlığını (örn. 'Şema Modları Ölçeği') yazın.",
       },
       {
         number: "02",
         title: "Erişim şifresi veya bitiş tarihi tanımlayın",
-        text: "'Şifreli Link' seçeneğini işaretleyip PIN kodunuzu belirleyin veya zamanlanmış bitiş tarihi girin.",
+        text: "'Şifreli bağlantı' seçeneğini işaretleyip PIN kodunuzu belirleyin veya zamanlanmış bitiş tarihi girin.",
       },
       {
         number: "03",
@@ -1214,15 +1217,15 @@ export const SEO_PAGES: SeoPageData[] = [
     faqs: [
       {
         question:
-          "Şifreli linklerin hedef adresi sayfa kaynak kodunda görünür mü?",
+          "Şifreli bağlantılerin hedef adresi sayfa kaynak kodunda görünür mü?",
         answer:
           "Hayır. Şifreli bağlantıların hedef URL'si açık profil verisinde yer almaz; yalnızca danışan doğru şifreyi girdiğinde sunucu tarafından doğrulanarak açılır.",
       },
       {
         question:
-          "Hangi form altyapılarını şifreli link olarak bağlayabilirim?",
+          "Hangi form altyapılarını şifreli bağlantı olarak bağlayabilirim?",
         answer:
-          "Google Forms, Tally, Typeform, Jotform, kendi PDF çalışma kağıtlarınız veya güvenli ölçek bağlantılarınızın tamamını şifreli link olarak ekleyebilirsiniz.",
+          "Google Forms, Tally, Typeform, Jotform, kendi PDF çalışma kâğıtlarınız veya güvenli ölçek bağlantılarınızın tamamını şifreli bağlantı olarak ekleyebilirsiniz.",
       },
     ],
   },
@@ -1230,17 +1233,17 @@ export const SEO_PAGES: SeoPageData[] = [
     slug: "klinik-masa-qr-karti",
     path: "/cozumler/klinik-masa-qr-karti",
     category: "cozumler",
-    categoryLabel: "Klinik Çözümler",
-    footerLabel: "Klinik Masa QR Kartı & Dijital Kartvizit",
-    eyebrow: "KLİNİK ÇÖZÜM · DİNAMİK MASA QR KARTI",
-    titleDark: "Klinik masa QR kartı:",
+    categoryLabel: "Klinik çözümler",
+    footerLabel: "Klinik QR masa kartı ve dijital kartvizit",
+    eyebrow: "KLİNİK ÇÖZÜM · DİNAMİK QR MASA KARTI",
+    titleDark: "Klinik QR masa kartı:",
     titleAccent: "görüşme odanızdan dijital profilinize anında geçiş.",
     metaTitle:
-      "Psikologlar İçin Masa QR Kartı ve Dijital Kartvizit | Terapist.co",
+      "Psikologlar İçin QR masa kartı ve Dijital Kartvizit | Terapist.co",
     metaDescription:
       "Görüşme odanız, bekleme salonunuz ve kartvizitiniz için dinamik Terapist.co QR masa kartı: Danışanlarınız kamerayla okutarak formlarınıza ve randevu takviminize ulaşsın.",
     lead: "Görüşme odanızdaki sehpanın üzerine veya basılı kartvizitinize yerleştirebileceğiniz yüksek çözünürlüklü PNG ve vektörel SVG QR masa kartı ile danışanlarınız tek okutmada profilinize, şifreli değerlendirme formlarınıza ve sonraki seans takviminize ulaşsın.",
-    competitorName: "Kağıt Broşür & Statik QR",
+    competitorName: "Kâğıt Broşür ve Statik QR",
     terapistTagline:
       "Marka renklerinizle uyumlu, UTM analitik takipli masa kartı ve web rozeti",
     competitorTagline:
@@ -1252,7 +1255,7 @@ export const SEO_PAGES: SeoPageData[] = [
         competitorValue: "Düşük çözünürlüklü ekran görüntüsü",
       },
       {
-        label: "Tema & Renk Uyumu",
+        label: "Tema ve Renk Uyumu",
         terapistValue: "Seçtiğiniz Klinik Paletle Uyumlu",
         competitorValue: "Standart siyah-beyaz",
       },
@@ -1263,11 +1266,11 @@ export const SEO_PAGES: SeoPageData[] = [
       },
       {
         label: "Web Doğrulama Rozeti",
-        terapistValue: "Canlı SVG Embed Kodu",
+        terapistValue: "Canlı SVG yerleştirme kodu",
         competitorValue: "Yok",
       },
     ],
-    comparisonTitle: "Terapist.co Dinamik Masa Kartı vs Standart QR Kodlar",
+    comparisonTitle: "Terapist.co Dinamik Masa Kartı vs Standart QR kodlar",
     comparisonSubtitle:
       "Yüz yüze klinik deneyimini dijital çalışma alanınızla bütünleştiren tasarım.",
     comparisonRows: [
@@ -1291,7 +1294,7 @@ export const SEO_PAGES: SeoPageData[] = [
         feature: "Değişmeyen Kalıcı Bağlantı",
         terapistCo:
           "Profilinizdeki formları veya saatleri güncellediğinizde basılı QR kartınızı değiştirmeniz gerekmez",
-        competitor: "Her form veya link değişiminde yeni QR basmak gerekir",
+        competitor: "Her form veya bağlantı değişiminde yeni QR basmak gerekir",
         terapistHighlight: true,
       },
       {
@@ -1302,13 +1305,13 @@ export const SEO_PAGES: SeoPageData[] = [
         terapistHighlight: true,
       },
     ],
-    pillarsEyebrow: "FİZİKSEL & DİJİTAL BÜTÜNLÜK",
+    pillarsEyebrow: "FİZİKSEL VE DİJİTAL BÜTÜNLÜK",
     pillarsTitle: "Görüşme odanızda şık ve işlevsel bir dokunuş.",
     pillarsSubtitle:
-      "Seans sonunda form linki göndermek veya bir sonraki randevuyu planlamak saniyeler sürer.",
+      "Seans sonunda form bağlantısı göndermek veya bir sonraki randevuyu planlamak saniyeler sürer.",
     pillars: [
       {
-        badge: "MASA KARTI (PNG & SVG)",
+        badge: "MASA KARTI (PNG VE SVG)",
         title: "Matbaa ve masaüstü çerçeve baskısına hazır yüksek kalite",
         description:
           "İster pleksi masa çerçevesine koyun, ister kartvizitinizin arkasına basın; vektörel SVG ve yüksek çözünürlüklü PNG çıktılar her boyutta net kalır.",
@@ -1326,18 +1329,18 @@ export const SEO_PAGES: SeoPageData[] = [
           "Panelinizdeki tek satırlık HTML/Markdown rozet kodunu kişisel web sitenize yapıştırarak ziyaretçilerinizi doğrulanmış profilinize bağlayın.",
       },
     ],
-    stepsTitle: "Masa QR kartınızı hemen indirin.",
+    stepsTitle: "QR masa kartınızı hemen indirin.",
     stepsSubtitle:
       "Üç adımda kliniğiniz ve kartvizitiniz için QR kartınızı oluşturun.",
     steps: [
       {
         number: "01",
-        title: "Görünüm & Tema sekmesinden renginizi seçin",
+        title: "Görünüm ve QR kodu sekmesinden renginizi seçin",
         text: "QR kodunuz seçtiğiniz klinik renk paletiyle otomatik olarak uyumlu hale gelir.",
       },
       {
         number: "02",
-        title: "Masa Kartı İndir (PNG) veya Vektör (SVG) butonuna tıklayın",
+        title: "Masa Kartı İndir (PNG) veya Vektör (SVG) düğmesine tıklayın",
         text: "Panelinizden hazır tasarlanmış masa kartınızı tek tıkla cihazınıza indirin.",
       },
       {
@@ -1349,7 +1352,7 @@ export const SEO_PAGES: SeoPageData[] = [
     faqs: [
       {
         question:
-          "Profilimdeki linkleri güncellediğimde masamdaki QR kartı yenilemem gerekir mi?",
+          "Profilimdeki bağlantıları güncellediğimde masamdaki QR kartı yenilemem gerekir mi?",
         answer:
           "Hayır. QR kodunuz kalıcı terapist.co/adiniz adresinize yönlendirir. Panelinizden yeni form, medya veya çalışma saati eklediğinizde aynı QR kod güncel içeriğinizi göstermeye devam eder.",
       },
@@ -1365,16 +1368,16 @@ export const SEO_PAGES: SeoPageData[] = [
     slug: "dogrulanmis-meslektas-agi",
     path: "/cozumler/dogrulanmis-meslektas-agi",
     category: "cozumler",
-    categoryLabel: "Klinik Çözümler",
+    categoryLabel: "Klinik çözümler",
     footerLabel: "Doğrulanmış Meslektaş ve Yönlendirme Ağı",
-    eyebrow: "KLİNİK ÇÖZÜM · MESLEKTAŞ AĞI & ETİK YÖNLENDİRME",
+    eyebrow: "KLİNİK ÇÖZÜM · MESLEKTAŞ AĞI VE ETİK YÖNLENDİRME",
     titleDark: "Doğrulanmış meslektaş ağı:",
     titleAccent: "etik yönlendirme ve profesyonel bağlar.",
     metaTitle:
       "Terapistler Arası Meslektaş Ağı ve Etik Danışan Yönlendirme | Terapist.co",
     metaDescription:
       "Klinik psikologlar arasında karşılıklı onaylı mesleki bağlar, süpervizyon ilişkisi gösterimi ve terapist.co/r/... ile etik danışan yönlendirme ağı.",
-    lead: "Ruh sağlığı alanında güven, uzmanın içinde bulunduğu mesleki toplulukla güçlenir. Birlikte çalıştığınız, aynı eğitimden geçtiğiniz veya süpervizyon paylaştığınız doğrulanmış meslektaşlarınızla bağlarınızı görünür kılın; kendi çalışma alanınız dışındaki talepleri etik biçimde yönlendirin.",
+    lead: "Ruh sağlığı alanında güven, uzmanın içinde bulunduğu mesleki toplulukla güçlenir. Birlikte çalıştığınız, aynı eğitimden geçtiğiniz veya aynı süpervizyon grubunda yer aldığınız doğrulanmış meslektaşlarınızla bağlarınızı görünür kılın; kendi çalışma alanınız dışındaki talepleri etik biçimde yönlendirin.",
     competitorName: "Kayıtsız Sözlü Yönlendirme",
     terapistTagline:
       "Karşılıklı onaylı mesleki bağlar ve terapist.co/r/... yönlendirme protokolü",
@@ -1397,7 +1400,7 @@ export const SEO_PAGES: SeoPageData[] = [
       },
       {
         label: "Meslektaş Mesajlaşması",
-        terapistValue: "Panel İçi Bildirim & Mesajlar",
+        terapistValue: "Panel İçi Bildirim ve Mesajlar",
         competitorValue: "Kişisel numara zorunluluğu",
       },
     ],
@@ -1408,7 +1411,7 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Karşılıklı Onaylı Mesleki Bağlar",
         terapistCo:
-          "Süpervizyon, ortak eğitim veya klinik çalışma bağları yalnızca iki uzmanın onayıyla yayınlanır",
+          "Süpervizyon, ortak eğitim veya klinik çalışma bağları yalnızca iki uzmanın onayıyla yayımlanır",
         competitor:
           "Sosyal medyada takip listeleri dışında mesleki bağlam görünmez",
         terapistHighlight: true,
@@ -1477,7 +1480,7 @@ export const SEO_PAGES: SeoPageData[] = [
       },
       {
         number: "03",
-        title: "terapist.co/r/... yönlendirme linklerini kullanın",
+        title: "terapist.co/r/... yönlendirme bağlantılarını kullanın",
         text: "Uygun olmayan danışan taleplerini etik yönlendirme bağlantısıyla güvenle meslektaşınıza aktarın.",
       },
     ],
@@ -1503,7 +1506,7 @@ export const SEO_PAGES: SeoPageData[] = [
     slug: "klinik-psikolog-dijital-kimlik",
     path: "/rehber/klinik-psikolog-dijital-kimlik",
     category: "rehber",
-    categoryLabel: "Uzman Rehberi",
+    categoryLabel: "Uzman rehberi",
     footerLabel: "Klinik Psikolog Dijital Kimlik Rehberi",
     eyebrow: "UZMAN REHBERİ · DİJİTAL KİMLİK VE SEO",
     titleDark: "Klinik psikologlar için",
@@ -1522,15 +1525,15 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         label: "Arama Motoru Yapısı",
         terapistValue: "Schema.org/Person + Sitemap",
-        competitorValue: "Yapısal veri yok",
+        competitorValue: "Yapılandırılmış veri yok",
       },
       {
         label: "Kısa ve Kalıcı URL",
         terapistValue: "terapist.co/adinizsoyadiniz",
-        competitorValue: "Karmaşık sosyal medya linkleri",
+        competitorValue: "Karmaşık sosyal medya bağlantıları",
       },
       {
-        label: "Ekol & Uzmanlık Netliği",
+        label: "Ekol ve Uzmanlık Netliği",
         terapistValue: "Yapılandırılmış Klinik Etiketler",
         competitorValue: "Dağınık biyografi metni",
       },
@@ -1568,7 +1571,7 @@ export const SEO_PAGES: SeoPageData[] = [
       },
     ],
     pillarsEyebrow: "REHBER İLKELER",
-    pillarsTitle: "Dijital kimliğinizi güçlendiren 3 temel sütun.",
+    pillarsTitle: "Dijital kimliğinizi güçlendiren 3 temel unsur.",
     pillarsSubtitle:
       "Hem arama motorlarında bulunabilir olun hem de klinik ciddiyetinizi koruyun.",
     pillars: [
@@ -1582,7 +1585,7 @@ export const SEO_PAGES: SeoPageData[] = [
         badge: "02 · ŞEFFAF ÇERÇEVE",
         title: "Eğitiminizi, ekolünüzü ve görüşme koşullarınızı açıkça yazın",
         description:
-          "Danışanların en çok merak ettiği 'Hangi ekolle çalışıyor, hangi yaş gruplarını görüyor, online seans var mı?' sorularını tek sayfada yanıtlayın.",
+          "Danışanların en çok merak ettiği 'Hangi ekolle çalışıyor, hangi yaş gruplarını görüyor, çevrim içi seans var mı?' sorularını tek sayfada yanıtlayın.",
       },
       {
         badge: "03 · DOĞRULANMIŞ GÜVEN",
@@ -1615,7 +1618,7 @@ export const SEO_PAGES: SeoPageData[] = [
         question:
           "Terapist.co profilim Google aramalarında ne kadar sürede görünür olur?",
         answer:
-          "Profiliniz yönetici onayından geçtiği anda otomatik olarak sitemap.xml dosyasına eklenir ve Schema.org/Person yapısal verisiyle arama motorlarına açılır.",
+          "Profiliniz yönetici onayından geçtiği anda otomatik olarak sitemap.xml dosyasına eklenir ve Schema.org/Person yapılandırılmış verisiyle arama motorlarına açılır.",
       },
       {
         question: "Biyografimi yazarken nelere dikkat etmeliyim?",
@@ -1628,24 +1631,25 @@ export const SEO_PAGES: SeoPageData[] = [
     slug: "bdt-ve-sema-terapistleri-icin",
     path: "/rehber/bdt-ve-sema-terapistleri-icin",
     category: "rehber",
-    categoryLabel: "Uzman Rehberi",
-    footerLabel: "BDT & Şema Terapistleri İçin Dijital Pratik",
-    eyebrow: "UZMAN REHBERİ · BDT & ŞEMA TERAPİ PRATİĞİ",
+    categoryLabel: "Uzman rehberi",
+    footerLabel: "BDT ve Şema Terapistleri İçin Dijital Pratik",
+    eyebrow: "UZMAN REHBERİ · BDT VE ŞEMA TERAPİ PRATİĞİ",
     titleDark: "BDT ve Şema terapistleri için",
     titleAccent: "dijital form, ödev ve kaynak yönetimi.",
     metaTitle:
       "BDT ve Şema Terapistleri İçin Dijital Profil ve Şifreli Formlar | Terapist.co",
     metaDescription:
-      "Bilişsel Davranışçı Terapi (BDT) ve Şema Terapi uzmanları için şifreli ölçek paylaşımı, psiko-eğitim materyalleri, sesli yaşantısal egzersizler ve randevu yönetimi.",
-    lead: "Bilişsel Davranışçı Terapi ve Şema Terapi, seanslar arası ev ödevleri, düşünce kayıt formları, mod çalışma kağıtları ve psiko-eğitim okumalarıyla yapılandırılmış ekollerdir. Terapist.co, bu materyalleri danışanlarınızla en güvenli ve düzenli biçimde paylaşmanız için tasarlandı.",
-    competitorName: "Dağınık E-Posta & Mesaj Ekleri",
+      "Bilişsel davranışçı terapi (BDT) ve Şema Terapi uzmanları için şifreli ölçek paylaşımı, psikoeğitim materyalleri, sesli yaşantısal egzersizler ve randevu yönetimi.",
+    lead: "Bilişsel davranışçı terapi ve Şema Terapi, seanslar arası ev ödevleri, düşünce kayıt formları, mod çalışma kâğıtları ve psikoeğitim okumalarıyla yapılandırılmış ekollerdir. Terapist.co, bu materyalleri danışanlarınızla en güvenli ve düzenli biçimde paylaşmanız için tasarlandı.",
+    competitorName: "Dağınık e-posta ve Mesaj Ekleri",
     terapistTagline:
       "PIN kilitli ölçekler, gömülü sesli egzersizler ve ekol rozetleri",
-    competitorTagline: "Her danışana tekrar tekrar gönderilen PDF ve linkler",
+    competitorTagline:
+      "Her danışana tekrar tekrar gönderilen PDF ve bağlantılar",
     heroMetrics: [
       {
         label: "Ölçek ve Ödev Paylaşımı",
-        terapistValue: "Şifreli Link (Link Lock)",
+        terapistValue: "Şifreli bağlantı (Link Lock)",
         competitorValue: "E-posta / WhatsApp eki",
       },
       {
@@ -1654,13 +1658,13 @@ export const SEO_PAGES: SeoPageData[] = [
         competitorValue: "Dış bağlantı",
       },
       {
-        label: "Psiko-Eğitim Videoları",
+        label: "Psikoeğitim Videoları",
         terapistValue: "Sayfa İçi YouTube Oynatıcı",
-        competitorValue: "Dağınık video linkleri",
+        competitorValue: "Dağınık video bağlantıları",
       },
       {
         label: "Ekol Görünürlüğü",
-        terapistValue: "BDT & Şema Terapi Dizin Filtresi",
+        terapistValue: "BDT ve Şema Terapi Dizin Filtresi",
         competitorValue: "Genel liste",
       },
     ],
@@ -1671,13 +1675,13 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Şema ve BDT Formlarının Korunması",
         terapistCo:
-          "Şema ölçeklerini ve düşünce kayıt formlarını yalnızca danışanınızın bildiği PIN şifresiyle kilitleyin",
+          "Şema ölçeklerini ve düşünce kayıt formlarını yalnızca danışanınızın bildiği PIN koduyla kilitleyin",
         competitor:
           "Form bağlantılarının yetkisiz kişilerce görüntülenmesi riski",
         terapistHighlight: true,
       },
       {
-        feature: "Güvenli Yer / Mindfulness Ses Kayıtları",
+        feature: "Güvenli yer ve bilinçli farkındalık ses kayıtları",
         terapistCo:
           "İmajinasyon veya nefes egzersizi kayıtlarınızı gömülü oynatıcıyla doğrudan profilinizden dinletin",
         competitor: "Ses dosyalarını mesajlaşma uygulamalarından göndermek",
@@ -1686,8 +1690,8 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Grup Terapisi ve Atölye Duyuruları",
         terapistCo:
-          "Başlangıç tarihi geldiğinde otomatik gizlenen Zamanlanmış Linkler (Schedule Links)",
-        competitor: "Süresi geçmiş etkinlik linklerinin profilde kalması",
+          "Bitiş tarihi geldiğinde otomatik gizlenen zamanlanmış bağlantılar (Scheduled Links)",
+        competitor: "Süresi geçmiş etkinlik bağlantılarının profilde kalması",
         terapistHighlight: true,
       },
     ],
@@ -1700,10 +1704,10 @@ export const SEO_PAGES: SeoPageData[] = [
         badge: "ŞİFRELİ ÖLÇEKLER",
         title: "Değerlendirme formlarınızı danışana özel PIN ile koruyun",
         description:
-          "Young Şema Ölçeği, Mod Envanteri veya BDT otomatik düşünce kayıt bağlantılarınızı kilitli butonlar olarak profilinize yerleştirin.",
+          "Young Şema Ölçeği, Mod Envanteri veya BDT otomatik düşünce kayıt bağlantılarınızı kilitli düğmeler olarak profilinize yerleştirin.",
       },
       {
-        badge: "PSİKO-EĞİTİM KÜTÜPHANESİ",
+        badge: "PSİKOEĞİTİM KÜTÜPHANESİ",
         title: "Okuma önerilerinizi ve videolarınızı kategorize edin",
         description:
           "Şema terapi kavramlarını veya bilişsel çarpıtmaları anlatan video ve makalelerinizi düzenli kartlar halinde sunun.",
@@ -1715,7 +1719,7 @@ export const SEO_PAGES: SeoPageData[] = [
           "Keşfet dizinindeki yapılandırılmış terapi yaklaşımı filtreleri sayesinde özellikle sizin ekolünüzde uzman arayan danışanlara ulaşın.",
       },
     ],
-    stepsTitle: "BDT & Şema çalışma alanınızı hemen kurun.",
+    stepsTitle: "BDT ve Şema çalışma alanınızı hemen kurun.",
     stepsSubtitle: "Üç adımda formlarınızı ve profilinizi birleştirin.",
     steps: [
       {
@@ -1726,11 +1730,11 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         number: "02",
         title: "Şifreli form ve sesli egzersiz bağlantılarınızı ekleyin",
-        text: "Link Lock ile ölçeklerinizi kilitleyin, Spotify/YouTube psiko-eğitim içeriklerinizi gömün.",
+        text: "Link Lock ile ölçeklerinizi kilitleyin, Spotify/YouTube psikoeğitim içeriklerinizi gömün.",
       },
       {
         number: "03",
-        title: "Masa QR kartınızla seans içi geçişi hızlandırın",
+        title: "QR masa kartınızla seans içi geçişi hızlandırın",
         text: "Danışanlarınız seans sonunda QR kartınızı okutarak ödev ve formlarına anında ulaşsın.",
       },
     ],
@@ -1738,12 +1742,12 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         question: "Birden fazla şifreli form ekleyebilir miyim?",
         answer:
-          "Evet. BDT formları için ayrı, Şema Terapi ölçekleri için ayrı başlık ve ayrı PIN şifreleriyle dilediğiniz kadar kilitli kaynak tanımlayabilirsiniz.",
+          "Evet. BDT formları için ayrı, Şema Terapi ölçekleri için ayrı başlık ve ayrı PIN kodlarıyla dilediğiniz kadar kilitli kaynak tanımlayabilirsiniz.",
       },
       {
         question: "Şifreyi danışanlarıma nasıl iletiyorum?",
         answer:
-          "Kaynak oluştururken belirlediğiniz şifreyi seans sırasında sözlü olarak veya masa QR kartınızı okuttuklarında danışanınıza iletebilirsiniz.",
+          "Kaynak oluştururken belirlediğiniz şifreyi seans sırasında sözlü olarak veya QR masa kartınızı okuttuklarında danışanınıza iletebilirsiniz.",
       },
     ],
   },
@@ -1751,7 +1755,7 @@ export const SEO_PAGES: SeoPageData[] = [
     slug: "cift-ve-emdr-terapistleri-icin",
     path: "/rehber/cift-ve-emdr-terapistleri-icin",
     category: "rehber",
-    categoryLabel: "Uzman Rehberi",
+    categoryLabel: "Uzman rehberi",
     footerLabel: "Çift, Aile ve EMDR Uzmanları İçin Profil",
     eyebrow: "UZMAN REHBERİ · ÇİFT, AİLE VE EMDR UZMANLARI",
     titleDark: "Çift, Aile ve EMDR uzmanları için",
@@ -1768,14 +1772,14 @@ export const SEO_PAGES: SeoPageData[] = [
       "Uzmanlık düzeyinin ve çalışma çerçevesinin belirsiz olduğu sayfalar",
     heroMetrics: [
       {
-        label: "Uzmanlık & Eğitim Sunumu",
-        terapistValue: "Yapılandırılmış Eğitim & Ekol Alanı",
-        competitorValue: "Kısa bio satırı",
+        label: "Uzmanlık ve Eğitim Sunumu",
+        terapistValue: "Yapılandırılmış Eğitim ve Ekol Alanı",
+        competitorValue: "Kısa biyografi satırı",
       },
       {
         label: "Stabilizasyon Kaynakları",
-        terapistValue: "Gömülü Ses & Video Oynatıcı",
-        competitorValue: "Harici linkler",
+        terapistValue: "Gömülü Ses ve Video Oynatıcı",
+        competitorValue: "Harici bağlantılar",
       },
       {
         label: "Bireysel / Çift Yönlendirmesi",
@@ -1783,7 +1787,7 @@ export const SEO_PAGES: SeoPageData[] = [
         competitorValue: "Manuel yönlendirme",
       },
       {
-        label: "Seans Süresi & Koşullar",
+        label: "Seans Süresi ve Koşullar",
         terapistValue: "Şeffaf Ücret ve Takvim",
         competitorValue: "DM ile bilgi alma",
       },
@@ -1795,7 +1799,7 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         feature: "Süpervizyon ve Eğitim Bağlarının Gösterimi",
         terapistCo:
-          "Aynı ekolde çalıştığınız veya süpervizyon paylaştığınız doğrulanmış uzmanlarla karşılıklı bağ",
+          "Aynı ekolde çalıştığınız veya aynı süpervizyon grubunda yer aldığınız doğrulanmış uzmanlarla karşılıklı bağ",
         competitor: "Mesleki topluluk bağını gösteren bir yapı yoktur",
         terapistHighlight: true,
       },
@@ -1810,7 +1814,7 @@ export const SEO_PAGES: SeoPageData[] = [
         feature: "Regülasyon ve Kaynak Geliştirme Materyalleri",
         terapistCo:
           "EMDR hazırlık evresi veya çift iletişim egzersizlerini şifreli/gömülü kaynak olarak paylaşma",
-        competitor: "Dağınık döküman gönderimi",
+        competitor: "Dağınık doküman gönderimi",
         terapistHighlight: true,
       },
     ],
@@ -1840,7 +1844,7 @@ export const SEO_PAGES: SeoPageData[] = [
     ],
     stepsTitle: "Uzmanlık profilinizi 3 adımda oluşturun.",
     stepsSubtitle:
-      "Klinik çerçevenizi yansıtan mikro-sitenizi hemen hazırlayın.",
+      "Klinik çerçevenizi yansıtan mikro sitenizi hemen hazırlayın.",
     steps: [
       {
         number: "01",
@@ -1855,7 +1859,7 @@ export const SEO_PAGES: SeoPageData[] = [
       {
         number: "03",
         title: "Meslektaş ağınızı ve kaynaklarınızı bağlayın",
-        text: "Birlikte çalıştığınız uzmanlarla bağ kurun ve danışan kaynaklarınızı yayınlayın.",
+        text: "Birlikte çalıştığınız uzmanlarla bağ kurun ve danışan kaynaklarınızı yayımlayın.",
       },
     ],
     faqs: [
@@ -1877,24 +1881,24 @@ export const SEO_PAGES: SeoPageData[] = [
     slug: "terapide-kvkk-ve-veri-minimasyonu",
     path: "/rehber/terapide-kvkk-ve-veri-minimasyonu",
     category: "rehber",
-    categoryLabel: "Uzman Rehberi",
-    footerLabel: "Terapide KVKK ve Veri Minimasyonu",
-    eyebrow: "UZMAN REHBERİ · KVKK VE VERİ MİNİMASYONU",
+    categoryLabel: "Uzman rehberi",
+    footerLabel: "Terapide KVKK ve Veri Minimizasyonu",
+    eyebrow: "UZMAN REHBERİ · KVKK VE VERİ MİNİMİZASYONU",
     titleDark: "Psikolojik danışmanlıkta",
-    titleAccent: "KVKK ve veri minimasyonu standartları.",
+    titleAccent: "KVKK ve veri minimizasyonu standartları.",
     metaTitle:
-      "Psikologlar İçin KVKK, Veri Minimasyonu ve Güvenli Randevu | Terapist.co",
+      "Psikologlar İçin KVKK, Veri Minimizasyonu ve Güvenli Randevu | Terapist.co",
     metaDescription:
-      "Klinik psikologların online randevu ve dijital profil süreçlerinde KVKK uyumu, veri minimasyonu, sürümlü aydınlatma metni ve iki aşamalı doğrulama (MFA) rehberi.",
-    lead: "Ruh sağlığı alanında dijital araç kullanırken en kritik ilke 'Veri Minimasyonu'dur: Danışandan ilk randevu talebinde tanı, semptom listesi veya terapi öyküsü istememek; aydınlatma metni onayını sürümlü olarak kaydetmek ve uzman hesabını iki aşamalı doğrulama (MFA) ile korumak.",
+      "Klinik psikologların çevrim içi randevu ve dijital profil süreçlerinde KVKK uyumu, veri minimizasyonu, sürümlü aydınlatma metni ve iki aşamalı doğrulama (MFA) rehberi.",
+    lead: "Ruh sağlığı alanında dijital araç kullanırken en kritik ilke veri minimizasyonudur: Danışandan ilk randevu talebinde tanı, semptom listesi veya terapi öyküsü istememek; aydınlatma metni onayını sürümlü olarak kaydetmek ve uzman hesabını iki aşamalı doğrulama (MFA) ile korumak.",
     competitorName: "Genel İletişim Formları",
     terapistTagline:
-      "Tanı ve terapi notu tutmayan, MFA korumalı, veri minimasyonu odaklı mimari",
+      "Tanı ve terapi notu tutmayan, MFA korumalı, veri minimizasyonu odaklı mimari",
     competitorTagline:
       "Serbest metin kutularıyla hassas sağlık verisi toplayan kontrolsüz formlar",
     heroMetrics: [
       {
-        label: "Tanı & Terapi Notu",
+        label: "Tanı ve Terapi Notu",
         terapistValue: "Sistemde Tutulmaz (Sıfır Kayıt)",
         competitorValue: "Açık form kutularında birikir",
       },
@@ -1910,20 +1914,20 @@ export const SEO_PAGES: SeoPageData[] = [
       },
       {
         label: "Analitik Gizliliği",
-        terapistValue: "1. Parti Anonim Olay Sayımı",
+        terapistValue: "Birinci taraf anonim olay sayımı",
         competitorValue: "Üçüncü taraf reklam izleyicileri",
       },
     ],
-    comparisonTitle: "Veri Minimasyonu Odaklı Mimari vs Standart Formlar",
+    comparisonTitle: "Veri Minimizasyonu Odaklı Mimari vs Standart Formlar",
     comparisonSubtitle:
       "Hem danışan mahremiyetini hem de uzmanın hukuki/etik sorumluluğunu gözeten teknik önlemler.",
     comparisonRows: [
       {
         feature: "İlk Randevu Formu İçeriği",
         terapistCo:
-          "Yalnızca ad, iletişim, görüşme şekli ve saat tercihi alınır; tanı veya şikayet metni istenmez",
+          "Yalnızca ad, iletişim, görüşme şekli ve saat tercihi alınır; tanı veya şikâyet metni istenmez",
         competitor:
-          "'Mesajınız / Şikayetiniz' kutusuyla özel nitelikli sağlık verisi toplanır",
+          "'Mesajınız / Şikâyetiniz' kutusuyla özel nitelikli sağlık verisi toplanır",
         terapistHighlight: true,
       },
       {
@@ -1955,7 +1959,7 @@ export const SEO_PAGES: SeoPageData[] = [
       "Terapist.co, klinik veri tutmayan bir iletişim ve randevu köprüsü olarak inşa edilmiştir.",
     pillars: [
       {
-        badge: "VERİ MİNİMASYONU",
+        badge: "VERİ MİNİMİZASYONU",
         title: "Klinik tanı veya seans notu talep etmeyen ilk adım",
         description:
           "Danışanın bir psikologla görüşmek istemesi bile hassas bir bağlamdır. Bu nedenle formlarımızda tanı, ilaç kullanımı veya travma öyküsü gibi alanlar yer almaz.",
@@ -1967,15 +1971,15 @@ export const SEO_PAGES: SeoPageData[] = [
           "Randevu ve bekleme listesi formları, güncel aydınlatma metni sürümüyle eşleşir; danışan metni inceleyip onaylamadan talep gönderilmez.",
       },
       {
-        badge: "MFA & ŞİFRELİ LİNKLER",
+        badge: "MFA VE ŞİFRELİ LİNKLER",
         title: "İki aşamalı hesap koruması ve PIN kilitli kaynaklar",
         description:
-          "Uzman panelinizi TOTP tabanlı iki aşamalı doğrulamayla koruyun; dış ölçek bağlantılarınızı ise şifreli link (Link Lock) ile paylaşın.",
+          "Uzman panelinizi TOTP tabanlı iki aşamalı doğrulamayla koruyun; dış ölçek bağlantılarınızı ise şifreli bağlantı (Link Lock) ile paylaşın.",
       },
     ],
     stepsTitle: "Güvenli dijital çalışma alanınıza geçin.",
     stepsSubtitle:
-      "Üç adımda veri minimasyonu ilkelerine uygun profilinizi açın.",
+      "Üç adımda veri minimizasyonu ilkelerine uygun profilinizi açın.",
     steps: [
       {
         number: "01",
@@ -2004,7 +2008,7 @@ export const SEO_PAGES: SeoPageData[] = [
         question:
           "Uzman hesabımı iki aşamalı doğrulama (MFA) ile nasıl koruyabilirim?",
         answer:
-          "Çalışma alanınızdaki güvenlik ayarlarından QR kodu telefonunuzdaki doğrulayıcı uygulamayla (Google Authenticator, Authy vb.) okutarak MFA korumasını ve tek kullanımlık yedek kodlarınızı aktif edebilirsiniz.",
+          "Çalışma alanınızdaki güvenlik ayarlarından QR kodu telefonunuzdaki doğrulayıcı uygulamayla (Google Authenticator, Authy vb.) okutarak MFA korumasını ve tek kullanımlık yedek kodlarınızı etkinleştirebilirsiniz.",
       },
     ],
   },

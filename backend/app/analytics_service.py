@@ -581,8 +581,9 @@ def uzman_trafik_raporu(db: Session, uzman: Uzman, gun: int) -> dict:
             "baslik": "Profil bağlantınızı paylaşmaya başlayın",
             "aciklama": (
                 f"terapist.co/{uzman.kullanici_adi} adresinizi Instagram, "
-                "YouTube veya kişisel web sitenize eklediğinizde profilinize "
-                "kimlerin nereden geldiğini burada net şekilde görebilirsiniz."
+                "YouTube veya kişisel web sitenize eklediğinizde, "
+                "ziyaretçilerin hangi kaynaklardan geldiğini burada "
+                "görebilirsiniz."
             ),
         }
     elif booking_count == 0 and drawer_opens > 0:
@@ -607,8 +608,8 @@ def uzman_trafik_raporu(db: Session, uzman: Uzman, gun: int) -> dict:
         oneri = {
             "baslik": "Profil performansınız izleniyor",
             "aciklama": (
-                "Profil ziyaretleriniz, randevu dönüşümleriniz ve yönlendirme "
-                "kaynaklarınız sade özet olarak düzenli güncellenir."
+                "Profil ziyaretleri, randevu dönüşümleri ve yönlendirme "
+                "kaynaklarına ilişkin özetiniz düzenli olarak güncellenir."
             ),
         }
 

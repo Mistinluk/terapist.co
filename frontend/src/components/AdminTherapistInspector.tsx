@@ -15,6 +15,13 @@ import { api, Profil, ProfilGirdi, YonetimUzmanDetayi } from "../lib/api";
 import { useApi } from "../lib/useApi";
 import { ProfileForm } from "./ProfileForm";
 import { Status } from "./Status";
+import {
+  BUTTON_STYLES,
+  DESIGN_STYLES,
+  FONT_PAIRINGS,
+  SURFACE_STYLES,
+  THEME_PRESETS,
+} from "./ThemeCustomizer";
 
 const verificationLabels: Record<string, string> = {
   verified: "Doğrulandı",
@@ -80,7 +87,7 @@ export function AdminTherapistInspectorView({
             disabled={busyAction === profile.id}
             onClick={onToggleApproval}
           >
-            {profile.onayli ? "Yayından kaldır" : "Onayla ve yayınla"}
+            {profile.onayli ? "Yayından kaldır" : "Onayla ve yayımla"}
           </button>
         </div>
       </div>
@@ -99,15 +106,15 @@ export function AdminTherapistInspectorView({
             <article className="admin-panel-card">
               <div className="analytics-metric-heading">
                 <Award size={18} aria-hidden="true" />
-                <h3>Doğrulama & Kurucu</h3>
+                <h3>Doğrulama ve kurucu üyelik</h3>
               </div>
               <p className="admin-detail-main">
                 {verificationLabels[detail.dogrulama_durumu]}
               </p>
               <p className="muted">
                 {detail.kurucu_no !== null
-                  ? `Founding Therapist #${String(detail.kurucu_no).padStart(4, "0")}`
-                  : "Kurucu programına henüz dahil değil"}
+                  ? `Kurucu terapist #${String(detail.kurucu_no).padStart(4, "0")}`
+                  : "Kurucu programına henüz dâhil değil"}
               </p>
               {(detail.kurucu_no !== null || profile.onayli) && (
                 <button
@@ -130,7 +137,7 @@ export function AdminTherapistInspectorView({
             <article className="admin-panel-card">
               <div className="analytics-metric-heading">
                 <CalendarDays size={18} aria-hidden="true" />
-                <h3>Takvim & Randevu</h3>
+                <h3>Takvim ve randevular</h3>
               </div>
               <p className="admin-detail-main">
                 {detail.takvim.bagli
@@ -157,21 +164,40 @@ export function AdminTherapistInspectorView({
               <article className="admin-panel-card">
                 <div className="analytics-metric-heading">
                   <Palette size={18} aria-hidden="true" />
-                  <h3>Tema & White-Label</h3>
+                  <h3>Tema ve marka görünürlüğü</h3>
                 </div>
                 <p className="admin-detail-main">
-                  Tarz: {detail.tema.tasarim_tarzi} · Renk:{" "}
-                  {detail.tema.tema_stili} · Buton: {detail.tema.buton_stili}
+                  Tarz:{" "}
+                  {DESIGN_STYLES.find(
+                    (item) => item.id === detail.tema?.tasarim_tarzi,
+                  )?.label ?? "Belirtilmemiş"}{" "}
+                  · Renk:{" "}
+                  {detail.tema.tema_stili === "ozel"
+                    ? "Özel renk"
+                    : (THEME_PRESETS.find(
+                        (item) => item.id === detail.tema?.tema_stili,
+                      )?.label ?? "Belirtilmemiş")}{" "}
+                  · Düğme:{" "}
+                  {BUTTON_STYLES.find(
+                    (item) => item.id === detail.tema?.buton_stili,
+                  )?.label ?? "Belirtilmemiş"}
                 </p>
                 <p className="muted">
-                  Font: {detail.tema.yazi_tipi} · Zemin:{" "}
-                  {detail.tema.yuzey_stili} · Kod:{" "}
-                  <code>{detail.tema.vurgu_rengi}</code> · White-Label:{" "}
+                  Yazı tipi:{" "}
+                  {FONT_PAIRINGS.find(
+                    (item) => item.id === detail.tema?.yazi_tipi,
+                  )?.label ?? "Belirtilmemiş"}{" "}
+                  · Zemin:{" "}
+                  {SURFACE_STYLES.find(
+                    (item) => item.id === detail.tema?.yuzey_stili,
+                  )?.label ?? "Belirtilmemiş"}{" "}
+                  · Renk kodu: <code>{detail.tema.vurgu_rengi}</code> · Marka
+                  gizleme:{" "}
                   {detail.tema.marka_gizleme_etkin ? "Aktif" : "Kapalı"} ·
                   Yetki:{" "}
                   {detail.tema.premium_etkin
                     ? detail.tema.ozel_tema_yetkisi
-                      ? "Admin tanımlı"
+                      ? "Yönetici tarafından tanımlandı"
                       : "Kurucu"
                     : "Standart"}
                 </p>
@@ -192,7 +218,7 @@ export function AdminTherapistInspectorView({
                       ? "Güncelleniyor…"
                       : detail.tema.ozel_tema_yetkisi
                         ? "Özel tema yetkisini kaldır"
-                        : "Özel tema & White-Label yetkisi ver"}
+                        : "Özel tema ve marka gizleme yetkisi ver"}
                   </button>
                 )}
               </article>
@@ -201,15 +227,15 @@ export function AdminTherapistInspectorView({
             <article className="admin-panel-card">
               <div className="analytics-metric-heading">
                 <ShieldCheck size={18} aria-hidden="true" />
-                <h3>Rozet & Kaynaklar</h3>
+                <h3>Rozet ve kaynaklar</h3>
               </div>
               <p className="admin-detail-main">
                 {detail.rozet.aktif ? "Rozet aktif" : "Rozet yok"} ·{" "}
                 {detail.kaynaklar.length} kaynak
               </p>
               <p className="muted">
-                Rozet: {detail.rozet.tiklama_sayisi} tık · Yönlendirme:{" "}
-                {detail.yonlendirme_ozeti.olusturulan_link} link /{" "}
+                Rozet: {detail.rozet.tiklama_sayisi} tıklama · Yönlendirme:{" "}
+                {detail.yonlendirme_ozeti.olusturulan_link} bağlantı /{" "}
                 {detail.yonlendirme_ozeti.alinan_yonlendirme} alınan
               </p>
             </article>
@@ -217,7 +243,7 @@ export function AdminTherapistInspectorView({
             <article className="admin-panel-card">
               <div className="analytics-metric-heading">
                 <UsersRound size={18} aria-hidden="true" />
-                <h3>Mesleki Ağ</h3>
+                <h3>Mesleki ağ</h3>
               </div>
               <p className="admin-detail-main">
                 {detail.ag.baglanti_sayisi} bağlantı
@@ -264,7 +290,7 @@ export function AdminTherapistInspectorView({
             </section>
 
             <section className="admin-panel-card">
-              <span className="eyebrow">PROFİL GÖRÜNÜRLÜĞÜ & KAYNAKLAR</span>
+              <span className="eyebrow">PROFİL GÖRÜNÜRLÜĞÜ VE KAYNAKLAR</span>
               <h3>Gizlilik tercihleri ve bağlantılar</h3>
               <div className="admin-pill-row">
                 <span className="status-badge">
@@ -330,7 +356,7 @@ export function AdminTherapistInspectorView({
                           </em>
                         )}
                       </span>
-                      <span>{res.tiklama_sayisi} tık</span>
+                      <span>{res.tiklama_sayisi} tıklama</span>
                     </li>
                   ))}
                 </ul>
@@ -454,8 +480,8 @@ export function AdminTherapistInspector({
       onSaved();
       setMessage(
         enabled
-          ? `${profile.ad} için Özel Tema & White-Label yetkisi verildi.`
-          : `${profile.ad} için Özel Tema & White-Label yetkisi kaldırıldı.`,
+          ? `${profile.ad} için Özel Tema ve marka görünürlüğü yetkisi verildi.`
+          : `${profile.ad} için Özel Tema ve marka görünürlüğü yetkisi kaldırıldı.`,
       );
     } catch (error) {
       setMessage((error as Error).message);

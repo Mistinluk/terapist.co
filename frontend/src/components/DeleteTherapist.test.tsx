@@ -37,7 +37,7 @@ function markup(
   );
 }
 
-describe("Kalıcı silme onayı", () => {
+describe("Kalıcı olarak silme onayı", () => {
   it.each([
     [undefined, "kurgusaluzman", false],
     [available, "", false],

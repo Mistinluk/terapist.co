@@ -50,7 +50,7 @@ export function DeleteTherapistView({
         korunur.
       </p>
       <p>
-        Randevu geçmişi (iptal edilenler dahil) varsa kalıcı silme yapılamaz.
+        Randevu geçmişi (iptal edilenler dâhil) varsa kalıcı silme yapılamaz.
         Kayıtları korumak için Arşivle seçeneğini kullanın.
       </p>
       {summary?.engeller.length ? (
@@ -62,7 +62,9 @@ export function DeleteTherapistView({
       ) : null}
       {summary?.silinebilir && (
         <label>
-          Onaylamak için <strong>{profile.kullanici_adi}</strong> yazın
+          <span>
+            Onaylamak için <strong>{profile.kullanici_adi}</strong> yazın
+          </span>
           <input
             aria-label="Silinecek uzmanın kullanıcı adı"
             value={confirmation}
@@ -79,7 +81,7 @@ export function DeleteTherapistView({
           className="button danger"
           disabled={!allowed || busy}
         >
-          {busy ? "Siliniyor…" : "Kalıcı silmeyi onayla"}
+          {busy ? "Siliniyor…" : "Kalıcı olarak silmeyi onayla"}
         </button>
         <button
           type="button"
@@ -145,7 +147,7 @@ export function DeleteTherapist({
     >
       <div>
         <h2 id="therapist-deletion-title" tabIndex={-1} ref={heading}>
-          Uzmanı kalıcı sil
+          Uzmanı kalıcı olarak sil
         </h2>
         <Status
           loading={preview.loading}

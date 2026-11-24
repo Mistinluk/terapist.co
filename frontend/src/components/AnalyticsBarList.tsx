@@ -70,7 +70,7 @@ export function AnalyticsBarList({
             <caption className="sr-only">{title}</caption>
             <thead>
               <tr>
-                <th>Kaynak / Öğe</th>
+                <th>Kaynak / öğe</th>
                 <th>{valueLabel}</th>
                 <th>Ayrıntı</th>
               </tr>
@@ -84,7 +84,9 @@ export function AnalyticsBarList({
                   <td className="tabular-num">{item.value}</td>
                   <td className="muted tabular-num">
                     {item.secondaryValue ||
-                      (item.sharePct !== undefined ? `%${item.sharePct}` : "—")}
+                      (item.sharePct !== undefined
+                        ? `%${item.sharePct.toLocaleString("tr-TR")}`
+                        : "—")}
                   </td>
                 </tr>
               ))}
@@ -99,7 +101,9 @@ export function AnalyticsBarList({
                 <span>{item.label}</span>
                 <strong className="tabular-num">
                   {item.value}
-                  {item.sharePct !== undefined ? ` · %${item.sharePct}` : ""}
+                  {item.sharePct !== undefined
+                    ? ` · %${item.sharePct.toLocaleString("tr-TR")}`
+                    : ""}
                   {item.secondaryValue ? ` (${item.secondaryValue})` : ""}
                 </strong>
               </div>

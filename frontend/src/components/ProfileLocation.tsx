@@ -44,7 +44,9 @@ export function ProfileLocation({
           rel="noopener noreferrer"
           referrerPolicy="no-referrer"
         >
-          {address ? "Adresi Google Maps’te aç" : "Bölgeyi Google Maps’te aç"}
+          {address
+            ? "Adresi Google Haritalar’da aç"
+            : "Bölgeyi Google Haritalar’da aç"}
           <ExternalLink size={16} aria-hidden="true" />
           <span className="sr-only"> (yeni sekme)</span>
         </a>

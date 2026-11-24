@@ -242,7 +242,7 @@ def tema_guncelle(body: TemaAyarlariGirdi, me: AktifUzman, db: Db):
     ):
         raise HTTPException(
             403,
-            "Özel klinik rengi ve beyaz etiket (logo gizleme) özelliği "
+            "Özel klinik rengi ve beyaz etiket (logo gizleme) özellikleri "
             "yetkili profiller ve kurucu üyeler içindir.",
         )
     me.bekleme_listesi_acik = body.bekleme_listesi_acik

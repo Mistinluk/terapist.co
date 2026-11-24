@@ -59,58 +59,58 @@ type AdminNavGroup = {
 
 const adminNavigation: AdminNavGroup[] = [
   {
-    label: "Genel ve İzleme",
+    label: "Genel bakış ve izleme",
     items: [
       {
         id: "analitik",
-        label: "Genel bakış & Analitik",
+        label: "Genel bakış ve analitik",
         description: "Platform sağlığı ve istatistikler",
         icon: ChartNoAxesCombined,
       },
       {
         id: "trafik",
-        label: "Google Analytics & Trafik",
+        label: "Google Analytics ve trafik",
         description: "Ziyaretçi, konum, profil ve kaynaklar",
         icon: Activity,
       },
       {
         id: "randevular",
         label: "Genel randevular",
-        description: "KVKK güvenli randevu akışı",
+        description: "Danışan bilgilerini gizleyen randevu akışı",
         icon: CalendarDays,
       },
       {
         id: "mesajlar",
-        label: "Bildirimler ve Mesajlar",
+        label: "Bildirimler ve mesajlar",
         description: "Uzmanlarla mesajlaşma, duyuru ve bildirimler",
         icon: MessageSquare,
       },
     ],
   },
   {
-    label: "Uzman ve Program",
+    label: "Uzmanlar ve programlar",
     items: [
       {
         id: "uzmanlar",
-        label: "Uzmanlar & Profiller",
+        label: "Uzmanlar ve profiller",
         description: "Doğrulama, profil ve kotalar",
         icon: UsersRound,
       },
       {
         id: "kurucu",
         label: "Kurucu programı",
-        description: "Kontenjan, üye ekle ve çıkar",
+        description: "Kontenjan ve üyelik yönetimi",
         icon: Award,
       },
     ],
   },
   {
-    label: "Büyüme ve Yönlendirmeler",
+    label: "Büyüme ve yönlendirmeler",
     items: [
       {
         id: "yonlendirmeler",
         label: "Danışan yönlendirmeleri",
-        description: "Linkler, hedefler ve dönüşüm",
+        description: "Bağlantılar, hedefler ve dönüşüm",
         icon: Share2,
       },
       {
@@ -122,7 +122,7 @@ const adminNavigation: AdminNavGroup[] = [
     ],
   },
   {
-    label: "Güvenlik ve Denetim",
+    label: "Güvenlik ve denetim",
     items: [
       {
         id: "moderasyon",
@@ -352,7 +352,7 @@ export function Admin() {
           <header className="dashboard-view-heading">
             <h2>
               {editing
-                ? `${editing.ad} — Uzman İnceleme`
+                ? `${editing.ad} — Uzman incelemesi`
                 : activeNavigation.label}
             </h2>
             <p>
@@ -521,7 +521,7 @@ export function Admin() {
                       </span>
                       {p.kurucu_no !== null && (
                         <span className="status-badge founder">
-                          Founding #{String(p.kurucu_no).padStart(4, "0")}
+                          Kurucu #{String(p.kurucu_no).padStart(4, "0")}
                         </span>
                       )}
                     </div>
@@ -556,7 +556,7 @@ export function Admin() {
                         disabled={!!busy || !!deleting}
                         onClick={() => setDeleting(p)}
                       >
-                        Kalıcı sil
+                        Kalıcı olarak sil
                       </button>
                     </div>
                   </article>

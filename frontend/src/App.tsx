@@ -207,7 +207,7 @@ export default function App() {
                   Özellikler
                 </Link>
                 <a href="/#meslektas-agi" onClick={() => setMenuOpen(false)}>
-                  Meslektaş Ağı
+                  Meslektaş ağı
                 </a>
                 <a href="/#sss" onClick={() => setMenuOpen(false)}>
                   SSS
@@ -411,8 +411,8 @@ export default function App() {
               </ul>
             </nav>
 
-            <nav className="site-footer-col" aria-label="Klinik Çözümler">
-              <h3>Klinik Çözümler</h3>
+            <nav className="site-footer-col" aria-label="Klinik çözümler">
+              <h3>Klinik çözümler</h3>
               <ul>
                 {SEO_FOOTER_GROUPS.cozumler.map((item) => (
                   <li key={item.path}>
@@ -422,8 +422,8 @@ export default function App() {
               </ul>
             </nav>
 
-            <nav className="site-footer-col" aria-label="Uzman Rehberleri">
-              <h3>Uzman Rehberleri</h3>
+            <nav className="site-footer-col" aria-label="Uzman rehberleri">
+              <h3>Uzman rehberleri</h3>
               <ul>
                 {SEO_FOOTER_GROUPS.rehber.map((item) => (
                   <li key={item.path}>
@@ -432,13 +432,13 @@ export default function App() {
                 ))}
                 <li>
                   <Link to="/karsilastirma">
-                    Tüm Karşılaştırma &amp; Rehberler
+                    Tüm karşılaştırma ve rehberler
                   </Link>
                 </li>
               </ul>
             </nav>
 
-            <nav className="site-footer-col" aria-label="Platform ve Kurumsal">
+            <nav className="site-footer-col" aria-label="Platform ve kurumsal">
               <h3>Platform</h3>
               <ul>
                 <li>
@@ -466,12 +466,12 @@ export default function App() {
           <div className="site-footer-bottom">
             <span>
               © {new Date().getFullYear()} terapist.co · Klinik psikologlar ve
-              terapistler için mesleki mikro-site altyapısı.
+              terapistler için mesleki mikro site altyapısı.
             </span>
             <div className="site-footer-badges">
-              <span>KVKK &amp; Veri Minimasyonu</span>
-              <span>Doğrulanmış Uzman Ağı</span>
-              <span>%0 Komisyon</span>
+              <span>KVKK ve veri minimizasyonu</span>
+              <span>Doğrulanmış uzman ağı</span>
+              <span>%0 komisyon</span>
             </div>
           </div>
         </footer>

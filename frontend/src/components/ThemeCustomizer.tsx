@@ -47,7 +47,7 @@ export const DESIGN_STYLES: DesignStyleOption[] = [
   {
     id: "klinik_modern",
     label: "Klinik Modern",
-    tagline: "Net · Güven Veren",
+    tagline: "Net · Güven veren",
     desc: "Sade beyaz kartlar, dengeli Klinik Mavi vurgular ve temiz tipografi.",
     defaults: {
       tema_stili: "klasik",
@@ -61,7 +61,7 @@ export const DESIGN_STYLES: DesignStyleOption[] = [
     id: "editoryal_serif",
     label: "Editoryal Klinik",
     tagline: "Akademik · Prestijli",
-    desc: "Klasik serif başlıklar, sıcak fildişi kağıt zemini ve kontürlü butonlar.",
+    desc: "Klasik serif başlıklar, sıcak fildişi kâğıt zemini ve çerçeveli düğmeler.",
     defaults: {
       tema_stili: "gece",
       vurgu_rengi: "#1e293b",
@@ -72,9 +72,9 @@ export const DESIGN_STYLES: DesignStyleOption[] = [
   },
   {
     id: "organik_sakin",
-    label: "Organik Mindfulness",
+    label: "Doğal sakinlik",
     tagline: "Şefkatli · Doğal",
-    desc: "Geniş kavisli kartlar, doğa tonları ve yumuşak hap formunda butonlar.",
+    desc: "Geniş kavisli kartlar, doğa tonları ve yumuşak kapsül biçiminde düğmeler.",
     defaults: {
       tema_stili: "orman",
       vurgu_rengi: "#15803d",
@@ -85,7 +85,7 @@ export const DESIGN_STYLES: DesignStyleOption[] = [
   },
   {
     id: "yumusak_cam",
-    label: "Yumuşak Cam Studio",
+    label: "Yumuşak cam",
     tagline: "Çağdaş · Katmanlı",
     desc: "Yarı saydam buzlu cam yüzeyler, geometrik başlıklar ve derinlik hissi.",
     defaults: {
@@ -114,13 +114,13 @@ export const THEME_PRESETS: Array<{
     id: "toprak",
     label: "Sıcak Toprak",
     color: "#b45309",
-    desc: "Empatik ve davetkar ton",
+    desc: "Empatik ve davetkâr ton",
   },
   {
     id: "orman",
-    label: "Denge Orman",
+    label: "Dengeli orman",
     color: "#15803d",
-    desc: "Mindfulness ve bütüncül denge",
+    desc: "Farkındalık ve bütüncül denge",
   },
   {
     id: "okyanus",
@@ -148,7 +148,7 @@ export const THEME_PRESETS: Array<{
   },
   {
     id: "ada_cayi",
-    label: "Zeytin & Adaçayı",
+    label: "Zeytin ve adaçayı",
     color: "#3f6212",
     desc: "Dingin doğal tonlar",
   },
@@ -159,13 +159,13 @@ export const BUTTON_STYLES: Array<{
   label: string;
   desc: string;
 }> = [
-  { id: "yuvarlak", label: "Yumuşak (14px)", desc: "Dengeli modern kavis" },
-  { id: "yastik", label: "Tam Hap (Pill)", desc: "Dostane kapsül form" },
-  { id: "keskin", label: "Köşeli (6px)", desc: "Net mimari hatlar" },
+  { id: "yuvarlak", label: "Yumuşak (14 px)", desc: "Dengeli modern kavis" },
+  { id: "yastik", label: "Kapsül", desc: "Yumuşak kapsül biçimi" },
+  { id: "keskin", label: "Köşeli (6 px)", desc: "Net mimari hatlar" },
   {
     id: "cerceveli",
-    label: "Çerçeveli Kontür",
-    desc: "Zarif 2px çizgili vurgu",
+    label: "Çerçeveli",
+    desc: "Zarif 2 px çizgili vurgu",
   },
   {
     id: "yumusak_golge",
@@ -208,9 +208,9 @@ export const SURFACE_STYLES: Array<{
   desc: string;
 }> = [
   { id: "temiz", label: "Sade Beyaz", desc: "Ferah klinik zemin" },
-  { id: "krem", label: "Sıcak Fildişi", desc: "Doğal kağıt dokusu" },
+  { id: "krem", label: "Sıcak Fildişi", desc: "Doğal kâğıt dokusu" },
   { id: "pastel", label: "Pastel Gradyan", desc: "Renk tonlu yumuşak zemin" },
-  { id: "buzlu", label: "Buzlu Cam", desc: "Blur destekli katman" },
+  { id: "buzlu", label: "Buzlu Cam", desc: "Bulanıklık efektli katman" },
 ];
 
 export type UnsplashBgPreset = {
@@ -225,7 +225,7 @@ export const UNSPLASH_BG_PRESETS: UnsplashBgPreset[] = [
   {
     id: "sahil",
     label: "Sakin Kıyı",
-    caption: "Unsplash · Açık mavi & sıcak kum",
+    caption: "Unsplash · Açık mavi ve sıcak kum",
     url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80",
     thumbUrl:
       "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=420&q=70",
@@ -233,14 +233,14 @@ export const UNSPLASH_BG_PRESETS: UnsplashBgPreset[] = [
   {
     id: "orman",
     label: "Orman Işığı",
-    caption: "Unsplash · Doğal yeşil sükunet",
+    caption: "Unsplash · Doğal yeşil sükûnet",
     url: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1600&q=80",
     thumbUrl:
       "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=420&q=70",
   },
   {
     id: "vadi",
-    label: "Göl & Vadi",
+    label: "Göl ve vadi",
     caption: "Unsplash · Yumuşak ufuk çizgisi",
     url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80",
     thumbUrl:
@@ -249,15 +249,15 @@ export const UNSPLASH_BG_PRESETS: UnsplashBgPreset[] = [
   {
     id: "botanik",
     label: "Botanik Yaprak",
-    caption: "Unsplash · Adaçayı & huzur",
+    caption: "Unsplash · Adaçayı ve huzur",
     url: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1600&q=80",
     thumbUrl:
       "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=420&q=70",
   },
   {
     id: "icmekan",
-    label: "Minimal Studio",
-    caption: "Unsplash · Sıcak taş & sanat",
+    label: "Minimal stüdyo",
+    caption: "Unsplash · Sıcak taş ve sanat",
     url: "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1600&q=80",
     thumbUrl:
       "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=420&q=70",
@@ -265,7 +265,7 @@ export const UNSPLASH_BG_PRESETS: UnsplashBgPreset[] = [
   {
     id: "sisli",
     label: "Sabah Sisi",
-    caption: "Unsplash · Bulutlar & dinginlik",
+    caption: "Unsplash · Bulutlar ve dinginlik",
     url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1600&q=80",
     thumbUrl:
       "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=420&q=70",
@@ -411,7 +411,7 @@ export function ThemeCustomizer({
             <section className="admin-panel-card theme-controls-card">
               <div className="analytics-metric-heading">
                 <Sparkles size={19} aria-hidden="true" />
-                <h3>1. Hazır Tasarım Tarzı (Tek Tıkla Uygula)</h3>
+                <h3>1. Hazır tasarım tarzı (tek tıkla uygula)</h3>
               </div>
               <p className="muted">
                 Terapist.co site bütünlüğünü koruyarak profilinize karakter
@@ -462,7 +462,7 @@ export function ThemeCustomizer({
             <section className="admin-panel-card theme-controls-card">
               <div className="analytics-metric-heading">
                 <Palette size={19} aria-hidden="true" />
-                <h3>2. Renk Paleti ve Marka Rengi</h3>
+                <h3>2. Renk paleti ve marka rengi</h3>
               </div>
 
               <div className="theme-preset-grid">
@@ -497,8 +497,8 @@ export function ThemeCustomizer({
               <div className="theme-custom-row">
                 <div className="theme-custom-header">
                   <strong>
-                    <Sparkles size={15} aria-hidden="true" /> Özel Klinik Rengi
-                    (Hex)
+                    <Sparkles size={15} aria-hidden="true" /> Özel marka rengi
+                    (HEX)
                   </strong>
                   {!premiumEnabled && (
                     <span className="status-badge">
@@ -524,7 +524,7 @@ export function ThemeCustomizer({
                   />
                   <input
                     type="text"
-                    aria-label="Marka Hex kodu"
+                    aria-label="Marka rengi HEX kodu"
                     value={vurguRengi}
                     pattern="^#[0-9a-fA-F]{6}$"
                     maxLength={7}
@@ -540,7 +540,7 @@ export function ThemeCustomizer({
                     disabled={!premiumEnabled}
                     onClick={() => setTemaStili("ozel")}
                   >
-                    Özel Rengi Kullan
+                    Özel rengi kullan
                   </button>
                 </div>
               </div>
@@ -549,13 +549,13 @@ export function ThemeCustomizer({
             <section className="admin-panel-card theme-controls-card">
               <div className="analytics-metric-heading">
                 <Square size={19} aria-hidden="true" />
-                <h3>3. Buton Yapısı ve Etkileşim Biçimi</h3>
+                <h3>3. Düğme yapısı ve etkileşim biçimi</h3>
               </div>
 
               <div
                 className="button-style-grid"
                 role="group"
-                aria-label="Buton yapısı seçenekleri"
+                aria-label="Düğme yapısı seçenekleri"
               >
                 {BUTTON_STYLES.map((opt) => {
                   const active = butonStili === opt.id;
@@ -573,7 +573,7 @@ export function ThemeCustomizer({
                         data-profile-button={opt.id}
                         aria-hidden="true"
                       >
-                        Randevu Al
+                        Randevu al
                       </span>
                       <strong>{opt.label}</strong>
                       <small>{opt.desc}</small>
@@ -586,7 +586,7 @@ export function ThemeCustomizer({
             <section className="admin-panel-card theme-controls-card">
               <div className="analytics-metric-heading">
                 <Type size={19} aria-hidden="true" />
-                <h3>4. Tipografi ve Sayfa Zemini</h3>
+                <h3>4. Yazı tipi ve sayfa zemini</h3>
               </div>
 
               <div
@@ -623,8 +623,8 @@ export function ThemeCustomizer({
 
               <div className="surface-style-block">
                 <span className="surface-section-label">
-                  <Layers size={15} aria-hidden="true" /> Sayfa Zemini &amp;
-                  Kart Dokusu
+                  <Layers size={15} aria-hidden="true" /> Sayfa zemini ve kart
+                  dokusu
                 </span>
                 <div
                   className="surface-style-grid"
@@ -658,8 +658,7 @@ export function ThemeCustomizer({
               <div className="surface-style-block bg-image-picker-block">
                 <div className="bg-image-picker-header">
                   <span className="surface-section-label">
-                    <ImageIcon size={15} aria-hidden="true" /> Arka Plan Görseli
-                    (Unsplash / Açık Kaynak)
+                    <ImageIcon size={15} aria-hidden="true" /> Arka plan görseli
                   </span>
                   {arkaPlanGorseliUrl && (
                     <button
@@ -672,9 +671,9 @@ export function ThemeCustomizer({
                   )}
                 </div>
                 <p className="muted small">
-                  Masaüstünde çevresindeki alan seçtiğiniz görsel veya zemin
-                  rengiyle uyumlu yumuşak bir fon oluşturur; mobilde görsel ya
-                  da zemin rengi tam genişlikte ekranı kaplar.
+                  Masaüstünde profilinizin çevresinde seçtiğiniz görsel veya
+                  zemin rengiyle uyumlu bir fon görünür. Mobilde görsel ya da
+                  zemin rengi ekranın tamamını kaplar.
                 </p>
 
                 <div
@@ -694,7 +693,7 @@ export function ThemeCustomizer({
                       data-profile-theme={temaStili}
                       aria-hidden="true"
                     />
-                    <strong>Sadece Zemin Rengi</strong>
+                    <strong>Yalnızca zemin rengi</strong>
                     <small>Seçili yüzey tonu</small>
                   </button>
                   {UNSPLASH_BG_PRESETS.map((preset) => {
@@ -723,7 +722,8 @@ export function ThemeCustomizer({
 
                 <label className="field bg-url-field">
                   <span>
-                    Özel görsel bağlantısı (Unsplash, Pexels, Pixabay HTTPS URL)
+                    Özel görsel bağlantısı (Unsplash, Pexels veya Pixabay HTTPS
+                    adresi)
                   </span>
                   <div className="bg-url-input-row">
                     <input
@@ -769,8 +769,8 @@ export function ThemeCustomizer({
                   checked={waitlistOpen}
                   onChange={(e) => setWaitlistOpen(e.target.checked)}
                 />
-                Takvim dolduğunda danışanlar için Bekleme Listesi butonunu aktif
-                et
+                Takvim dolduğunda danışanlar için bekleme listesi düğmesini
+                etkinleştir
               </label>
 
               <label
@@ -783,15 +783,14 @@ export function ThemeCustomizer({
                   onChange={(e) => setHideBrand(e.target.checked)}
                 />
                 <span>
-                  <EyeOff size={14} aria-hidden="true" /> White-Label: Profil
+                  <EyeOff size={14} aria-hidden="true" /> Marka gizleme: Profil
                   sayfamda Terapist.co logosunu ve alt bilgisini gizle
                 </span>
               </label>
               {!premiumEnabled && (
                 <p className="muted small">
-                  White-label logo gizleme ve özel Hex marka rengi Kurucu
-                  Terapist üyeleri ile yönetim tarafından yetkilendirilen
-                  Premium profillere açıktır.
+                  Logo gizleme ve özel marka rengi, kurucu terapist üyelerine ve
+                  yönetim tarafından yetkilendirilen Premium profillere açıktır.
                 </p>
               )}
 
@@ -811,14 +810,14 @@ export function ThemeCustomizer({
                   {busy ? "Kaydediliyor…" : "Görünümü kaydet"}
                 </button>
                 <Link className="button secondary" to="/panel/onizleme">
-                  <Eye size={16} aria-hidden="true" /> Profil Önizlemesi
+                  <Eye size={16} aria-hidden="true" /> Profil önizlemesi
                 </Link>
                 {profile.onayli && (
                   <Link
                     className="button secondary"
                     to={`/${profile.kullanici_adi}`}
                   >
-                    <ExternalLink size={16} aria-hidden="true" /> Canlı Sayfa
+                    <ExternalLink size={16} aria-hidden="true" /> Profil sayfası
                   </Link>
                 )}
               </div>
@@ -827,10 +826,10 @@ export function ThemeCustomizer({
 
           <aside
             className="admin-panel-card theme-preview-card"
-            aria-label="Mikro-site canlı önizlemesi"
+            aria-label="Profil sayfası önizlemesi"
           >
             <div className="theme-preview-heading">
-              <span className="eyebrow">CANLI MİKRO-SİTE ÖNİZLEMESİ</span>
+              <span className="eyebrow">PROFİL SAYFASI ÖNİZLEMESİ</span>
               <span className="theme-preview-chip">
                 {activeStyleLabel} · {activeFontLabel}
               </span>
@@ -838,7 +837,7 @@ export function ThemeCustomizer({
             {temaStili === "ozel" && (
               <p className="muted small">
                 Özel marka renginiz (<code>{vurguRengi}</code>) kaydedildikten
-                sonra canlı profil sayfanıza tam CSS değişkenleriyle uygulanır.
+                sonra profil sayfanıza uygulanır.
               </p>
             )}
             <div
@@ -919,13 +918,13 @@ export function ThemeCustomizer({
                       )}
                     </div>
                     <div className="microsite-preview-buttons">
-                      <span className="microsite-btn-primary">Randevu Al</span>
+                      <span className="microsite-btn-primary">Randevu al</span>
                       <span className="microsite-btn-secondary">
                         BDT Formu (Şifreli)
                       </span>
                       {waitlistOpen && (
                         <span className="microsite-btn-secondary">
-                          Bekleme Listesine Katıl
+                          Bekleme listesine katıl
                         </span>
                       )}
                     </div>

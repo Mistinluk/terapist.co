@@ -56,7 +56,7 @@ export function AdminAnalyticsOverview({
         >
           <div className="analytics-metric-heading">
             <UsersRound size={19} aria-hidden="true" />
-            <h3>Uzman Ağı</h3>
+            <h3>Uzman ağı</h3>
           </div>
           <strong>{ozet.toplam_uzman}</strong>
           <p>aktif kayıtlı uzman</p>
@@ -75,13 +75,13 @@ export function AdminAnalyticsOverview({
         >
           <div className="analytics-metric-heading">
             <CalendarDays size={19} aria-hidden="true" />
-            <h3>Genel Randevular</h3>
+            <h3>Genel randevular</h3>
           </div>
           <strong>{ozet.randevular.toplam}</strong>
           <p>anonim randevu talebi</p>
           <span>
             Son 30 günde {ozet.randevular.son_30_gun} · %
-            {ozet.randevular.onay_orani_yuzde} onay
+            {ozet.randevular.onay_orani_yuzde.toLocaleString("tr-TR")} onay
           </span>
           <span className="analytics-action">
             Randevu akışını aç <ArrowRight size={15} aria-hidden="true" />
@@ -95,7 +95,7 @@ export function AdminAnalyticsOverview({
         >
           <div className="analytics-metric-heading">
             <Award size={19} aria-hidden="true" />
-            <h3>Kurucu Programı</h3>
+            <h3>Kurucu programı</h3>
           </div>
           <strong>
             {ozet.kurucu_programi.atanmis_uye} /{" "}
@@ -115,13 +115,14 @@ export function AdminAnalyticsOverview({
         >
           <div className="analytics-metric-heading">
             <Share2 size={19} aria-hidden="true" />
-            <h3>Danışan Yönlendirme</h3>
+            <h3>Danışan yönlendirme</h3>
           </div>
           <strong>{buyume_ve_yonlendirme.toplam_yonlendirme_linki}</strong>
-          <p>oluşturulan yönlendirme linki</p>
+          <p>oluşturulan yönlendirme bağlantısı</p>
           <span>
             {buyume_ve_yonlendirme.yonlendirme_hedef_atamasi} tercih ·{" "}
-            {buyume_ve_yonlendirme.yonlendirme_profil_tiklamasi} profil tıkı
+            {buyume_ve_yonlendirme.yonlendirme_profil_tiklamasi} profil
+            tıklaması
           </span>
           <span className="analytics-action">
             Yönlendirmeleri gör <ArrowRight size={15} aria-hidden="true" />
@@ -233,14 +234,14 @@ export function AdminAnalyticsOverview({
             <div className="admin-stat-item">
               <div className="admin-stat-label">
                 <MousePointerClick size={16} aria-hidden="true" />
-                <span>Yönlendirme linki etkileşimi</span>
+                <span>Yönlendirme bağlantısı etkileşimi</span>
               </div>
               <div className="admin-stat-values">
                 <strong>
                   {buyume_ve_yonlendirme.yonlendirme_goruntulenme} görüntülenme
                 </strong>
                 <small>
-                  {buyume_ve_yonlendirme.aktif_yonlendirme_linki} aktif link
+                  {buyume_ve_yonlendirme.aktif_yonlendirme_linki} aktif bağlantı
                 </small>
               </div>
             </div>
@@ -255,13 +256,13 @@ export function AdminAnalyticsOverview({
             <div>
               <span className="eyebrow">DAĞILIM VE DURUMLAR</span>
               <h3 id="admin-distribution-heading">
-                Randevular, formatlar ve şehirler
+                Randevular, görüşme şekilleri ve şehirler
               </h3>
             </div>
           </div>
 
           <div className="admin-distribution-block">
-            <h4>Randevu durum kırılımı</h4>
+            <h4>Randevu durum dağılımı</h4>
             <div className="admin-pill-row">
               <span className="status-badge bekliyor">
                 Bekleyen: {ozet.randevular.bekliyor}
@@ -282,7 +283,7 @@ export function AdminAnalyticsOverview({
           </div>
 
           <div className="admin-distribution-block">
-            <h4>Çalışma formatları</h4>
+            <h4>Görüşme şekilleri</h4>
             <div className="admin-bar-list">
               <div className="admin-bar-row">
                 <div className="admin-bar-meta">

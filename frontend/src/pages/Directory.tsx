@@ -25,7 +25,7 @@ import { usePageMetadata } from "../lib/seoMetadata";
 
 export function Directory() {
   usePageMetadata({
-    title: "Terapistleri Keşfet · Doğrulanmış Uzman Dizini | terapist.co",
+    title: "Terapistleri keşfet · Doğrulanmış uzman dizini | terapist.co",
     description:
       "Şehir, terapi yaklaşımı, çalışma alanı ve danışan grubuna göre doğrulanmış psikolog ve terapistleri keşfedin; doğrudan profil ve randevu bilgilerine ulaşın.",
     path: "/kesfet",
@@ -34,7 +34,7 @@ export function Directory() {
       "@graph": [
         {
           "@type": "CollectionPage",
-          name: "Terapistleri Keşfet · Doğrulanmış Uzman Dizini",
+          name: "Terapistleri keşfet · Doğrulanmış uzman dizini",
           url: "https://terapist.co/kesfet",
           inLanguage: "tr",
           isPartOf: { "@id": "https://terapist.co/#website" },
@@ -45,13 +45,13 @@ export function Directory() {
             {
               "@type": "ListItem",
               position: 1,
-              name: "Ana Sayfa",
+              name: "Ana sayfa",
               item: "https://terapist.co/",
             },
             {
               "@type": "ListItem",
               position: 2,
-              name: "Terapistleri Keşfet",
+              name: "Terapistleri keşfet",
               item: "https://terapist.co/kesfet",
             },
           ],
@@ -345,7 +345,7 @@ export function Directory() {
             <p className="matching-note">
               {filters.uzmanliklar.length || filters.ekoller.length
                 ? "Eşleşme puanı seçtiğiniz destek alanları ve yaklaşımlara dayanır. Klinik uygunluk veya tedavi başarısı ölçümü değildir."
-                : "Destek alanı veya yaklaşım seçerek size göre sıralayın. Tercih belirtilmediğinde uzmanlar seçtiğiniz sırayla, varsayılan olarak alfabetik gösterilir."}
+                : "Destek alanı veya yaklaşım seçerek size göre sıralayın. Tercih belirtilmediğinde seçtiğiniz sıralama kullanılır. Varsayılan sıralama alfabetiktir."}
             </p>
             <p className="network-search-note">
               Meslektaş ilişkilendirmeleri bilgi amaçlıdır. Seçilen ağ alanı

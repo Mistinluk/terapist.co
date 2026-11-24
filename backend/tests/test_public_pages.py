@@ -50,8 +50,8 @@ def test_kisa_adres_tek_profil_uygulamasini_ve_meta_bilgilerini_sunar(env):
     assert initial["kullanici_adi"] == "ornek-uzman"
     assert 'src="/src/main.tsx"' in response.text
     assert (
-        '<main itemscope itemtype="https://schema.org/Person">'
-        in response.text
+        '<main class="public-profile-fallback" itemscope\n'
+        'itemtype="https://schema.org/Person">' in response.text
     )
     assert (
         '<link rel="canonical" href="http://localhost:5173/ornek-uzman">'

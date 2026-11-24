@@ -588,7 +588,7 @@ def analitik(user: Yonetici, db: Db):
             "anahtar": "calendar_disconnected",
             "baslik": f"{takvim_koptu} terapistin takvim bağlantısı kopmuş",
             "aciklama": (
-                "Randevu boşluklarının güncel kalması için ilgili uzmanların "
+                "Uygun randevu saatlerinin güncel kalması için uzmanların "
                 "profil özetini kontrol edebilirsiniz."
             ),
             "sekme": "uzmanlar",

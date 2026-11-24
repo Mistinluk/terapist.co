@@ -47,7 +47,7 @@ const slaOptions = [
 const notificationTemplates = [
   {
     label: "Yanıt hatırlatması",
-    text: "Danışan randevu talebiniz için yanıt bekliyor. Lütfen müsaitliğinizi onaylayın veya reddedin.",
+    text: "Danışan, randevu talebine yanıt vermenizi bekliyor. Lütfen talebi onaylayın veya reddedin.",
   },
   {
     label: "Süre aşımı uyarısı",
@@ -56,13 +56,13 @@ const notificationTemplates = [
 ] as const;
 
 const auditLabels: Record<string, string> = {
-  "randevular.detay": "Yönetici detayı inceledi",
+  "randevular.detay": "Yönetici randevu ayrıntılarını inceledi",
   "randevu.bildirim_gonder": "Terapiste bildirim gönderildi",
   "randevu.yonetim_tamamla": "Yanıtsız işlem yönetici tarafından tamamlandı",
-  "randevu.yonetim_onaylandi": "Yönetici durumu Onaylandı yaptı",
-  "randevu.yonetim_reddedildi": "Yönetici durumu Reddedildi yaptı",
-  "randevu.yonetim_iptal": "Yönetici durumu İptal edildi yaptı",
-  "randevu.yonetim_bekliyor": "Yönetici durumu Yanıt bekliyor yaptı",
+  "randevu.yonetim_onaylandi": "Yönetici randevuyu onayladı",
+  "randevu.yonetim_reddedildi": "Yönetici randevuyu reddetti",
+  "randevu.yonetim_iptal": "Yönetici randevuyu iptal etti",
+  "randevu.yonetim_bekliyor": "Yönetici randevuyu yanıt bekliyor durumuna aldı",
   "randevu.onaylandi": "Terapist randevuyu onayladı",
   "randevu.reddedildi": "Terapist randevuyu reddetti",
   "randevu.iptal": "Terapist randevuyu iptal etti",
@@ -202,9 +202,9 @@ export function AdminAppointmentsView({
         <ShieldCheck size={18} aria-hidden="true" />
         <span>
           KVKK koruması: Danışan adları ve telefon numaraları şifreli tutulur ve
-          listede çözülmez. Yönetici olarak operasyonel detayları inceleyebilir,
-          terapiste bildirim gönderebilir ve yanıt süresi dolan randevuların
-          durumunu tamamlayabilirsiniz.
+          listede gösterilmez. Yönetici olarak randevu ayrıntılarını
+          inceleyebilir, terapiste bildirim gönderebilir ve yanıt süresi dolan
+          randevuların işlemlerini tamamlayabilirsiniz.
         </span>
       </div>
 
@@ -319,15 +319,15 @@ export function AdminAppointmentsView({
       {selectedId && (
         <section
           className="admin-panel-card admin-appointment-detail"
-          aria-label="Randevu detayı ve yönetici işlemleri"
+          aria-label="Randevu ayrıntıları ve yönetici işlemleri"
         >
           <div className="admin-card-header">
             <div>
-              <span className="eyebrow">RANDEVU DETAYI &amp; MÜDAHALE</span>
+              <span className="eyebrow">RANDEVU AYRINTILARI VE İŞLEMLER</span>
               <h3>
                 {detail
                   ? `${detail.uzman.ad} · ${unixFormat(detail.baslangic)}`
-                  : "Randevu detayları yükleniyor"}
+                  : "Randevu ayrıntıları yükleniyor"}
               </h3>
             </div>
             <button
@@ -344,7 +344,7 @@ export function AdminAppointmentsView({
           </div>
 
           {detailLoading && (
-            <p className="muted">Randevu detayları getiriliyor...</p>
+            <p className="muted">Randevu ayrıntıları getiriliyor…</p>
           )}
           {detailError && (
             <p className="error" role="alert">
@@ -370,30 +370,30 @@ export function AdminAppointmentsView({
                     </dd>
                   </div>
                   <div>
-                    <dt>Seans Zamanı</dt>
+                    <dt>Seans zamanı</dt>
                     <dd>{unixFormat(detail.baslangic)}</dd>
                   </div>
                   <div>
-                    <dt>Talep Tarihi</dt>
+                    <dt>Talep tarihi</dt>
                     <dd>{unixFormat(detail.olusturma)}</dd>
                   </div>
                   <div>
-                    <dt>Yanıt Bekleme</dt>
+                    <dt>Yanıt bekleme süresi</dt>
                     <dd>
                       {detail.durum === "bekliyor"
                         ? `${detail.bekleme_suresi_saat} saat (Eşik: ${detail.yanit_suresi_saat} saat)`
-                        : "Yanıtlandı / Kapandı"}
+                        : "Yanıtlandı / kapandı"}
                     </dd>
                   </div>
                   <div>
-                    <dt>Uzman İletişim</dt>
+                    <dt>Uzman iletişim bilgileri</dt>
                     <dd>
                       {detail.uzman.eposta || "E-posta yok"} ·{" "}
                       {detail.uzman.sehir || "—"}
                     </dd>
                   </div>
                   <div>
-                    <dt>Danışan (Maskeli)</dt>
+                    <dt>Danışan (bilgiler gizli)</dt>
                     <dd>
                       {detail.danisan_maskeli.ad} ·{" "}
                       {detail.danisan_maskeli.telefon}
@@ -421,7 +421,7 @@ export function AdminAppointmentsView({
                 <div className="admin-status-control-box">
                   <h4>
                     {detail.yanit_gecikti && detail.durum === "bekliyor"
-                      ? "Süre dolan işlemi terapist adına tamamla"
+                      ? "Süresi dolan işlemi terapist adına tamamla"
                       : "Randevu durumunu değiştir"}
                   </h4>
                   <label className="field">
@@ -440,7 +440,7 @@ export function AdminAppointmentsView({
                       checked={notifyTherapist}
                       onChange={(e) => setNotifyTherapist(e.target.checked)}
                     />
-                    <span>Terapiste durum değişikliği bildirimi bırak</span>
+                    <span>Terapiste durum değişikliği bildirimi gönder</span>
                   </label>
                   <div className="actions">
                     {detail.durum === "onaylandi" &&
@@ -452,7 +452,7 @@ export function AdminAppointmentsView({
                           disabled={actionBusy}
                           onClick={() => updateBookingStatus("tamamlandi")}
                         >
-                          Tamamlandı işaretle
+                          Tamamlandı olarak işaretle
                         </button>
                       )}
                     {detail.durum !== "onaylandi" && (
@@ -511,7 +511,7 @@ export function AdminAppointmentsView({
                         disabled={actionBusy}
                         onClick={() => updateBookingStatus("bekliyor", false)}
                       >
-                        Yanıt bekliyor&apos;a al
+                        Yanıt bekliyor durumuna al
                       </button>
                     )}
                   </div>
@@ -558,7 +558,7 @@ export function AdminAppointmentsView({
                       rows={3}
                       value={notifText}
                       onChange={(e) => setNotifText(e.target.value)}
-                      placeholder="Terapistin panelinde göreceği mesajı yazın..."
+                      placeholder="Terapistin panelinde göreceği mesajı yazın…"
                       maxLength={500}
                       required
                     />
@@ -637,12 +637,12 @@ export function AdminAppointmentsView({
                 <table>
                   <thead>
                     <tr>
-                      <th>Seans Zamanı</th>
+                      <th>Seans zamanı</th>
                       <th>Uzman</th>
                       <th>Şehir</th>
                       <th>Durum</th>
                       <th>Bildirim</th>
-                      <th>Talep Tarihi</th>
+                      <th>Talep tarihi</th>
                       <th>Aydınlatma</th>
                       <th>İşlem</th>
                     </tr>
@@ -701,7 +701,7 @@ export function AdminAppointmentsView({
                             className="button secondary admin-compact-btn"
                             onClick={() => void loadDetail(row.id)}
                           >
-                            Detay &amp; İşlem
+                            Ayrıntılar ve işlemler
                           </button>
                         </td>
                       </tr>

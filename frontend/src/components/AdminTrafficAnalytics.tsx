@@ -184,7 +184,7 @@ export function AdminTrafficAnalytics({
               className={`admin-pill-btn ${kaynak === "karma" || kaynak === "ga4" ? "is-active" : ""}`}
               onClick={() => setKaynak("karma")}
             >
-              Otomatik (GA4 + Site)
+              Otomatik (GA4 + site içi ölçüm)
             </button>
             <button
               type="button"
@@ -273,14 +273,14 @@ export function AdminTrafficAnalytics({
           <p className="muted small">
             Site içi ölçüm yalnızca herkese açık sayfalarda çalışır. Özel
             bağlantıları korumak için tarayıcıdan Google Analytics'e yeni olay
-            gönderilmez. Mevcut GA4 raporlarını görüntülemek için Mülk Kimliğini
+            gönderilmez. Mevcut GA4 raporlarını görüntülemek için mülk kimliğini
             girip Google hesabınızı veya hizmet hesabınızı bağlayın.
           </p>
 
           <form className="analytics-config-form" onSubmit={saveSettings}>
             <div className="analytics-config-grid">
               <label className="field">
-                GA4 Ölçüm Kimliği (Measurement ID)
+                GA4 ölçüm kimliği (Measurement ID)
                 <input
                   type="text"
                   placeholder="G-XXXXXXXXXX"
@@ -293,7 +293,7 @@ export function AdminTrafficAnalytics({
               </label>
 
               <label className="field">
-                GA4 Mülk Kimliği (Property ID)
+                GA4 mülk kimliği (Property ID)
                 <input
                   type="text"
                   inputMode="numeric"
@@ -302,7 +302,7 @@ export function AdminTrafficAnalytics({
                   onChange={(e) => setPropertyId(e.target.value)}
                 />
                 <span className="muted small">
-                  Google Analytics yönetici panelindeki rakamsal Mülk Kimliği.
+                  Google Analytics yönetici panelindeki sayısal mülk kimliği.
                 </span>
               </label>
             </div>
@@ -322,12 +322,12 @@ export function AdminTrafficAnalytics({
               <summary>
                 <KeyRound size={15} aria-hidden="true" />
                 <span>
-                  Hizmet Hesabı (Service Account) JSON ile bağla (isteğe bağlı)
+                  Hizmet hesabı (Service Account) JSON ile bağla (isteğe bağlı)
                 </span>
               </summary>
               <div className="analytics-sa-body">
                 <label className="field">
-                  Service Account JSON içeriği
+                  Hizmet hesabının JSON içeriği
                   <textarea
                     rows={4}
                     placeholder='{"type": "service_account", "client_email": "...", "private_key": "..."}'
@@ -439,7 +439,7 @@ export function AdminTrafficAnalyticsView({
         <div className="analytics-metric analytics-metric-static">
           <div className="analytics-metric-heading">
             <UsersRound size={19} aria-hidden="true" />
-            <h3>Kaç Kişi Girdi</h3>
+            <h3>Tekil ziyaretçiler</h3>
           </div>
           <strong className="tabular-num">{data.ozet.ziyaretci}</strong>
           <p>tekil ziyaretçi (son {data.gun} gün)</p>
@@ -449,12 +449,12 @@ export function AdminTrafficAnalyticsView({
         <div className="analytics-metric analytics-metric-static">
           <div className="analytics-metric-heading">
             <Share2 size={19} aria-hidden="true" />
-            <h3>En Fazla Yönlendiren</h3>
+            <h3>Başlıca ziyaret kaynağı</h3>
           </div>
           <strong>{topSource?.etiket || "Henüz veri yok"}</strong>
           <p>
             {topSource
-              ? `${topSource.ziyaretci} ziyaretçi (%${topSource.pay_yuzde})`
+              ? `${topSource.ziyaretci} ziyaretçi (%${topSource.pay_yuzde.toLocaleString("tr-TR")})`
               : "Instagram, YouTube, Google veya Doğrudan"}
           </p>
           <span>
@@ -470,7 +470,7 @@ export function AdminTrafficAnalyticsView({
           >
             <div className="analytics-metric-heading">
               <UserRound size={19} aria-hidden="true" />
-              <h3>En Çok Ziyaret Edilen Profil</h3>
+              <h3>En çok ziyaret edilen profil</h3>
             </div>
             <strong>{topProfile.ad}</strong>
             <p>
@@ -485,7 +485,7 @@ export function AdminTrafficAnalyticsView({
           <div className="analytics-metric analytics-metric-static">
             <div className="analytics-metric-heading">
               <UserRound size={19} aria-hidden="true" />
-              <h3>En Çok Ziyaret Edilen Profil</h3>
+              <h3>En çok ziyaret edilen profil</h3>
             </div>
             <strong>Henüz yok</strong>
             <p>Son {data.gun} günde profil ziyareti bekleniyor</p>
@@ -496,7 +496,7 @@ export function AdminTrafficAnalyticsView({
         <div className="analytics-metric analytics-metric-static">
           <div className="analytics-metric-heading">
             <MapPin size={19} aria-hidden="true" />
-            <h3>En Yoğun Konum</h3>
+            <h3>En çok ziyaretçi gelen konum</h3>
           </div>
           <strong>{topLocation?.sehir || "Henüz veri yok"}</strong>
           <p>
@@ -506,14 +506,14 @@ export function AdminTrafficAnalyticsView({
           </p>
           <span>
             {topLocation
-              ? `Toplam trafiğin %${topLocation.pay_yuzde}'i`
+              ? `Toplam trafikteki payı: %${topLocation.pay_yuzde.toLocaleString("tr-TR")}`
               : "Konum sinyalleri bekleniyor"}
           </span>
         </div>
       </section>
 
       <DailyTrendChart
-        title={`Günlük ziyaretçi ve sayfa trafiği (Son ${data.gun} gün)`}
+        title={`Günlük ziyaretçi ve sayfa trafiği (son ${data.gun} gün)`}
         eyebrow="ZAMAN ÇİZELGESİ"
         headingId="admin-daily-trend-heading"
         primaryLabel="Sayfa görüntüleme"

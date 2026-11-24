@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export const SITE_ORIGIN = "https://terapist.co";
 export const DEFAULT_OG_IMAGE = `${SITE_ORIGIN}/brand/terapistco-og.png`;
 export const DEFAULT_TITLE =
-  "Psikolog & Terapist Profili | Alan Adınızı Alın · terapist.co";
+  "Psikolog ve terapist profili | Profil adresinizi alın · terapist.co";
 export const DEFAULT_DESCRIPTION =
   "Psikolog ve terapistler için doğrulanmış dijital profil. Özel terapist.co adresinizi alın; randevu takvimi, şifreli form ve QR kartınızı hemen oluşturun.";
 

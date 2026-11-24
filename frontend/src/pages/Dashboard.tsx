@@ -82,7 +82,7 @@ const referralReasons: Array<{ value: YonlendirmeNedeni; label: string }> = [
   { value: "age_group", label: "Yaş grubu" },
   { value: "location", label: "Konum" },
   { value: "budget", label: "Bütçe" },
-  { value: "therapy_format", label: "Görüşme formatı" },
+  { value: "therapy_format", label: "Görüşme şekli" },
   { value: "psychiatry", label: "Psikiyatri yönlendirmesi" },
   { value: "other", label: "Diğer" },
 ];
@@ -744,7 +744,7 @@ function ClientReferrals() {
         aria-labelledby="yonlendir"
       >
         <span className="eyebrow">GÜVENLİ MESLEKTAŞ YÖNLENDİRMESİ</span>
-        <h2 id="yonlendir">Danışan Yönlendir</h2>
+        <h2 id="yonlendir">Danışan yönlendir</h2>
         <p className="muted">
           Bu işlem danışan adı, iletişim bilgisi, tanı, not veya başka sağlık
           verisi istemez ve bağlantıya eklemez.
@@ -889,7 +889,7 @@ function ClientReferrals() {
                 onClick={createReferral}
               >
                 <Link2 size={17} />
-                {busy ? "Oluşturuluyor…" : "Referral oluştur"}
+                {busy ? "Oluşturuluyor…" : "Yönlendirme oluştur"}
               </button>
             </div>
           </div>
@@ -1023,7 +1023,7 @@ function Invitations() {
             <div className="invitation-heading">
               <div>
                 <span className="eyebrow">MESLEKİ AĞ</span>
-                <h2>Meslektaş Davet Et</h2>
+                <h2>Meslektaş davet et</h2>
               </div>
               <strong className="invite-count" aria-label="Kalan davet hakkı">
                 {invitations.data.kalan}/{invitations.data.davet_limiti}
@@ -1181,7 +1181,7 @@ function WebsiteBadge() {
     if (!badge.data?.rozet) return;
     try {
       await navigator.clipboard.writeText(badge.data.rozet.embed_code);
-      setMessage("Embed kodu panoya kopyalandı.");
+      setMessage("Yerleştirme kodu panoya kopyalandı.");
     } catch {
       setMessage("Kod kopyalanamadı. Metin alanından seçerek kopyalayın.");
     }
@@ -1202,7 +1202,7 @@ function WebsiteBadge() {
       {badge.data && (
         <section className="form-section" aria-labelledby="website-badge-title">
           <span className="eyebrow">DOĞRULANMIŞ PROFİL</span>
-          <h2 id="website-badge-title">Web Siteme Ekle</h2>
+          <h2 id="website-badge-title">Web siteme ekle</h2>
           <p className="muted">
             Rozeti web sitenize ekleyin. Tıklandığında doğrulanmış Terapist.co
             profiliniz açılır.
@@ -1232,14 +1232,14 @@ function WebsiteBadge() {
                 >
                   <img
                     src={badge.data.rozet.gorsel_url}
-                    alt="Terapist.co Doğrulanmış Terapist"
+                    alt="Terapist.co doğrulanmış terapist"
                     width="280"
                     height="72"
                   />
                 </a>
               </div>
               <label className="field website-badge-code">
-                Embed kodu
+                Yerleştirme kodu
                 <textarea
                   readOnly
                   rows={7}
@@ -1316,7 +1316,7 @@ const dashboardNavigation: Array<{
       },
       {
         id: "mesajlar",
-        label: "Bildirimler ve Mesajlar",
+        label: "Bildirimler ve mesajlar",
         description: "Meslektaş ve yönetici mesajları, bildirimler",
         icon: MessageSquare,
       },
@@ -1333,14 +1333,14 @@ const dashboardNavigation: Array<{
       },
       {
         id: "gorunum",
-        label: "Görünüm, QR & White-Label",
-        description: "Tema rengi, buton stili ve masa QR kartı",
+        label: "Görünüm ve QR kodu",
+        description: "Tema, marka görünürlüğü ve QR kartı",
         icon: Palette,
       },
       {
         id: "website-badge",
         label: "Web sitesi rozeti",
-        description: "Doğrulanmış profilini paylaş",
+        description: "Doğrulanmış profilinizi paylaşın",
         icon: ShieldCheck,
       },
     ],
@@ -1357,7 +1357,7 @@ const dashboardNavigation: Array<{
       {
         id: "tavsiyeler",
         label: "Terapist önerileri",
-        description: "Önerdiğin uzmanları yönet",
+        description: "Önerdiğiniz uzmanları yönetin",
         icon: HeartHandshake,
       },
       {
@@ -1738,7 +1738,7 @@ export function Dashboard() {
                             onClick={() => void markNotificationRead(item.id)}
                           >
                             <Check size={14} aria-hidden="true" />
-                            <span>Okundu işaretle</span>
+                            <span>Okundu olarak işaretle</span>
                           </button>
                         )}
                       </li>
@@ -1809,7 +1809,7 @@ export function Dashboard() {
                           ? "Çevrim içi"
                           : entry.tercih_format === "yuz_yuze"
                             ? "Yüz yüze"
-                            : "Format farketmez";
+                            : "Görüşme şekli fark etmez";
                       const timeLabel =
                         entry.tercih_zaman === "sabah"
                           ? "Sabah"
@@ -1819,7 +1819,7 @@ export function Dashboard() {
                               ? "Akşam"
                               : entry.tercih_zaman === "hafta_sonu"
                                 ? "Hafta sonu"
-                                : "Zaman esnek";
+                                : "Esnek saatler";
                       const statusLabel =
                         entry.durum === "bekliyor"
                           ? "Bekliyor"
@@ -1940,19 +1940,20 @@ export function Dashboard() {
                             {b.telefon}
                           </a>
                         </div>
-                        <span className={`status-badge ${b.durum}`}>
-                          {statuses[b.durum]}
-                        </span>
-                        {b.takvim_durumu && (
-                          <small>
-                            {b.takvim_durumu === "esitlendi"
-                              ? "Google Takvim güncel"
-                              : b.takvim_durumu === "hata"
-                                ? "Google aktarımı yeniden denenecek"
-                                : "Google aktarımı bekliyor"}
-                          </small>
-                        )}
-                        <AppointmentLinkButton bookingId={b.id} />
+                        <div className="appointment-status">
+                          <span className={`status-badge ${b.durum}`}>
+                            {statuses[b.durum]}
+                          </span>
+                          {b.takvim_durumu && (
+                            <small>
+                              {b.takvim_durumu === "esitlendi"
+                                ? "Google Takvim güncel"
+                                : b.takvim_durumu === "hata"
+                                  ? "Google Takvim aktarımı yeniden denenecek"
+                                  : "Google Takvim aktarımı bekleniyor"}
+                            </small>
+                          )}
+                        </div>
                         <div className="actions">
                           {b.durum === "onaylandi" &&
                             b.bitis &&
@@ -1962,7 +1963,7 @@ export function Dashboard() {
                                 disabled={busy === b.id}
                                 onClick={() => change(b.id, "tamamlandi")}
                               >
-                                Tamamlandı işaretle
+                                Tamamlandı olarak işaretle
                               </button>
                             )}
                           {b.durum === "bekliyor" && (
@@ -1993,6 +1994,7 @@ export function Dashboard() {
                             </button>
                           )}
                         </div>
+                        <AppointmentLinkButton bookingId={b.id} />
                       </article>
                     ))}
                   </div>

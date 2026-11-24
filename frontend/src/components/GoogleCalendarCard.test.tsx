@@ -38,12 +38,12 @@ const bagliDurum: GoogleTakvimDurumu = {
 };
 
 describe("GoogleCalendarCardContent", () => {
-  it("yapılandırıldığında Takvimini ekle bağlantısını etkinleştirir", () => {
+  it("yapılandırıldığında Takviminizi ekleyin bağlantısını etkinleştirir", () => {
     const html = renderToStaticMarkup(
       <GoogleCalendarCardContent data={bagliDegil} />,
     );
 
-    expect(html).toContain("Takvimini ekle (Google Takvim)");
+    expect(html).toContain("Takviminizi ekleyin (Google Takvim)");
     expect(html).not.toContain("disabled");
     expect(html).toContain(
       "kişisel etkinlik başlıkları veya katılımcılar profilinizde gösterilmez",

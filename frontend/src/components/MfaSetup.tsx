@@ -11,7 +11,7 @@ export function MfaSetup({ result }: { result: MfaSonucu }) {
       <h2>İki adımlı doğrulamayı kurun</h2>
       <p className="muted">
         Google Authenticator'da + → QR kodu tara seçeneğini açın ve aşağıdaki
-        kodu tarayın. Bu QR kod yalnızca sizin hesabınıza aittir.
+        kodu tarayın. Bu QR kodu yalnızca sizin hesabınıza aittir.
       </p>
       <div className="mfa-qr">
         <QRCodeSVG

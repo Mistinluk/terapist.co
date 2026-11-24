@@ -26,7 +26,7 @@ describe("NotificationBell ve NotificationsAndMessages", () => {
     expect(adminHtml).toContain("nav-bell-btn");
   });
 
-  it("Bildirimler ve Mesajlar sekmesini (mesajlar, bildirimler ve yeni mesaj başlatma) render eder", () => {
+  it("Bildirimler ve mesajlar sekmesini (mesajlar, bildirimler ve yeni mesaj başlatma) render eder", () => {
     const hubHtml = renderToStaticMarkup(
       <MemoryRouter>
         <NotificationsAndMessages userRole="uzman" />

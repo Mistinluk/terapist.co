@@ -128,7 +128,9 @@ export function GoogleCalendarCardContent({
                 disabled={!configured || busy}
                 onClick={onConnect}
               >
-                {busy ? "Yönlendiriliyor…" : "Takvimini ekle (Google Takvim)"}
+                {busy
+                  ? "Yönlendiriliyor…"
+                  : "Takviminizi ekleyin (Google Takvim)"}
               </button>
             </>
           ) : (
